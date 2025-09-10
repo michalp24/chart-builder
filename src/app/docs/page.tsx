@@ -129,8 +129,8 @@ export default function DocsPage() {
               
               <div>
                 <h3 className="font-semibold mb-2">2. Basic Embed Code</h3>
-                <div className="bg-slate-50 border rounded p-3 relative group">
-                  <code className="text-sm font-mono block">{embedCode}</code>
+                <div className="bg-slate-50 dark:bg-slate-800 border rounded p-3 relative group">
+                  <code className="text-sm font-mono block text-slate-800 dark:text-slate-200">{embedCode}</code>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -163,8 +163,8 @@ export default function DocsPage() {
                       <Badge variant="outline">Recommended</Badge>
                       <Badge variant="secondary">NPM Install</Badge>
                     </div>
-                    <div className="bg-slate-50 border rounded p-3">
-                      <code className="text-sm">{`npm install -D tailwindcss postcss autoprefixer
+                    <div className="bg-slate-50 dark:bg-slate-800 border dark:border-slate-700 rounded p-3">
+                      <code className="text-sm text-slate-800 dark:text-slate-200">{`npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p`}</code>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1">
@@ -177,10 +177,10 @@ npx tailwindcss init -p`}</code>
                       <Badge variant="destructive">Development Only</Badge>
                       <Badge variant="secondary">CDN</Badge>
                     </div>
-                    <div className="bg-slate-50 border rounded p-3">
-                      <code className="text-sm">{`<script src="https://cdn.tailwindcss.com"></script>`}</code>
+                    <div className="bg-slate-50 dark:bg-slate-800 border dark:border-slate-700 rounded p-3">
+                      <code className="text-sm text-slate-800 dark:text-slate-200">{`<script src="https://cdn.tailwindcss.com"></script>`}</code>
                     </div>
-                    <p className="text-xs text-amber-600 mt-1">
+                    <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
                       ⚠️ Not recommended for production - may show console warnings
                     </p>
                   </div>
@@ -195,8 +195,8 @@ npx tailwindcss init -p`}</code>
                   For custom theming and colors, include these CSS variables in your page:
                 </p>
                 
-                <div className="bg-slate-50 border rounded p-4 overflow-x-auto">
-                  <pre className="text-sm">
+                <div className="bg-slate-50 dark:bg-slate-800 border dark:border-slate-700 rounded p-4 overflow-x-auto">
+                  <pre className="text-sm text-slate-800 dark:text-slate-200">
 {`:root {
     --chart-1: 12, 76%, 61%;      /* Orange-red */
     --chart-2: 173, 58%, 39%;     /* Teal */
@@ -240,7 +240,7 @@ npx tailwindcss init -p`}</code>
                 A complete HTML page showing how to properly embed charts with all dependencies:
               </p>
               
-              <div className="bg-slate-50 border rounded p-4 overflow-x-auto relative group max-h-96 overflow-y-auto">
+              <div className="bg-slate-50 dark:bg-slate-800 border dark:border-slate-700 rounded p-4 overflow-x-auto relative group max-h-96 overflow-y-auto">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -250,7 +250,7 @@ npx tailwindcss init -p`}</code>
                   <Copy className="h-3 w-3" />
                 </Button>
                 <pre className="text-sm">
-                  <code>{htmlTemplate}</code>
+                  <code className="text-slate-800 dark:text-slate-200">{htmlTemplate}</code>
                 </pre>
               </div>
             </CardContent>
@@ -264,7 +264,7 @@ npx tailwindcss init -p`}</code>
             <CardContent className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <h3 className="font-semibold text-green-700 mb-2">✅ Do</h3>
+                  <h3 className="font-semibold text-green-700 dark:text-green-400 mb-2">✅ Do</h3>
                   <ul className="text-sm space-y-1 text-muted-foreground">
                     <li>• Include Tailwind CSS for proper styling</li>
                     <li>• Set appropriate width/height for your layout</li>
@@ -275,7 +275,7 @@ npx tailwindcss init -p`}</code>
                 </div>
                 
                 <div>
-                  <h3 className="font-semibold text-red-700 mb-2">❌ Don&apos;t</h3>
+                  <h3 className="font-semibold text-red-700 dark:text-red-400 mb-2">❌ Don&apos;t</h3>
                   <ul className="text-sm space-y-1 text-muted-foreground">
                     <li>• Forget to include Tailwind CSS</li>
                     <li>• Set fixed heights that break responsiveness</li>
