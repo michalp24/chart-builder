@@ -650,37 +650,22 @@ export const RADAR_CHART_TEMPLATES: ChartTemplate[] = [
   },
 ];
 
-// Sample data for tooltip charts (reuse existing data with enhanced tooltip configs)
+// Sample data for tooltip charts - consistent shadcn format (all use same stacked bar data)
 const tooltipChartData = {
-  basic: {
-    fields: [
-      { key: "month", label: "Month" },
-      { key: "desktop", label: "Desktop" },
-      { key: "mobile", label: "Mobile" },
-    ],
-    rows: [
-      { month: "January", desktop: 186, mobile: 80 },
-      { month: "February", desktop: 305, mobile: 200 },
-      { month: "March", desktop: 237, mobile: 120 },
-      { month: "April", desktop: 73, mobile: 190 },
-      { month: "May", desktop: 209, mobile: 130 },
-      { month: "June", desktop: 214, mobile: 140 },
-    ],
-  },
-  advanced: {
+  // Consistent data matching shadcn tooltip examples
+  standard: {
     fields: [
       { key: "date", label: "Date" },
-      { key: "revenue", label: "Revenue" },
-      { key: "profit", label: "Profit" },
-      { key: "users", label: "Users" },
+      { key: "running", label: "Running" },
+      { key: "swimming", label: "Swimming" },
     ],
     rows: [
-      { date: "2024-01-01", revenue: 1200, profit: 400, users: 1500 },
-      { date: "2024-01-02", revenue: 1100, profit: 350, users: 1400 },
-      { date: "2024-01-03", revenue: 1300, profit: 450, users: 1600 },
-      { date: "2024-01-04", revenue: 1250, profit: 420, users: 1550 },
-      { date: "2024-01-05", revenue: 1400, profit: 500, users: 1700 },
-      { date: "2024-01-06", revenue: 1350, profit: 480, users: 1650 },
+      { date: "2024-07-14", running: 320, swimming: 180 },  // Sun
+      { date: "2024-07-15", running: 280, swimming: 150 },  // Mon  
+      { date: "2024-07-16", running: 400, swimming: 200 },  // Tue
+      { date: "2024-07-17", running: 350, swimming: 220 },  // Wed
+      { date: "2024-07-18", running: 450, swimming: 300 },  // Thu (matches image)
+      { date: "2024-07-19", running: 380, swimming: 250 },  // Fri
     ],
   },
 };
@@ -692,17 +677,18 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     description: "Default tooltip with ChartTooltipContent",
     category: "tooltip",
     config: {
-      type: "line",
-      xKey: "month",
-      yKeys: ["desktop", "mobile"],
+      type: "bar",
+      xKey: "date",
+      yKeys: ["running", "swimming"],
       legend: true,
+      stacked: true,
       tooltip: { 
         enabled: true, 
         variant: "default" 
       },
-      size: { width: 600, height: 300 },
+      size: { width: 600, height: 350 },
     },
-    dataset: tooltipChartData.basic,
+    dataset: tooltipChartData.standard,
   },
   {
     id: "tooltip-line-indicator",
@@ -710,18 +696,19 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     description: "Tooltip with line indicator",
     category: "tooltip",
     config: {
-      type: "line",
-      xKey: "month",
-      yKeys: ["desktop", "mobile"],
+      type: "bar",
+      xKey: "date",
+      yKeys: ["running", "swimming"],
       legend: true,
+      stacked: true,
       tooltip: { 
         enabled: true, 
         variant: "line-indicator",
         showIndicator: true
       },
-      size: { width: 600, height: 300 },
+      size: { width: 600, height: 350 },
     },
-    dataset: tooltipChartData.basic,
+    dataset: tooltipChartData.standard,
   },
   {
     id: "tooltip-no-indicator",
@@ -729,18 +716,19 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     description: "Tooltip with no indicator",
     category: "tooltip",
     config: {
-      type: "line",
-      xKey: "month",
-      yKeys: ["desktop", "mobile"],
+      type: "bar",
+      xKey: "date",
+      yKeys: ["running", "swimming"],
       legend: true,
+      stacked: true,
       tooltip: { 
         enabled: true, 
         variant: "no-indicator",
         showIndicator: false
       },
-      size: { width: 600, height: 300 },
+      size: { width: 600, height: 350 },
     },
-    dataset: tooltipChartData.basic,
+    dataset: tooltipChartData.standard,
   },
   {
     id: "tooltip-custom-label",
@@ -749,16 +737,17 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     category: "tooltip",
     config: {
       type: "bar",
-      xKey: "month",
-      yKeys: ["desktop", "mobile"],
+      xKey: "date",
+      yKeys: ["running", "swimming"],
       legend: true,
+      stacked: true,
       tooltip: { 
         enabled: true, 
         variant: "custom-label"
       },
-      size: { width: 600, height: 300 },
+      size: { width: 600, height: 350 },
     },
-    dataset: tooltipChartData.basic,
+    dataset: tooltipChartData.standard,
   },
   {
     id: "tooltip-label-formatter",
@@ -767,16 +756,17 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     category: "tooltip",
     config: {
       type: "bar",
-      xKey: "month",
-      yKeys: ["desktop", "mobile"],
+      xKey: "date",
+      yKeys: ["running", "swimming"],
       legend: true,
+      stacked: true,
       tooltip: { 
         enabled: true, 
         variant: "label-formatter"
       },
-      size: { width: 600, height: 300 },
+      size: { width: 600, height: 350 },
     },
-    dataset: tooltipChartData.basic,
+    dataset: tooltipChartData.standard,
   },
   {
     id: "tooltip-no-label",
@@ -784,18 +774,19 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     description: "Tooltip with no label",
     category: "tooltip",
     config: {
-      type: "area",
-      xKey: "month",
-      yKeys: ["desktop", "mobile"],
+      type: "bar",
+      xKey: "date",
+      yKeys: ["running", "swimming"],
       legend: true,
+      stacked: true,
       tooltip: { 
         enabled: true, 
         variant: "no-label",
         showLabel: false
       },
-      size: { width: 600, height: 300 },
+      size: { width: 600, height: 350 },
     },
-    dataset: tooltipChartData.basic,
+    dataset: tooltipChartData.standard,
   },
   {
     id: "tooltip-formatter",
@@ -804,17 +795,18 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     category: "tooltip",
     config: {
       type: "bar",
-      xKey: "month",
-      yKeys: ["desktop", "mobile"],
+      xKey: "date",
+      yKeys: ["running", "swimming"],
       legend: true,
+      stacked: true,
       tooltip: { 
         enabled: true, 
         variant: "formatter",
         customFormatter: true
       },
-      size: { width: 600, height: 300 },
+      size: { width: 600, height: 350 },
     },
-    dataset: tooltipChartData.basic,
+    dataset: tooltipChartData.standard,
   },
   {
     id: "tooltip-icons",
@@ -822,18 +814,19 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     description: "Tooltip with icons",
     category: "tooltip",
     config: {
-      type: "line",
-      xKey: "month",
-      yKeys: ["desktop", "mobile"],
+      type: "bar",
+      xKey: "date",
+      yKeys: ["running", "swimming"],
       legend: true,
+      stacked: true,
       tooltip: { 
         enabled: true, 
         variant: "icons",
         showIcons: true
       },
-      size: { width: 600, height: 300 },
+      size: { width: 600, height: 350 },
     },
-    dataset: tooltipChartData.basic,
+    dataset: tooltipChartData.standard,
   },
   {
     id: "tooltip-advanced",
@@ -843,17 +836,18 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     config: {
       type: "bar",
       xKey: "date",
-      yKeys: ["revenue", "profit", "users"],
+      yKeys: ["running", "swimming"],
       legend: true,
+      stacked: true,
       tooltip: { 
         enabled: true, 
         variant: "advanced",
         customFormatter: true,
         showTotal: true
       },
-      size: { width: 600, height: 300 },
+      size: { width: 600, height: 350 },
     },
-    dataset: tooltipChartData.advanced,
+    dataset: tooltipChartData.standard,
   },
 ];
 

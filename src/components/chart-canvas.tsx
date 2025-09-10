@@ -28,7 +28,7 @@ import {
 } from "recharts";
 import { ChartConfig, Dataset } from "@/lib/schema";
 import { getChartColor, mapSeriesToColors } from "@/lib/colors";
-import { Monitor, Smartphone } from "lucide-react";
+import { Activity, Waves } from "lucide-react";
 
 interface ChartCanvasProps {
   config: ChartConfig;
@@ -101,7 +101,30 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
         try {
           const date = new Date(value);
           if (!isNaN(date.getTime())) {
+            // For stacked bar charts (tooltip examples), show day of week
+            if (config.type === 'bar' && config.stacked) {
+              return date.toLocaleDateString('en-US', { weekday: 'short' });
+            }
             return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          }
+        } catch (error) {
+          console.warn('Date parsing error:', error);
+        }
+      }
+      return value;
+    };
+
+    // Format tooltip label (shows full date for tooltips)
+    const formatTooltipLabel = (value: any) => {
+      if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)) {
+        try {
+          const date = new Date(value);
+          if (!isNaN(date.getTime())) {
+            return date.toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            });
           }
         } catch (error) {
           console.warn('Date parsing error:', error);
@@ -119,7 +142,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       }
       
       if (variant === "label-formatter") {
-        return (label: any) => `Custom: ${formatXAxisValue(label)}`;
+        return (label: any) => `Custom: ${formatTooltipLabel(label)}`;
       }
       
       if (variant === "custom-label" && xKey && fieldLabelMap[xKey]) {
@@ -130,7 +153,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
         if (xKey && fieldLabelMap[xKey]) {
           return fieldLabelMap[xKey];
         }
-        return formatXAxisValue(label);
+        return formatTooltipLabel(label);
       };
     };
 
@@ -168,8 +191,10 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
     const getTooltipIcon = (name: string) => {
       if (config.tooltip?.variant === "icons" || config.tooltip?.showIcons) {
         const iconMap: Record<string, React.ReactNode> = {
-          desktop: <Monitor className="h-3 w-3" />,
-          mobile: <Smartphone className="h-3 w-3" />,
+          running: <Activity className="h-3 w-3" />,
+          swimming: <Waves className="h-3 w-3" />,
+          desktop: <Activity className="h-3 w-3" />,
+          mobile: <Waves className="h-3 w-3" />,
         };
         return iconMap[name] || null;
       }
