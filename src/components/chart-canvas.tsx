@@ -371,7 +371,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             layout={isHorizontal ? "vertical" : "horizontal"}
             margin={{ top: 6, right: 30, left: 6, bottom: 60 }}
             barCategoryGap="20%"
-            barGap={0}
+            barGap={4}
           >
             {/* Only show grid lines if NOT a tooltip chart */}
             {!isTooltipChart && (isHorizontal ? (
