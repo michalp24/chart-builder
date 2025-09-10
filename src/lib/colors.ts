@@ -36,12 +36,19 @@ export function getChartColor(index: number, useActualColors: boolean = true): s
   return CHART_COLORS_CSS[colorKey];
 }
 
+// Primary columns that should ALWAYS get NVIDIA Green
+const PRIMARY_COLUMNS = ['desktop', 'revenue', 'sales', 'value', 'amount', 'data', 'count', 'total'];
+
+// Check if a column is a primary data column
+function isPrimaryColumn(columnName: string): boolean {
+  return PRIMARY_COLUMNS.includes(columnName.toLowerCase());
+}
+
 // Stable color mapping - each column name gets a consistent color
 function getStableColorForColumn(columnName: string): number {
-  // Primary columns always get NVIDIA Green (index 0)
-  const primaryColumns = ['desktop', 'revenue', 'sales', 'value', 'amount', 'data', 'count', 'total'];
-  if (primaryColumns.includes(columnName.toLowerCase())) {
-    return 0; // NVIDIA Green
+  // Primary columns always get NVIDIA Green (index 0) - NEVER override this
+  if (isPrimaryColumn(columnName)) {
+    return 0; // NVIDIA Green - ALWAYS
   }
   
   // For other columns, create a stable hash based on column name
@@ -87,13 +94,26 @@ export function mapSeriesToColors(
   
   // For regular charts, use stable color assignment based on column name
   yKeys.forEach((key) => {
-    if (customColors?.[key]) {
-      // Always preserve custom colors (highest priority)
-      colors[key] = customColors[key];
+    // Check if this is a primary column that should ALWAYS be NVIDIA Green
+    if (isPrimaryColumn(key)) {
+      // Primary columns get NVIDIA Green unless explicitly overridden by user
+      if (customColors?.[key] && customColors[key] !== getChartColor(0, useActualColors)) {
+        // User has explicitly set a different color for primary column
+        colors[key] = customColors[key];
+      } else {
+        // Use NVIDIA Green for primary columns (default behavior)
+        colors[key] = getChartColor(0, useActualColors);
+      }
     } else {
-      // Get stable color index for this column name
-      const colorIndex = getStableColorForColumn(key);
-      colors[key] = getChartColor(colorIndex, useActualColors);
+      // Non-primary columns
+      if (customColors?.[key]) {
+        // Preserve user-set custom colors
+        colors[key] = customColors[key];
+      } else {
+        // Get stable hash-based color for non-primary columns
+        const colorIndex = getStableColorForColumn(key);
+        colors[key] = getChartColor(colorIndex, useActualColors);
+      }
     }
   });
   

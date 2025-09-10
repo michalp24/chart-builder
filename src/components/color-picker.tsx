@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Palette } from "lucide-react";
 import { ChartConfig } from "@/lib/schema";
+import { mapSeriesToColors } from "@/lib/colors";
 
 // NVIDIA Color Palette organized by categories
 const NVIDIA_COLOR_CATEGORIES = {
@@ -103,15 +104,20 @@ export function ColorPicker({ config, onConfigChange, yKeys }: ColorPickerProps)
   };
 
   const resetToDefaults = () => {
-    const defaultColorMap: Record<string, string> = {};
-    yKeys.forEach((key, index) => {
-      defaultColorMap[key] = DEFAULT_COLORS[index % DEFAULT_COLORS.length];
-    });
+    // Use the stable color assignment logic from colors.ts
+    const defaultColorMap = mapSeriesToColors(yKeys, true, {});
     onConfigChange({ ...config, colors: defaultColorMap });
   };
 
   const getColorForKey = (yKey: string, index: number): string => {
-    return currentColors[yKey] || DEFAULT_COLORS[index % DEFAULT_COLORS.length];
+    // First check if user has set a custom color
+    if (currentColors[yKey]) {
+      return currentColors[yKey];
+    }
+    
+    // Otherwise use stable color assignment logic
+    const stableColors = mapSeriesToColors(yKeys, true, {});
+    return stableColors[yKey];
   };
 
   if (yKeys.length === 0) {
