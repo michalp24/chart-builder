@@ -69,8 +69,8 @@ function EditableCell({ value, onChange, type = "text" }: EditableCell) {
 }
 
 export function DataGrid({ dataset, onChange }: DataGridProps) {
-  const data = dataset?.rows || [];
-  const fields = dataset?.fields || [];
+  const data = useMemo(() => dataset?.rows || [], [dataset?.rows]);
+  const fields = useMemo(() => dataset?.fields || [], [dataset?.fields]);
 
   const columns = useMemo<ColumnDef<Record<string, any>>[]>(() => {
     return fields.map((field) => ({

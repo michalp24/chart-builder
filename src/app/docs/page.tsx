@@ -123,7 +123,7 @@ export default function DocsPage() {
               <div>
                 <h3 className="font-semibold mb-2">1. Create and Export Chart</h3>
                 <p className="text-sm text-muted-foreground mb-2">
-                  Build your chart using our editor, then click "Get Embed Code" to generate the iframe code.
+                  Build your chart using our editor, then click &quot;Get Embed Code&quot; to generate the iframe code.
                 </p>
               </div>
               
@@ -268,14 +268,14 @@ npx tailwindcss init -p`}</code>
                   <ul className="text-sm space-y-1 text-muted-foreground">
                     <li>• Include Tailwind CSS for proper styling</li>
                     <li>• Set appropriate width/height for your layout</li>
-                    <li>• Use loading="lazy" for better performance</li>
+                    <li>• Use loading=&quot;lazy&quot; for better performance</li>
                     <li>• Test in different screen sizes</li>
                     <li>• Include theme variables for consistency</li>
                   </ul>
                 </div>
                 
                 <div>
-                  <h3 className="font-semibold text-red-700 mb-2">❌ Don't</h3>
+                  <h3 className="font-semibold text-red-700 mb-2">❌ Don&apos;t</h3>
                   <ul className="text-sm space-y-1 text-muted-foreground">
                     <li>• Forget to include Tailwind CSS</li>
                     <li>• Set fixed heights that break responsiveness</li>

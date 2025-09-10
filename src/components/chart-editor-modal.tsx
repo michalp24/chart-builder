@@ -41,6 +41,7 @@ export function ChartEditorModal({ template, open, onOpenChange }: ChartEditorMo
   }, [template]);
 
   // Update chart config when dataset changes (for new columns)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (config && dataset?.rows?.length) {
       try {
