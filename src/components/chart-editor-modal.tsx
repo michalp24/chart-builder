@@ -59,7 +59,7 @@ export function ChartEditorModal({ template, open, onOpenChange }: ChartEditorMo
           .map(field => field.key);
 
         // Only update if there's actually a change and we have valid yKeys
-        if (newYKeys.length > 0 && JSON.stringify(newYKeys.sort()) !== JSON.stringify((config.yKeys || []).sort())) {
+        if (newYKeys.length > 0 && JSON.stringify([...newYKeys].sort()) !== JSON.stringify([...(config.yKeys || [])].sort())) {
           setConfig(prev => prev ? {
             ...prev,
             yKeys: newYKeys
