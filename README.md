@@ -237,6 +237,21 @@ npm run start
 - Include tests for new functionality
 - Update documentation for API changes
 
+## 📚 Documentation
+
+### Technical References
+- **[Chart Construction Notes](docs/CHART_CONSTRUCTION_NOTES.md)** - Comprehensive guide covering colors, themes, architecture, and technical implementation details
+- **[Quick Reference](docs/QUICK_REFERENCE.md)** - Essential patterns, colors, and checklists for building new charts
+- **[User Documentation](docs/)** - End-user guides and embedding instructions
+
+### Key Topics Covered
+- NVIDIA brand color system and theme implementation
+- Recharts configuration and grid line management  
+- Custom SVG legend implementation for proper export
+- SVG export with color preservation
+- Theme-aware component development
+- Known issues and solutions
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
