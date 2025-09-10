@@ -41,7 +41,6 @@ export function ChartEditorModal({ template, open, onOpenChange }: ChartEditorMo
   }, [template]);
 
   // Update chart config when dataset changes (for new columns)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (config && dataset?.rows?.length) {
       try {
@@ -70,6 +69,7 @@ export function ChartEditorModal({ template, open, onOpenChange }: ChartEditorMo
         console.error('Error updating yKeys:', error);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataset?.fields, dataset?.rows?.length, config?.xKey]); // More specific dependencies
 
   const handleExportSVG = () => {
