@@ -39,9 +39,31 @@ export function getChartColor(index: number, useActualColors: boolean = true): s
 export function mapSeriesToColors(
   yKeys: string[], 
   useActualColors: boolean = true,
-  customColors?: Record<string, string>
+  customColors?: Record<string, string>,
+  isTooltipChart?: boolean
 ): Record<string, string> {
   const colors: Record<string, string> = {};
+  
+  // Special color mapping for tooltip charts to match shadcn blue theme
+  if (isTooltipChart) {
+    const tooltipColors: Record<string, string> = {
+      swimming: "#93C5FD", // Light blue (bottom segment)
+      running: "#3B82F6",  // Darker blue (top segment) 
+    };
+    
+    yKeys.forEach((key, index) => {
+      if (customColors?.[key]) {
+        colors[key] = customColors[key];
+      } else if (tooltipColors[key]) {
+        colors[key] = tooltipColors[key];
+      } else {
+        colors[key] = getChartColor(index, useActualColors);
+      }
+    });
+    
+    return colors;
+  }
+  
   yKeys.forEach((key, index) => {
     // Use custom color if available, otherwise fallback to default
     colors[key] = customColors?.[key] || getChartColor(index, useActualColors);

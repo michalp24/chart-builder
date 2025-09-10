@@ -656,15 +656,15 @@ const tooltipChartData = {
   standard: {
     fields: [
       { key: "date", label: "Date" },
-      { key: "running", label: "Running" },
       { key: "swimming", label: "Swimming" },
+      { key: "running", label: "Running" },
     ],
     rows: [
       { date: "2024-07-14", running: 320, swimming: 180 },  // Sun
       { date: "2024-07-15", running: 280, swimming: 150 },  // Mon  
-      { date: "2024-07-16", running: 400, swimming: 200 },  // Tue
+      { date: "2024-07-16", running: 380, swimming: 420 },  // Tue (matches user's tooltip image)
       { date: "2024-07-17", running: 350, swimming: 220 },  // Wed
-      { date: "2024-07-18", running: 450, swimming: 300 },  // Thu (matches image)
+      { date: "2024-07-18", running: 450, swimming: 300 },  // Thu
       { date: "2024-07-19", running: 380, swimming: 250 },  // Fri
     ],
   },
@@ -679,7 +679,7 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     config: {
       type: "bar",
       xKey: "date",
-      yKeys: ["running", "swimming"],
+      yKeys: ["swimming", "running"],
       legend: true,
       stacked: true,
       tooltip: { 
@@ -698,7 +698,7 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     config: {
       type: "bar",
       xKey: "date",
-      yKeys: ["running", "swimming"],
+      yKeys: ["swimming", "running"],
       legend: true,
       stacked: true,
       tooltip: { 
@@ -718,7 +718,7 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     config: {
       type: "bar",
       xKey: "date",
-      yKeys: ["running", "swimming"],
+      yKeys: ["swimming", "running"],
       legend: true,
       stacked: true,
       tooltip: { 
@@ -738,7 +738,7 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     config: {
       type: "bar",
       xKey: "date",
-      yKeys: ["running", "swimming"],
+      yKeys: ["swimming", "running"],
       legend: true,
       stacked: true,
       tooltip: { 
@@ -757,7 +757,7 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     config: {
       type: "bar",
       xKey: "date",
-      yKeys: ["running", "swimming"],
+      yKeys: ["swimming", "running"],
       legend: true,
       stacked: true,
       tooltip: { 
@@ -776,7 +776,7 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     config: {
       type: "bar",
       xKey: "date",
-      yKeys: ["running", "swimming"],
+      yKeys: ["swimming", "running"],
       legend: true,
       stacked: true,
       tooltip: { 
@@ -796,7 +796,7 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     config: {
       type: "bar",
       xKey: "date",
-      yKeys: ["running", "swimming"],
+      yKeys: ["swimming", "running"],
       legend: true,
       stacked: true,
       tooltip: { 
@@ -816,7 +816,7 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     config: {
       type: "bar",
       xKey: "date",
-      yKeys: ["running", "swimming"],
+      yKeys: ["swimming", "running"],
       legend: true,
       stacked: true,
       tooltip: { 
@@ -836,7 +836,7 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     config: {
       type: "bar",
       xKey: "date",
-      yKeys: ["running", "swimming"],
+      yKeys: ["swimming", "running"],
       legend: true,
       stacked: true,
       tooltip: { 

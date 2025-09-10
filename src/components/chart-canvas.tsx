@@ -58,7 +58,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       );
     }
 
-    const colors = mapSeriesToColors(yKeys, true, config.colors); // Use actual colors for better SVG export
+    const colors = mapSeriesToColors(yKeys, true, config.colors, isTooltipChart); // Use actual colors for better SVG export
     const data = dataset.rows;
     
     // Get grid line color based on theme
