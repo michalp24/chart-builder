@@ -58,6 +58,28 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
 
     const colors = mapSeriesToColors(yKeys, true, config.colors); // Use actual colors for better SVG export
     const data = dataset.rows;
+    
+    // Get grid line color based on theme
+    const getGridColor = () => {
+      if (typeof document !== 'undefined') {
+        const isDark = document.documentElement.classList.contains('dark');
+        return isDark ? '#313131' : '#cccccc';
+      }
+      return '#cccccc'; // Default to light theme color
+    };
+    
+    const gridColor = getGridColor();
+    
+    // Get text color based on theme  
+    const getTextColor = () => {
+      if (typeof document !== 'undefined') {
+        const isDark = document.documentElement.classList.contains('dark');
+        return isDark ? '#EEEEEE' : '#222222';
+      }
+      return '#222222'; // Default to light theme color
+    };
+    
+    const textColor = getTextColor();
 
     // Create a mapping from field keys to labels for the legend
     const fieldLabelMap = dataset.fields.reduce((acc, field) => {
@@ -103,12 +125,12 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
     const renderAreaChart = () => (
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data} margin={{ top: 5, right: 30, left: 5, bottom: 60 }}>
-          <CartesianGrid strokeDasharray="3 3" verticalPoints={[]} />
+          <CartesianGrid strokeDasharray="3 3" verticalPoints={[]} stroke={gridColor} />
           <XAxis 
             dataKey={xKey} 
             type="category"
             scale="point"
-            tick={{ fontSize: 12 }}
+            tick={{ fontSize: 12, fill: textColor }}
             axisLine={false}
             tickLine={false}
             tickMargin={8}
@@ -117,7 +139,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             interval="preserveStartEnd"
           />
           <YAxis 
-            tick={{ fontSize: 12 }}
+            tick={{ fontSize: 12, fill: textColor }}
             axisLine={false}
             tickLine={false}
             tickMargin={8}
@@ -161,7 +183,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                     x={x + 18}
                     y={legendY + 9}
                     fontSize="12"
-                    fill="#666"
+                    fill={textColor}
                     dominantBaseline="middle"
                     textAnchor="start"
                   >
@@ -220,23 +242,25 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             barGap={0}
           >
             {isHorizontal ? (
-              // Horizontal bar chart: Show vertical lines only
+              // Horizontal bar chart: Show vertical lines only (hide horizontal)
               <CartesianGrid 
                 strokeDasharray="3 3"
-                horizontalPoints={[]}
+                horizontalCoordinatesGenerator={() => []}
+                stroke={gridColor}
               />
             ) : (
-              // Vertical bar chart: Show horizontal lines only  
+              // Vertical bar chart: Show horizontal lines only (hide vertical)  
               <CartesianGrid 
                 strokeDasharray="3 3"
-                verticalPoints={[]}
+                verticalCoordinatesGenerator={() => []}
+                stroke={gridColor}
               />
             )}
             {isHorizontal ? (
               <>
                 <XAxis 
                   type="number"
-                  tick={{ fontSize: 12 }}
+                  tick={{ fontSize: 12, fill: textColor }}
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
@@ -245,7 +269,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 <YAxis 
                   dataKey={xKey}
                   type="category"
-                  tick={{ fontSize: 12 }}
+                  tick={{ fontSize: 12, fill: textColor }}
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
@@ -256,13 +280,13 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 <XAxis 
                   dataKey={xKey} 
                   type="category"
-                  tick={{ fontSize: 12 }}
+                  tick={{ fontSize: 12, fill: textColor }}
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
                 />
                 <YAxis 
-                  tick={{ fontSize: 12 }}
+                  tick={{ fontSize: 12, fill: textColor }}
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
@@ -311,7 +335,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                     x={x + 18}
                     y={legendY + 9}
                     fontSize="12"
-                    fill="#666"
+                    fill={textColor}
                     dominantBaseline="middle"
                     textAnchor="start"
                   >
@@ -360,12 +384,12 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
     const renderLineChart = () => (
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 5, right: 30, left: 5, bottom: 60 }}>
-          <CartesianGrid strokeDasharray="3 3" verticalPoints={[]} />
+          <CartesianGrid strokeDasharray="3 3" verticalPoints={[]} stroke={gridColor} />
           <XAxis 
             dataKey={xKey} 
             type="category"
             scale="point"
-            tick={{ fontSize: 12 }}
+            tick={{ fontSize: 12, fill: textColor }}
             axisLine={false}
             tickLine={false}
             tickMargin={8}
@@ -374,7 +398,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             interval="preserveStartEnd"
           />
           <YAxis 
-            tick={{ fontSize: 12 }}
+            tick={{ fontSize: 12, fill: textColor }}
             axisLine={false}
             tickLine={false}
             tickMargin={8}
@@ -418,7 +442,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                     x={x + 18}
                     y={legendY + 9}
                     fontSize="12"
-                    fill="#666"
+                    fill={textColor}
                     dominantBaseline="middle"
                     textAnchor="start"
                   >
@@ -501,7 +525,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                     x={x + 18}
                     y={legendY + 9}
                     fontSize="12"
-                    fill="#666"
+                    fill={textColor}
                     dominantBaseline="middle"
                     textAnchor="start"
                   >
@@ -522,8 +546,8 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart data={data} margin={{ top: 5, right: 30, left: 5, bottom: 5 }}>
           <PolarGrid />
-          <PolarAngleAxis dataKey={xKey} tick={{ fontSize: 12 }} />
-          <PolarRadiusAxis tick={{ fontSize: 12 }} />
+          <PolarAngleAxis dataKey={xKey} tick={{ fontSize: 12, fill: textColor }} />
+          <PolarRadiusAxis tick={{ fontSize: 12, fill: textColor }} />
           {config.tooltip?.enabled !== false && (
             <Tooltip 
               contentStyle={{
@@ -562,7 +586,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                     x={x + 18}
                     y={legendY + 9}
                     fontSize="12"
-                    fill="#666"
+                    fill={textColor}
                     dominantBaseline="middle"
                     textAnchor="start"
                   >
@@ -639,7 +663,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
         console.error('Chart rendering error:', error);
         return (
           <div className="flex items-center justify-center h-full text-red-500">
-            Chart rendering error: {error.message}
+            Chart rendering error: {error instanceof Error ? error.message : 'Unknown error'}
           </div>
         );
       }

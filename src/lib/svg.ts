@@ -53,6 +53,11 @@ function resolveColorsAndInlineStyles(element: Element) {
     'hsl(var(--chart-3))': isDark ? 'hsl(30, 80%, 55%)' : 'hsl(197, 37%, 24%)',
     'hsl(var(--chart-4))': isDark ? 'hsl(280, 65%, 60%)' : 'hsl(43, 74%, 66%)',
     'hsl(var(--chart-5))': isDark ? 'hsl(340, 75%, 55%)' : 'hsl(27, 87%, 67%)',
+    // Text and grid colors for theme consistency
+    '#222222': '#222222', // Light theme text
+    '#EEEEEE': '#EEEEEE', // Dark theme text
+    '#cccccc': '#cccccc', // Light theme grid
+    '#313131': '#313131', // Dark theme grid
   };
   
   // Step 1: Fix fill and stroke attributes directly
