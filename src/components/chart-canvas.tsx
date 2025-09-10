@@ -476,19 +476,25 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
 
     const renderPieChart = () => (
       <ResponsiveContainer width="100%" height="100%">
-        <PieChart margin={{ top: 5, right: 30, left: 5, bottom: 5 }}>
+        <PieChart margin={{ top: 5, right: 30, left: 5, bottom: 60 }}>
           <Pie
             data={data}
             dataKey={yKeys[0]}
             nameKey={xKey}
             cx="50%"
-            cy="50%"
-            innerRadius={config.donut ? "30%" : 0}
-            outerRadius="40%"
+            cy="45%"
+            innerRadius={config.donut ? "35%" : 0}
+            outerRadius="65%"
             paddingAngle={2}
+            activeIndex={config.activeIndex}
           >
             {data.map((_, index) => (
-              <Cell key={`cell-${index}`} fill={getChartColor(index)} />
+              <Cell 
+                key={`cell-${index}`} 
+                fill={getChartColor(index)}
+                stroke={config.activeIndex === index ? getChartColor(index) : undefined}
+                strokeWidth={config.activeIndex === index ? 3 : 0}
+              />
             ))}
             {config.showLabels && (
               <LabelList 
@@ -499,6 +505,19 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               />
             )}
           </Pie>
+          {config.centerText && config.donut && (
+            <text 
+              x="50%" 
+              y="45%" 
+              textAnchor="middle" 
+              dominantBaseline="middle" 
+              fontSize="24"
+              fontWeight="bold"
+              fill={textColor}
+            >
+              {data.reduce((sum, item) => sum + (item[yKeys[0]] as number), 0).toLocaleString()}
+            </text>
+          )}
           {config.tooltip?.enabled !== false && (
             <Tooltip 
               contentStyle={{
@@ -627,27 +646,106 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
     );
 
     const renderRadialChart = () => {
-      const value = data[0]?.[yKeys[0]] as number || 0;
-      const maxValue = 100; // Assuming percentage
-      
+      // For stacked radial charts, format data differently
+      if (config.stacked && yKeys.length > 1) {
+        const stackedData = yKeys.map((key, index) => ({
+          name: key,
+          value: data[0]?.[key] as number || 0,
+          fill: colors[key] || getChartColor(index),
+        }));
+        
         return (
           <ResponsiveContainer width="100%" height="100%">
             <RadialBarChart 
-              data={[{ name: "Progress", value, fill: getChartColor(0) }]} 
-              innerRadius="60%" 
+              data={stackedData} 
+              innerRadius="30%" 
               outerRadius="90%" 
-              margin={{ top: 5, right: 30, left: 5, bottom: 5 }}
+              margin={{ top: 5, right: 30, left: 5, bottom: 60 }}
             >
+              {config.showGrid && <PolarGrid />}
+              <RadialBar dataKey="value" cornerRadius={8} />
+              {config.legend !== false && yKeys.map((key, index) => {
+                try {
+                  const chartHeight = config.size?.height || 400;
+                  const legendY = chartHeight - 30;
+                  const itemWidth = 80;
+                  const totalWidth = yKeys.length * itemWidth;
+                  const chartWidth = config.size?.width || 600;
+                  const startX = (chartWidth - totalWidth) / 2;
+                  const x = startX + (index * itemWidth);
+                  const label = fieldLabelMap[key] || key;
+                  
+                  return (
+                    <g key={`svg-legend-${key}`}>
+                      <rect
+                        x={x}
+                        y={legendY}
+                        width="12"
+                        height="12"
+                        fill={colors[key] || '#666'}
+                        rx="2"
+                        ry="2"
+                      />
+                      <text
+                        x={x + 18}
+                        y={legendY + 9}
+                        fontSize="12"
+                        fill={textColor}
+                        dominantBaseline="middle"
+                        textAnchor="start"
+                      >
+                        {label}
+                      </text>
+                    </g>
+                  );
+                } catch (error) {
+                  console.error('Legend rendering error:', error);
+                  return null;
+                }
+              })}
+            </RadialBarChart>
+          </ResponsiveContainer>
+        );
+      }
+      
+      // Single value radial chart
+      const value = data[0]?.[yKeys[0]] as number || 0;
+      const maxValue = 100;
+      
+      return (
+        <ResponsiveContainer width="100%" height="100%">
+          <RadialBarChart 
+            data={[{ name: fieldLabelMap[yKeys[0]] || yKeys[0], value, fill: colors[yKeys[0]] || getChartColor(0) }]} 
+            innerRadius="40%" 
+            outerRadius="80%" 
+            margin={{ top: 5, right: 30, left: 5, bottom: 5 }}
+          >
+            {config.showGrid && <PolarGrid />}
             <RadialBar dataKey="value" cornerRadius={10} />
-            <text 
-              x="50%" 
-              y="50%" 
-              textAnchor="middle" 
-              dominantBaseline="middle" 
-              className="text-2xl font-bold fill-foreground"
-            >
-              {`${value}%`}
-            </text>
+            {config.centerLabel && (
+              <text 
+                x="50%" 
+                y="50%" 
+                textAnchor="middle" 
+                dominantBaseline="middle" 
+                fontSize="32"
+                fontWeight="bold"
+                fill={textColor}
+              >
+                {`${value}%`}
+              </text>
+            )}
+            {config.tooltip?.enabled !== false && (
+              <Tooltip 
+                contentStyle={{
+                  backgroundColor: "hsl(var(--background))",
+                  border: "1px solid hsl(var(--border))",
+                  borderRadius: "6px",
+                }}
+                formatter={tooltipFormatter}
+                labelFormatter={tooltipLabelFormatter}
+              />
+            )}
           </RadialBarChart>
         </ResponsiveContainer>
       );

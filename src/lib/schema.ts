@@ -28,8 +28,13 @@ export const ChartConfigSchema = z.object({
   // Pie specific options
   donut: z.boolean().optional(),
   showLabels: z.boolean().optional(),
+  centerText: z.boolean().optional(),
+  activeIndex: z.number().optional(),
+  interactive: z.boolean().optional(),
   // Radar specific options
   showGrid: z.boolean().optional(),
+  // Radial specific options
+  centerLabel: z.boolean().optional(),
   // Mixed overlays
   lineKeys: z.array(z.string()).optional(),
   axis: z.object({

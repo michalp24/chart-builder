@@ -556,23 +556,23 @@ export const LINE_CHART_TEMPLATES: ChartTemplate[] = [
 
 export const PIE_CHART_TEMPLATES: ChartTemplate[] = [
   {
-    id: "pie-basic",
-    title: "Pie Chart",
-    description: "A basic pie chart showing data distribution",
+    id: "pie-legend",
+    title: "Pie Chart - Legend",
+    description: "Pie chart with legend showing categories",
     category: "pie",
     config: {
       type: "pie",
       xKey: "browser",
       yKeys: ["visitors"],
       legend: true,
-      size: { width: 600, height: 300 },
+      size: { width: 600, height: 400 },
     },
     dataset: pieChartData.basic,
   },
   {
-    id: "pie-donut",
-    title: "Pie Chart - Donut",
-    description: "Donut chart with center hole",
+    id: "pie-donut-text",
+    title: "Pie Chart - Donut with Text",
+    description: "Donut chart with center text display",
     category: "pie",
     config: {
       type: "pie",
@@ -580,22 +580,39 @@ export const PIE_CHART_TEMPLATES: ChartTemplate[] = [
       yKeys: ["visitors"],
       legend: true,
       donut: true,
-      size: { width: 600, height: 300 },
+      centerText: true,
+      size: { width: 600, height: 400 },
     },
     dataset: pieChartData.donut,
   },
   {
-    id: "pie-label",
-    title: "Pie Chart - Label",
-    description: "Pie chart with value labels on slices",
+    id: "pie-donut-active",
+    title: "Pie Chart - Donut Active",
+    description: "Interactive donut chart with active states",
     category: "pie",
     config: {
       type: "pie",
       xKey: "browser",
       yKeys: ["visitors"],
       legend: true,
-      showLabels: true,
-      size: { width: 600, height: 300 },
+      donut: true,
+      activeIndex: 0,
+      size: { width: 600, height: 400 },
+    },
+    dataset: pieChartData.donut,
+  },
+  {
+    id: "pie-interactive",
+    title: "Pie Chart - Interactive",
+    description: "Interactive pie chart with hover effects",
+    category: "pie",
+    config: {
+      type: "pie",
+      xKey: "browser",
+      yKeys: ["visitors"],
+      legend: true,
+      interactive: true,
+      size: { width: 600, height: 400 },
     },
     dataset: pieChartData.basic,
   },
@@ -633,12 +650,98 @@ export const RADAR_CHART_TEMPLATES: ChartTemplate[] = [
   },
 ];
 
+// Sample data for radial charts
+const radialChartData = {
+  basic: {
+    fields: [
+      { key: "name", label: "Name" },
+      { key: "value", label: "Value" },
+    ],
+    rows: [
+      { name: "Progress", value: 72 },
+    ],
+  },
+  stacked: {
+    fields: [
+      { key: "name", label: "Name" },
+      { key: "desktop", label: "Desktop" },
+      { key: "mobile", label: "Mobile" },
+    ],
+    rows: [
+      { name: "Progress", desktop: 45, mobile: 27 },
+    ],
+  },
+};
+
+export const RADIAL_CHART_TEMPLATES: ChartTemplate[] = [
+  {
+    id: "radial-basic",
+    title: "Radial Chart",
+    description: "A basic radial progress chart",
+    category: "radial",
+    config: {
+      type: "radial",
+      xKey: "name",
+      yKeys: ["value"],
+      legend: false,
+      size: { width: 600, height: 400 },
+    },
+    dataset: radialChartData.basic,
+  },
+  {
+    id: "radial-label",
+    title: "Radial Chart - Label",
+    description: "Radial chart with center label",
+    category: "radial",
+    config: {
+      type: "radial",
+      xKey: "name",
+      yKeys: ["value"],
+      legend: false,
+      centerLabel: true,
+      size: { width: 600, height: 400 },
+    },
+    dataset: radialChartData.basic,
+  },
+  {
+    id: "radial-grid",
+    title: "Radial Chart - Grid",
+    description: "Radial chart with grid lines",
+    category: "radial",
+    config: {
+      type: "radial",
+      xKey: "name",
+      yKeys: ["value"],
+      legend: false,
+      showGrid: true,
+      size: { width: 600, height: 400 },
+    },
+    dataset: radialChartData.basic,
+  },
+  {
+    id: "radial-stacked",
+    title: "Radial Chart - Stacked",
+    description: "Stacked radial chart with multiple series",
+    category: "radial",
+    config: {
+      type: "radial",
+      xKey: "name",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      stacked: true,
+      size: { width: 600, height: 400 },
+    },
+    dataset: radialChartData.stacked,
+  },
+];
+
 export const ALL_TEMPLATES: ChartTemplate[] = [
   ...AREA_CHART_TEMPLATES,
   ...BAR_CHART_TEMPLATES,
   ...LINE_CHART_TEMPLATES,
   ...PIE_CHART_TEMPLATES,
   ...RADAR_CHART_TEMPLATES,
+  ...RADIAL_CHART_TEMPLATES,
 ];
 
 export function getTemplatesByCategory(category: ChartTemplate["category"]): ChartTemplate[] {
