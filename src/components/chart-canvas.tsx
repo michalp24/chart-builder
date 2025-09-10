@@ -423,7 +423,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
-                  domain={["dataMin - 5", "dataMax + 5"]}
+                  domain={[0, "dataMax + 5"]}
                   allowDataOverflow={false}
                 />
               </>

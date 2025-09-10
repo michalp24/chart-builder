@@ -65,8 +65,16 @@ export function mapSeriesToColors(
   }
   
   yKeys.forEach((key, index) => {
-    // Use custom color if available, otherwise fallback to default
-    colors[key] = customColors?.[key] || getChartColor(index, useActualColors);
+    if (customColors?.[key]) {
+      // Preserve existing custom colors
+      colors[key] = customColors[key];
+    } else {
+      // Assign stable color based on consistent hash of the key name
+      const stableIndex = key.split('').reduce((hash, char) => {
+        return char.charCodeAt(0) + ((hash << 5) - hash);
+      }, 0);
+      colors[key] = getChartColor(Math.abs(stableIndex), useActualColors);
+    }
   });
   return colors;
 }
