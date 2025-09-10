@@ -29,12 +29,20 @@ export function FileImporter({ onDataImported, currentDataset }: FileImporterPro
     return new Promise((resolve) => {
       Papa.parse(file, {
         header: true,
+        skipEmptyLines: true,
+        transformHeader: (header: string) => header.trim(),
         complete: (results) => {
           try {
-            if (results.errors.length > 0) {
+            // Filter out only critical errors, ignore minor parsing issues
+            const criticalErrors = results.errors.filter(error => 
+              error.type === 'Delimiter' || 
+              (error.type === 'FieldMismatch' && !error.message.includes('Too few fields'))
+            );
+            
+            if (criticalErrors.length > 0) {
               resolve({
                 success: false,
-                message: `CSV parsing errors: ${results.errors[0].message}`,
+                message: `CSV parsing errors: ${criticalErrors[0].message}`,
               });
               return;
             }
