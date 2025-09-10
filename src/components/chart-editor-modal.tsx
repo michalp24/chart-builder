@@ -181,6 +181,7 @@ export function ChartEditorModal({ template, open, onOpenChange }: ChartEditorMo
                     config={config} 
                     dataset={dataset} 
                     className="w-full h-full"
+                    isTooltipChart={template?.category === "tooltip"}
                   />
                 </div>
               </div>

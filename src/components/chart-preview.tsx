@@ -84,6 +84,7 @@ export function ChartPreview({ config, dataset }: ChartPreviewProps) {
             config={config} 
             dataset={dataset} 
             className="w-full max-w-full"
+            isTooltipChart={config.tooltip?.variant ? true : false}
           />
         </div>
       </div>

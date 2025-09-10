@@ -34,10 +34,11 @@ interface ChartCanvasProps {
   config: ChartConfig;
   dataset: Dataset;
   className?: string;
+  isTooltipChart?: boolean; // Flag for tooltip chart variants
 }
 
 const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
-  ({ config, dataset, className }, ref) => {
+  ({ config, dataset, className, isTooltipChart = false }, ref) => {
     const { type, xKey, yKeys = [] } = config;
 
 
@@ -372,7 +373,8 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             barCategoryGap="20%"
             barGap={0}
           >
-            {isHorizontal ? (
+            {/* Only show grid lines if NOT a tooltip chart */}
+            {!isTooltipChart && (isHorizontal ? (
               // Horizontal bar chart: Show vertical lines only (hide horizontal)
               <CartesianGrid 
                 strokeDasharray="3 3"
@@ -386,7 +388,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 verticalCoordinatesGenerator={() => []}
                 stroke={gridColor}
               />
-            )}
+            ))}
             {isHorizontal ? (
               <>
                 <XAxis 
@@ -400,7 +402,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 <YAxis 
                   dataKey={xKey}
                   type="category"
-                  tick={{ fontSize: 12, fill: textColor }}
+                  tick={isTooltipChart ? false : { fontSize: 12, fill: textColor }}
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
@@ -417,7 +419,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                   tickMargin={8}
                 />
                 <YAxis 
-                  tick={{ fontSize: 12, fill: textColor }}
+                  tick={isTooltipChart ? false : { fontSize: 12, fill: textColor }}
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}

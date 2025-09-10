@@ -57,6 +57,7 @@ export function ChartGallery({ category }: ChartGalleryProps) {
                         config={config}
                         dataset={template.dataset}
                         className="w-full h-full"
+                        isTooltipChart={template.category === "tooltip"}
                       />
                     </div>
                   </div>
