@@ -36,6 +36,27 @@ export function getChartColor(index: number, useActualColors: boolean = true): s
   return CHART_COLORS_CSS[colorKey];
 }
 
+// Stable color mapping - each column name gets a consistent color
+function getStableColorForColumn(columnName: string): number {
+  // Primary columns always get NVIDIA Green (index 0)
+  const primaryColumns = ['desktop', 'revenue', 'sales', 'value', 'amount', 'data', 'count', 'total'];
+  if (primaryColumns.includes(columnName.toLowerCase())) {
+    return 0; // NVIDIA Green
+  }
+  
+  // For other columns, create a stable hash based on column name
+  let hash = 0;
+  for (let i = 0; i < columnName.length; i++) {
+    const char = columnName.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  
+  // Map hash to color index 1-4 (skip 0 which is reserved for primary)
+  const colorIndex = (Math.abs(hash) % 4) + 1;
+  return colorIndex;
+}
+
 export function mapSeriesToColors(
   yKeys: string[], 
   useActualColors: boolean = true,
@@ -64,22 +85,14 @@ export function mapSeriesToColors(
     return colors;
   }
   
-  // For regular charts, ensure consistent color assignment
-  // First, identify primary data columns that should get NVIDIA Green
-  const primaryColumns = ['desktop', 'revenue', 'sales', 'value', 'amount', 'data', 'count', 'total'];
-  const primaryKey = yKeys.find(key => primaryColumns.includes(key.toLowerCase()));
-  
-  // Assign colors sequentially, ensuring primary column gets NVIDIA Green (index 0)
-  yKeys.forEach((key, index) => {
+  // For regular charts, use stable color assignment based on column name
+  yKeys.forEach((key) => {
     if (customColors?.[key]) {
-      // Always preserve custom colors
+      // Always preserve custom colors (highest priority)
       colors[key] = customColors[key];
-    } else if (key === primaryKey) {
-      // Primary data column gets NVIDIA Green (index 0)
-      colors[key] = getChartColor(0, useActualColors);
     } else {
-      // Other columns get subsequent colors, skipping index 0 if primary exists
-      const colorIndex = primaryKey ? index + (index >= yKeys.indexOf(primaryKey) ? 0 : 1) : index;
+      // Get stable color index for this column name
+      const colorIndex = getStableColorForColumn(key);
       colors[key] = getChartColor(colorIndex, useActualColors);
     }
   });
