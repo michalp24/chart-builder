@@ -219,13 +219,19 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             barCategoryGap="20%"
             barGap={0}
           >
-            <CartesianGrid 
-              strokeDasharray="3 3"
-              // For horizontal charts: hide horizontal lines, show vertical lines
-              // For vertical charts: hide vertical lines, show horizontal lines
-              verticalPoints={isHorizontal ? undefined : []}
-              horizontalPoints={isHorizontal ? [] : undefined}
-            />
+            {isHorizontal ? (
+              // Horizontal bar chart: Show vertical lines only
+              <CartesianGrid 
+                strokeDasharray="3 3"
+                horizontalPoints={[]}
+              />
+            ) : (
+              // Vertical bar chart: Show horizontal lines only  
+              <CartesianGrid 
+                strokeDasharray="3 3"
+                verticalPoints={[]}
+              />
+            )}
             {isHorizontal ? (
               <>
                 <XAxis 
