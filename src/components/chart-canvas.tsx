@@ -221,34 +221,10 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
           >
             <CartesianGrid 
               strokeDasharray="3 3"
-              verticalCoordinatesGenerator={(props) => {
-                if (isHorizontal) {
-                  // For horizontal bars, keep default vertical lines
-                  return props.verticalPoints;
-                }
-                // For vertical bars, position lines at bar edges
-                const { xAxisMap, offset, width } = props;
-                const xAxis = xAxisMap && xAxisMap[Object.keys(xAxisMap)[0]];
-                if (!xAxis || !xAxis.scale) return props.verticalPoints;
-                
-                const scale = xAxis.scale;
-                const bandwidth = typeof scale.bandwidth === 'function' ? scale.bandwidth() : 0;
-                const step = typeof scale.step === 'function' ? scale.step() : 0;
-                const domain = typeof scale.domain === 'function' ? scale.domain() : [];
-                
-                const points = [offset.left]; // Start with left edge
-                
-                // Add lines at the start and end of each bar category
-                for (let i = 0; i < domain.length; i++) {
-                  const categoryStart = offset.left + i * step;
-                  const categoryEnd = categoryStart + step;
-                  if (i === domain.length - 1) {
-                    points.push(categoryEnd); // Add final right edge
-                  }
-                }
-                
-                return points;
-              }}
+              // For horizontal charts: hide horizontal lines, show vertical lines
+              // For vertical charts: hide vertical lines, show horizontal lines
+              verticalPoints={isHorizontal ? undefined : []}
+              horizontalPoints={isHorizontal ? [] : undefined}
             />
             {isHorizontal ? (
               <>
