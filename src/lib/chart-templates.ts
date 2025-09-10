@@ -79,6 +79,22 @@ const areaChartData = {
       { month: "June", desktop: 214, mobile: 140 },
     ],
   },
+  stackedExpanded: {
+    fields: [
+      { key: "month", label: "Month" },
+      { key: "desktop", label: "Desktop" },
+      { key: "mobile", label: "Mobile" },
+      { key: "tablet", label: "Tablet" },
+    ],
+    rows: [
+      { month: "January", desktop: 186, mobile: 80, tablet: 40 },
+      { month: "February", desktop: 305, mobile: 200, tablet: 60 },
+      { month: "March", desktop: 237, mobile: 120, tablet: 80 },
+      { month: "April", desktop: 73, mobile: 190, tablet: 30 },
+      { month: "May", desktop: 209, mobile: 130, tablet: 50 },
+      { month: "June", desktop: 214, mobile: 140, tablet: 70 },
+    ],
+  },
 };
 
 // Sample data for bar charts (reuse shapes from area for consistency)
@@ -124,6 +140,103 @@ const barChartData = {
       { month: "April", revenue: -20 },
       { month: "May", revenue: 60 },
       { month: "June", revenue: 110 },
+    ],
+  },
+};
+
+// Sample data for line charts
+const lineChartData = {
+  basic: {
+    fields: [
+      { key: "month", label: "Month" },
+      { key: "desktop", label: "Desktop" },
+    ],
+    rows: [
+      { month: "January", desktop: 186 },
+      { month: "February", desktop: 305 },
+      { month: "March", desktop: 237 },
+      { month: "April", desktop: 73 },
+      { month: "May", desktop: 209 },
+      { month: "June", desktop: 214 },
+    ],
+  },
+  multiple: {
+    fields: [
+      { key: "month", label: "Month" },
+      { key: "desktop", label: "Desktop" },
+      { key: "mobile", label: "Mobile" },
+    ],
+    rows: [
+      { month: "January", desktop: 186, mobile: 80 },
+      { month: "February", desktop: 305, mobile: 200 },
+      { month: "March", desktop: 237, mobile: 120 },
+      { month: "April", desktop: 73, mobile: 190 },
+      { month: "May", desktop: 209, mobile: 130 },
+      { month: "June", desktop: 214, mobile: 140 },
+    ],
+  },
+  dots: {
+    fields: [
+      { key: "month", label: "Month" },
+      { key: "desktop", label: "Desktop" },
+      { key: "mobile", label: "Mobile" },
+    ],
+    rows: [
+      { month: "January", desktop: 186, mobile: 80 },
+      { month: "February", desktop: 305, mobile: 200 },
+      { month: "March", desktop: 237, mobile: 120 },
+      { month: "April", desktop: 73, mobile: 190 },
+      { month: "May", desktop: 209, mobile: 130 },
+      { month: "June", desktop: 214, mobile: 140 },
+    ],
+  },
+};
+
+// Sample data for pie charts
+const pieChartData = {
+  basic: {
+    fields: [
+      { key: "browser", label: "Browser" },
+      { key: "visitors", label: "Visitors" },
+    ],
+    rows: [
+      { browser: "chrome", visitors: 275 },
+      { browser: "safari", visitors: 200 },
+      { browser: "firefox", visitors: 287 },
+      { browser: "edge", visitors: 173 },
+      { browser: "other", visitors: 190 },
+    ],
+  },
+  donut: {
+    fields: [
+      { key: "browser", label: "Browser" },
+      { key: "visitors", label: "Visitors" },
+    ],
+    rows: [
+      { browser: "chrome", visitors: 275 },
+      { browser: "safari", visitors: 200 },
+      { browser: "firefox", visitors: 287 },
+      { browser: "edge", visitors: 173 },
+      { browser: "other", visitors: 190 },
+    ],
+  },
+};
+
+// Sample data for radar charts
+const radarChartData = {
+  basic: {
+    fields: [
+      { key: "month", label: "Month" },
+      { key: "desktop", label: "Desktop" },
+      { key: "mobile", label: "Mobile" },
+    ],
+    rows: [
+      { month: "January", desktop: 186, mobile: 80 },
+      { month: "February", desktop: 305, mobile: 200 },
+      { month: "March", desktop: 237, mobile: 120 },
+      { month: "April", desktop: 73, mobile: 190 },
+      { month: "May", desktop: 209, mobile: 130 },
+      { month: "June", desktop: 214, mobile: 140 },
     ],
   },
 };
@@ -219,6 +332,55 @@ export const AREA_CHART_TEMPLATES: ChartTemplate[] = [
       yKeys: ["desktop", "mobile"],
       legend: true,
       gradient: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: areaChartData.multiSeries,
+  },
+  {
+    id: "area-stacked-expanded",
+    title: "Area Chart - Stacked Expanded",
+    description: "100% stacked area chart showing proportional values",
+    category: "area",
+    config: {
+      type: "area",
+      xKey: "month",
+      yKeys: ["desktop", "mobile", "tablet"],
+      legend: true,
+      gradient: false,
+      stacked: true,
+      stackedExpanded: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: areaChartData.stackedExpanded,
+  },
+  {
+    id: "area-icons",
+    title: "Area Chart - Icons",
+    description: "Area chart with category icons in legend",
+    category: "area",
+    config: {
+      type: "area",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      gradient: false,
+      showIcons: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: areaChartData.multiSeries,
+  },
+  {
+    id: "area-axes",
+    title: "Area Chart - Axes",
+    description: "Area chart with customized axes styling",
+    category: "area",
+    config: {
+      type: "area",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      gradient: false,
+      customAxes: true,
       size: { width: 600, height: 300 },
     },
     dataset: areaChartData.multiSeries,
@@ -331,9 +493,152 @@ export const BAR_CHART_TEMPLATES: ChartTemplate[] = [
   },
 ];
 
+export const LINE_CHART_TEMPLATES: ChartTemplate[] = [
+  {
+    id: "line-basic",
+    title: "Line Chart",
+    description: "A basic line chart showing single data series",
+    category: "line",
+    config: {
+      type: "line",
+      xKey: "month",
+      yKeys: ["desktop"],
+      legend: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: lineChartData.basic,
+  },
+  {
+    id: "line-multiple",
+    title: "Line Chart - Multiple",
+    description: "Multiple line series chart",
+    category: "line",
+    config: {
+      type: "line",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: lineChartData.multiple,
+  },
+  {
+    id: "line-dots",
+    title: "Line Chart - Dots",
+    description: "Line chart with data point dots",
+    category: "line",
+    config: {
+      type: "line",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      showDots: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: lineChartData.dots,
+  },
+  {
+    id: "line-step",
+    title: "Line Chart - Step",
+    description: "Step line chart with sharp transitions",
+    category: "line",
+    config: {
+      type: "line",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      stepped: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: lineChartData.multiple,
+  },
+];
+
+export const PIE_CHART_TEMPLATES: ChartTemplate[] = [
+  {
+    id: "pie-basic",
+    title: "Pie Chart",
+    description: "A basic pie chart showing data distribution",
+    category: "pie",
+    config: {
+      type: "pie",
+      xKey: "browser",
+      yKeys: ["visitors"],
+      legend: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: pieChartData.basic,
+  },
+  {
+    id: "pie-donut",
+    title: "Pie Chart - Donut",
+    description: "Donut chart with center hole",
+    category: "pie",
+    config: {
+      type: "pie",
+      xKey: "browser",
+      yKeys: ["visitors"],
+      legend: true,
+      donut: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: pieChartData.donut,
+  },
+  {
+    id: "pie-label",
+    title: "Pie Chart - Label",
+    description: "Pie chart with value labels on slices",
+    category: "pie",
+    config: {
+      type: "pie",
+      xKey: "browser",
+      yKeys: ["visitors"],
+      legend: true,
+      showLabels: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: pieChartData.basic,
+  },
+];
+
+export const RADAR_CHART_TEMPLATES: ChartTemplate[] = [
+  {
+    id: "radar-basic",
+    title: "Radar Chart",
+    description: "A basic radar chart for multi-dimensional data",
+    category: "radar",
+    config: {
+      type: "radar",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: radarChartData.basic,
+  },
+  {
+    id: "radar-grid",
+    title: "Radar Chart - Grid",
+    description: "Radar chart with customized grid lines",
+    category: "radar",
+    config: {
+      type: "radar",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      showGrid: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: radarChartData.basic,
+  },
+];
+
 export const ALL_TEMPLATES: ChartTemplate[] = [
   ...AREA_CHART_TEMPLATES,
   ...BAR_CHART_TEMPLATES,
+  ...LINE_CHART_TEMPLATES,
+  ...PIE_CHART_TEMPLATES,
+  ...RADAR_CHART_TEMPLATES,
 ];
 
 export function getTemplatesByCategory(category: ChartTemplate["category"]): ChartTemplate[] {

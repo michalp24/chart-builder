@@ -124,7 +124,11 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
 
     const renderAreaChart = () => (
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} margin={{ top: 5, right: 30, left: 5, bottom: 60 }}>
+        <AreaChart 
+          data={data} 
+          margin={{ top: 5, right: 30, left: 5, bottom: 60 }}
+          stackOffset={config.stackedExpanded ? "expand" : undefined}
+        >
           <CartesianGrid strokeDasharray="3 3" verticalPoints={[]} stroke={gridColor} />
           <XAxis 
             dataKey={xKey} 
@@ -462,7 +466,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               dataKey={key}
               stroke={colors[key]}
               strokeWidth={2}
-              dot={{ fill: colors[key], strokeWidth: 2, r: 4 }}
+              dot={config.showDots ? { fill: colors[key], strokeWidth: 2, r: 4 } : false}
               activeDot={{ r: 6, strokeWidth: 0 }}
             />
           ))}
@@ -479,13 +483,21 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             nameKey={xKey}
             cx="50%"
             cy="50%"
-            innerRadius={0}
+            innerRadius={config.donut ? "30%" : 0}
             outerRadius="40%"
             paddingAngle={2}
           >
             {data.map((_, index) => (
               <Cell key={`cell-${index}`} fill={getChartColor(index)} />
             ))}
+            {config.showLabels && (
+              <LabelList 
+                dataKey={yKeys[0]} 
+                position="outside" 
+                fill={textColor}
+                fontSize={12}
+              />
+            )}
           </Pie>
           {config.tooltip?.enabled !== false && (
             <Tooltip 

@@ -13,13 +13,23 @@ export const ChartConfigSchema = z.object({
   xKey: z.string().optional(),
   yKeys: z.array(z.string()).optional(),
   stacked: z.boolean().optional(),
+  stackedExpanded: z.boolean().optional(),
   stepped: z.boolean().optional(),
   legend: z.boolean().optional(),
   gradient: z.boolean().optional(),
   colors: z.record(z.string(), z.string()).optional(),
+  // Area/Line specific options
+  showIcons: z.boolean().optional(),
+  customAxes: z.boolean().optional(),
+  showDots: z.boolean().optional(),
   // Bar specific options
   barLayout: z.enum(["horizontal", "vertical"]).optional(),
   barLabel: z.boolean().optional(),
+  // Pie specific options
+  donut: z.boolean().optional(),
+  showLabels: z.boolean().optional(),
+  // Radar specific options
+  showGrid: z.boolean().optional(),
   // Mixed overlays
   lineKeys: z.array(z.string()).optional(),
   axis: z.object({
