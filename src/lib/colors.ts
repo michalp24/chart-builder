@@ -64,17 +64,25 @@ export function mapSeriesToColors(
     return colors;
   }
   
+  // For regular charts, ensure consistent color assignment
+  // First, identify primary data columns that should get NVIDIA Green
+  const primaryColumns = ['desktop', 'revenue', 'sales', 'value', 'amount', 'data', 'count', 'total'];
+  const primaryKey = yKeys.find(key => primaryColumns.includes(key.toLowerCase()));
+  
+  // Assign colors sequentially, ensuring primary column gets NVIDIA Green (index 0)
   yKeys.forEach((key, index) => {
     if (customColors?.[key]) {
-      // Preserve existing custom colors
+      // Always preserve custom colors
       colors[key] = customColors[key];
+    } else if (key === primaryKey) {
+      // Primary data column gets NVIDIA Green (index 0)
+      colors[key] = getChartColor(0, useActualColors);
     } else {
-      // Assign stable color based on consistent hash of the key name
-      const stableIndex = key.split('').reduce((hash, char) => {
-        return char.charCodeAt(0) + ((hash << 5) - hash);
-      }, 0);
-      colors[key] = getChartColor(Math.abs(stableIndex), useActualColors);
+      // Other columns get subsequent colors, skipping index 0 if primary exists
+      const colorIndex = primaryKey ? index + (index >= yKeys.indexOf(primaryKey) ? 0 : 1) : index;
+      colors[key] = getChartColor(colorIndex, useActualColors);
     }
   });
+  
   return colors;
 }
