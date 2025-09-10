@@ -689,7 +689,7 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
   {
     id: "tooltip-default",
     title: "Tooltip - Default",
-    description: "Line chart with default tooltip styling",
+    description: "Default tooltip with ChartTooltipContent",
     category: "tooltip",
     config: {
       type: "line",
@@ -705,9 +705,83 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
     dataset: tooltipChartData.basic,
   },
   {
-    id: "tooltip-indicator",
-    title: "Tooltip - Indicator",
-    description: "Area chart with indicator dots in tooltip",
+    id: "tooltip-line-indicator",
+    title: "Tooltip - Line Indicator",
+    description: "Tooltip with line indicator",
+    category: "tooltip",
+    config: {
+      type: "line",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      tooltip: { 
+        enabled: true, 
+        variant: "line-indicator",
+        showIndicator: true
+      },
+      size: { width: 600, height: 300 },
+    },
+    dataset: tooltipChartData.basic,
+  },
+  {
+    id: "tooltip-no-indicator",
+    title: "Tooltip - No Indicator",
+    description: "Tooltip with no indicator",
+    category: "tooltip",
+    config: {
+      type: "line",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      tooltip: { 
+        enabled: true, 
+        variant: "no-indicator",
+        showIndicator: false
+      },
+      size: { width: 600, height: 300 },
+    },
+    dataset: tooltipChartData.basic,
+  },
+  {
+    id: "tooltip-custom-label",
+    title: "Tooltip - Custom Label",
+    description: "Tooltip with custom label from chartConfig",
+    category: "tooltip",
+    config: {
+      type: "bar",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      tooltip: { 
+        enabled: true, 
+        variant: "custom-label"
+      },
+      size: { width: 600, height: 300 },
+    },
+    dataset: tooltipChartData.basic,
+  },
+  {
+    id: "tooltip-label-formatter",
+    title: "Tooltip - Label Formatter",
+    description: "Tooltip with label formatter",
+    category: "tooltip",
+    config: {
+      type: "bar",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      tooltip: { 
+        enabled: true, 
+        variant: "label-formatter"
+      },
+      size: { width: 600, height: 300 },
+    },
+    dataset: tooltipChartData.basic,
+  },
+  {
+    id: "tooltip-no-label",
+    title: "Tooltip - No Label",
+    description: "Tooltip with no label",
     category: "tooltip",
     config: {
       type: "area",
@@ -716,8 +790,46 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
       legend: true,
       tooltip: { 
         enabled: true, 
-        variant: "indicator",
-        cursor: "line" 
+        variant: "no-label",
+        showLabel: false
+      },
+      size: { width: 600, height: 300 },
+    },
+    dataset: tooltipChartData.basic,
+  },
+  {
+    id: "tooltip-formatter",
+    title: "Tooltip - Formatter",
+    description: "Tooltip with custom formatter",
+    category: "tooltip",
+    config: {
+      type: "bar",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      tooltip: { 
+        enabled: true, 
+        variant: "formatter",
+        customFormatter: true
+      },
+      size: { width: 600, height: 300 },
+    },
+    dataset: tooltipChartData.basic,
+  },
+  {
+    id: "tooltip-icons",
+    title: "Tooltip - Icons",
+    description: "Tooltip with icons",
+    category: "tooltip",
+    config: {
+      type: "line",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      tooltip: { 
+        enabled: true, 
+        variant: "icons",
+        showIcons: true
       },
       size: { width: 600, height: 300 },
     },
@@ -726,7 +838,7 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
   {
     id: "tooltip-advanced",
     title: "Tooltip - Advanced",
-    description: "Bar chart with advanced multi-line tooltip formatting",
+    description: "Tooltip with custom formatter and total",
     category: "tooltip",
     config: {
       type: "bar",
@@ -736,67 +848,12 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
       tooltip: { 
         enabled: true, 
         variant: "advanced",
-        cursor: "rect" 
+        customFormatter: true,
+        showTotal: true
       },
       size: { width: 600, height: 300 },
     },
     dataset: tooltipChartData.advanced,
-  },
-  {
-    id: "tooltip-none",
-    title: "Tooltip - None",
-    description: "Line chart with tooltips disabled",
-    category: "tooltip",
-    config: {
-      type: "line",
-      xKey: "month",
-      yKeys: ["desktop", "mobile"],
-      legend: true,
-      tooltip: { 
-        enabled: false,
-        variant: "none"
-      },
-      size: { width: 600, height: 300 },
-    },
-    dataset: tooltipChartData.basic,
-  },
-  {
-    id: "tooltip-crosshair",
-    title: "Tooltip - Crosshair",
-    description: "Area chart with crosshair cursor and detailed tooltip",
-    category: "tooltip",
-    config: {
-      type: "area",
-      xKey: "month",
-      yKeys: ["desktop", "mobile"],
-      legend: true,
-      tooltip: { 
-        enabled: true, 
-        variant: "default",
-        cursor: "crosshair" 
-      },
-      size: { width: 600, height: 300 },
-    },
-    dataset: tooltipChartData.basic,
-  },
-  {
-    id: "tooltip-label-hidden",
-    title: "Tooltip - Label Hidden",
-    description: "Bar chart with hidden tooltip labels",
-    category: "tooltip",
-    config: {
-      type: "bar",
-      xKey: "month",
-      yKeys: ["desktop", "mobile"],
-      legend: true,
-      tooltip: { 
-        enabled: true, 
-        variant: "indicator",
-        hideLabel: true 
-      },
-      size: { width: 600, height: 300 },
-    },
-    dataset: tooltipChartData.basic,
   },
 ];
 

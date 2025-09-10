@@ -43,11 +43,22 @@ export const ChartConfigSchema = z.object({
   }).optional(),
   tooltip: z.object({
     enabled: z.boolean(),
-    formatters: z.record(z.string(), z.string()).optional(),
-    variant: z.enum(["default", "indicator", "advanced", "none"]).optional(),
-    cursor: z.enum(["line", "crosshair", "rect", "none"]).optional(),
-    hideLabel: z.boolean().optional(),
-    hideIndicator: z.boolean().optional(),
+    variant: z.enum([
+      "default", 
+      "line-indicator", 
+      "no-indicator", 
+      "custom-label", 
+      "label-formatter", 
+      "no-label", 
+      "formatter", 
+      "icons", 
+      "advanced"
+    ]).optional(),
+    showIndicator: z.boolean().optional(),
+    showLabel: z.boolean().optional(),
+    showIcons: z.boolean().optional(),
+    customFormatter: z.boolean().optional(),
+    showTotal: z.boolean().optional(),
   }).optional(),
   theme: z.enum(["system", "light", "dark"]).optional(),
   size: z.object({

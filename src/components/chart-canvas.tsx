@@ -28,6 +28,7 @@ import {
 } from "recharts";
 import { ChartConfig, Dataset } from "@/lib/schema";
 import { getChartColor, mapSeriesToColors } from "@/lib/colors";
+import { Monitor, Smartphone } from "lucide-react";
 
 interface ChartCanvasProps {
   config: ChartConfig;
@@ -109,17 +110,110 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       return value;
     };
 
-    // Custom tooltip formatter to use field labels instead of keys
-    const tooltipLabelFormatter = (label: any) => {
-      if (xKey && fieldLabelMap[xKey]) {
-        return fieldLabelMap[xKey];
+    // Enhanced tooltip formatters for shadcn variants
+    const getTooltipLabelFormatter = () => {
+      const variant = config.tooltip?.variant;
+      
+      if (variant === "no-label" || config.tooltip?.showLabel === false) {
+        return undefined;
       }
-      return formatXAxisValue(label);
+      
+      if (variant === "label-formatter") {
+        return (label: any) => `Custom: ${formatXAxisValue(label)}`;
+      }
+      
+      if (variant === "custom-label" && xKey && fieldLabelMap[xKey]) {
+        return (label: any) => fieldLabelMap[xKey];
+      }
+      
+      return (label: any) => {
+        if (xKey && fieldLabelMap[xKey]) {
+          return fieldLabelMap[xKey];
+        }
+        return formatXAxisValue(label);
+      };
     };
 
-    const tooltipFormatter = (value: any, name: string) => {
-      const label = fieldLabelMap[name] || name;
-      return [value, label];
+    const getTooltipFormatter = () => {
+      const variant = config.tooltip?.variant;
+      
+      if (variant === "formatter" || config.tooltip?.customFormatter) {
+        return (value: any, name: string) => {
+          const label = fieldLabelMap[name] || name;
+          if (typeof value === 'number') {
+            return [`${value.toLocaleString()} units`, label];
+          }
+          return [value, label];
+        };
+      }
+      
+      if (variant === "advanced" && config.tooltip?.showTotal) {
+        return (value: any, name: string) => {
+          const label = fieldLabelMap[name] || name;
+          return [`${value.toLocaleString()}`, label];
+        };
+      }
+      
+      return (value: any, name: string) => {
+        const label = fieldLabelMap[name] || name;
+        return [value, label];
+      };
+    };
+
+
+    const tooltipLabelFormatter = getTooltipLabelFormatter();
+    const tooltipFormatter = getTooltipFormatter();
+
+    // Icon mapping for tooltip icons variant
+    const getTooltipIcon = (name: string) => {
+      if (config.tooltip?.variant === "icons" || config.tooltip?.showIcons) {
+        const iconMap: Record<string, React.ReactNode> = {
+          desktop: <Monitor className="h-3 w-3" />,
+          mobile: <Smartphone className="h-3 w-3" />,
+        };
+        return iconMap[name] || null;
+      }
+      return null;
+    };
+
+    // Custom tooltip content for advanced variants
+    const CustomTooltipContent = ({ active, payload, label }: any) => {
+      if (!active || !payload || !payload.length) return null;
+
+      const variant = config.tooltip?.variant;
+      
+      return (
+        <div className="bg-background border border-border rounded-md p-3 shadow-md">
+          {label && tooltipLabelFormatter && (
+            <div className="font-medium mb-2 text-foreground">
+              {tooltipLabelFormatter(label)}
+            </div>
+          )}
+          
+          {payload.map((entry: any, index: number) => {
+            const icon = getTooltipIcon(entry.dataKey);
+            const [value, name] = tooltipFormatter(entry.value, entry.dataKey);
+            
+            return (
+              <div key={index} className="flex items-center gap-2 text-sm">
+                <div 
+                  className="w-3 h-3 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: entry.color }}
+                />
+                {icon && <span className="flex-shrink-0">{icon}</span>}
+                <span className="text-muted-foreground">{name}:</span>
+                <span className="font-medium text-foreground">{value}</span>
+              </div>
+            );
+          })}
+
+          {variant === "advanced" && config.tooltip?.showTotal && payload.length > 1 && (
+            <div className="mt-2 pt-2 border-t border-border text-sm font-medium text-foreground">
+              Total: {payload.reduce((sum: number, entry: any) => sum + entry.value, 0).toLocaleString()}
+            </div>
+          )}
+        </div>
+      );
     };
 
     const renderAreaChart = () => (
@@ -150,15 +244,23 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             domain={["dataMin - 5", "dataMax + 5"]}
           />
           {config.tooltip?.enabled !== false && (
-            <Tooltip 
-              contentStyle={{
-                backgroundColor: "hsl(var(--background))",
-                border: "1px solid hsl(var(--border))",
-                borderRadius: "6px",
-              }}
-              formatter={tooltipFormatter}
-              labelFormatter={tooltipLabelFormatter}
-            />
+            config.tooltip?.variant === "icons" || config.tooltip?.variant === "advanced" ? (
+              <Tooltip 
+                content={<CustomTooltipContent />}
+                wrapperStyle={{ outline: "none" }}
+              />
+            ) : (
+              <Tooltip 
+                contentStyle={{
+                  backgroundColor: "hsl(var(--background))",
+                  border: "1px solid hsl(var(--border))",
+                  borderRadius: "6px",
+                }}
+                formatter={tooltipFormatter}
+                labelFormatter={tooltipLabelFormatter}
+                wrapperStyle={{ outline: "none" }}
+              />
+            )
           )}
           {/* SVG Legend - renders inside chart SVG for proper export */}
           {config.legend !== false && yKeys.map((key, index) => {
@@ -409,15 +511,23 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             domain={["dataMin - 5", "dataMax + 5"]}
           />
           {config.tooltip?.enabled !== false && (
-            <Tooltip 
-              contentStyle={{
-                backgroundColor: "hsl(var(--background))",
-                border: "1px solid hsl(var(--border))",
-                borderRadius: "6px",
-              }}
-              formatter={tooltipFormatter}
-              labelFormatter={tooltipLabelFormatter}
-            />
+            config.tooltip?.variant === "icons" || config.tooltip?.variant === "advanced" ? (
+              <Tooltip 
+                content={<CustomTooltipContent />}
+                wrapperStyle={{ outline: "none" }}
+              />
+            ) : (
+              <Tooltip 
+                contentStyle={{
+                  backgroundColor: "hsl(var(--background))",
+                  border: "1px solid hsl(var(--border))",
+                  borderRadius: "6px",
+                }}
+                formatter={tooltipFormatter}
+                labelFormatter={tooltipLabelFormatter}
+                wrapperStyle={{ outline: "none" }}
+              />
+            )
           )}
           {/* SVG Legend - renders inside chart SVG for proper export */}
           {config.legend !== false && yKeys.map((key, index) => {
@@ -519,15 +629,23 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             </text>
           )}
           {config.tooltip?.enabled !== false && (
-            <Tooltip 
-              contentStyle={{
-                backgroundColor: "hsl(var(--background))",
-                border: "1px solid hsl(var(--border))",
-                borderRadius: "6px",
-              }}
-              formatter={tooltipFormatter}
-              labelFormatter={tooltipLabelFormatter}
-            />
+            config.tooltip?.variant === "icons" || config.tooltip?.variant === "advanced" ? (
+              <Tooltip 
+                content={<CustomTooltipContent />}
+                wrapperStyle={{ outline: "none" }}
+              />
+            ) : (
+              <Tooltip 
+                contentStyle={{
+                  backgroundColor: "hsl(var(--background))",
+                  border: "1px solid hsl(var(--border))",
+                  borderRadius: "6px",
+                }}
+                formatter={tooltipFormatter}
+                labelFormatter={tooltipLabelFormatter}
+                wrapperStyle={{ outline: "none" }}
+              />
+            )
           )}
           {/* SVG Legend - renders inside chart SVG for proper export */}
           {config.legend !== false && yKeys.map((key, index) => {
@@ -580,15 +698,23 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
           <PolarAngleAxis dataKey={xKey} tick={{ fontSize: 12, fill: textColor }} />
           <PolarRadiusAxis tick={{ fontSize: 12, fill: textColor }} />
           {config.tooltip?.enabled !== false && (
-            <Tooltip 
-              contentStyle={{
-                backgroundColor: "hsl(var(--background))",
-                border: "1px solid hsl(var(--border))",
-                borderRadius: "6px",
-              }}
-              formatter={tooltipFormatter}
-              labelFormatter={tooltipLabelFormatter}
-            />
+            config.tooltip?.variant === "icons" || config.tooltip?.variant === "advanced" ? (
+              <Tooltip 
+                content={<CustomTooltipContent />}
+                wrapperStyle={{ outline: "none" }}
+              />
+            ) : (
+              <Tooltip 
+                contentStyle={{
+                  backgroundColor: "hsl(var(--background))",
+                  border: "1px solid hsl(var(--border))",
+                  borderRadius: "6px",
+                }}
+                formatter={tooltipFormatter}
+                labelFormatter={tooltipLabelFormatter}
+                wrapperStyle={{ outline: "none" }}
+              />
+            )
           )}
           {/* SVG Legend - renders inside chart SVG for proper export */}
           {config.legend !== false && yKeys.map((key, index) => {
@@ -736,23 +862,25 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               </text>
             )}
             {config.tooltip?.enabled !== false && (
-              <Tooltip 
-                contentStyle={{
-                  backgroundColor: "hsl(var(--background))",
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: "6px",
-                }}
-                formatter={tooltipFormatter}
-                labelFormatter={config.tooltip?.hideLabel ? undefined : tooltipLabelFormatter}
-                cursor={
-                  config.tooltip?.cursor === "line" ? { strokeWidth: 1, stroke: textColor } :
-                  config.tooltip?.cursor === "crosshair" ? { strokeWidth: 1, stroke: textColor, strokeDasharray: "3 3" } :
-                  config.tooltip?.cursor === "rect" ? { fill: "rgba(148, 163, 184, 0.1)" } :
-                  config.tooltip?.cursor === "none" ? false :
-                  true
-                }
-                wrapperStyle={{ outline: "none" }}
-              />
+              config.tooltip?.variant === "icons" || config.tooltip?.variant === "advanced" ? (
+                <Tooltip 
+                  content={<CustomTooltipContent />}
+                  cursor={{ fill: "rgba(148, 163, 184, 0.1)" }}
+                  wrapperStyle={{ outline: "none" }}
+                />
+              ) : (
+                <Tooltip 
+                  contentStyle={{
+                    backgroundColor: "hsl(var(--background))",
+                    border: "1px solid hsl(var(--border))",
+                    borderRadius: "6px",
+                  }}
+                  formatter={tooltipFormatter}
+                  labelFormatter={tooltipLabelFormatter}
+                  cursor={{ fill: "rgba(148, 163, 184, 0.1)" }}
+                  wrapperStyle={{ outline: "none" }}
+                />
+              )
             )}
           </RadialBarChart>
         </ResponsiveContainer>
