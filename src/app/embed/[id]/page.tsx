@@ -3,18 +3,15 @@
 import React, { useEffect, useState } from "react";
 import { ChartCanvas } from "@/components/chart-canvas";
 import { ChartConfig, Dataset } from "@/lib/schema";
-import { use } from "react";
 
 interface EmbedPageProps {
-  params: Promise<{ id: string }>;
-  searchParams: Promise<{ theme?: string }>;
+  params: { id: string };
+  searchParams: { theme?: string };
 }
 
 export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
-  const resolvedParams = use(params);
-  const resolvedSearchParams = use(searchParams);
-  const { id } = resolvedParams;
-  const { theme } = resolvedSearchParams;
+  const { id } = params;
+  const { theme } = searchParams;
   
   const [config, setConfig] = useState<ChartConfig | null>(null);
   const [dataset, setDataset] = useState<Dataset | null>(null);
@@ -100,14 +97,9 @@ export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
       
       {/* Optional branding */}
       <div className="fixed bottom-2 right-2 text-xs text-muted-foreground">
-        <a 
-          href={window.location.origin} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="hover:text-primary"
-        >
+        <span className="hover:text-primary">
           Created with Chart Builder
-        </a>
+        </span>
       </div>
     </div>
   );

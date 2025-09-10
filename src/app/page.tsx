@@ -102,7 +102,9 @@ export default function Home() {
             </p>
             <div className="flex gap-4">
               <Button variant="ghost" size="sm">GitHub</Button>
-              <Button variant="ghost" size="sm">Documentation</Button>
+              <Button variant="ghost" size="sm" asChild>
+                <a href="/docs">Documentation</a>
+              </Button>
             </div>
           </div>
         </div>

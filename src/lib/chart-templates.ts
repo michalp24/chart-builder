@@ -81,6 +81,53 @@ const areaChartData = {
   },
 };
 
+// Sample data for bar charts (reuse shapes from area for consistency)
+const barChartData = {
+  basic: {
+    fields: [
+      { key: "month", label: "Month" },
+      { key: "desktop", label: "Desktop" },
+    ],
+    rows: [
+      { month: "January", desktop: 186 },
+      { month: "February", desktop: 305 },
+      { month: "March", desktop: 237 },
+      { month: "April", desktop: 73 },
+      { month: "May", desktop: 209 },
+      { month: "June", desktop: 214 },
+    ],
+  },
+  multiSeries: {
+    fields: [
+      { key: "month", label: "Month" },
+      { key: "desktop", label: "Desktop" },
+      { key: "mobile", label: "Mobile" },
+    ],
+    rows: [
+      { month: "January", desktop: 186, mobile: 80 },
+      { month: "February", desktop: 305, mobile: 200 },
+      { month: "March", desktop: 237, mobile: 120 },
+      { month: "April", desktop: 73, mobile: 190 },
+      { month: "May", desktop: 209, mobile: 130 },
+      { month: "June", desktop: 214, mobile: 140 },
+    ],
+  },
+  negative: {
+    fields: [
+      { key: "month", label: "Month" },
+      { key: "revenue", label: "Revenue" },
+    ],
+    rows: [
+      { month: "January", revenue: 120 },
+      { month: "February", revenue: -40 },
+      { month: "March", revenue: 80 },
+      { month: "April", revenue: -20 },
+      { month: "May", revenue: 60 },
+      { month: "June", revenue: 110 },
+    ],
+  },
+};
+
 export const AREA_CHART_TEMPLATES: ChartTemplate[] = [
   {
     id: "area-basic",
@@ -91,7 +138,7 @@ export const AREA_CHART_TEMPLATES: ChartTemplate[] = [
       type: "area",
       xKey: "month",
       yKeys: ["desktop"],
-      legend: false,
+      legend: true,
       gradient: false,
       size: { width: 600, height: 300 },
     },
@@ -178,10 +225,121 @@ export const AREA_CHART_TEMPLATES: ChartTemplate[] = [
   },
 ];
 
+export const BAR_CHART_TEMPLATES: ChartTemplate[] = [
+  {
+    id: "bar-basic",
+    title: "Bar Chart",
+    description: "A basic bar chart showing single data series",
+    category: "bar",
+    config: {
+      type: "bar",
+      xKey: "month",
+      yKeys: ["desktop"],
+      legend: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: barChartData.basic,
+  },
+  {
+    id: "bar-horizontal",
+    title: "Bar Chart - Horizontal",
+    description: "Horizontal layout bar chart",
+    category: "bar",
+    config: {
+      type: "bar",
+      xKey: "month",
+      yKeys: ["desktop"],
+      legend: true,
+      barLayout: "horizontal",
+      size: { width: 600, height: 300 },
+    },
+    dataset: barChartData.basic,
+  },
+  {
+    id: "bar-multiple",
+    title: "Bar Chart - Multiple",
+    description: "Multiple series bar chart",
+    category: "bar",
+    config: {
+      type: "bar",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: barChartData.multiSeries,
+  },
+  {
+    id: "bar-stacked",
+    title: "Bar Chart - Stacked + Legend",
+    description: "Stacked bar chart showing cumulative values",
+    category: "bar",
+    config: {
+      type: "bar",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      stacked: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: barChartData.multiSeries,
+  },
+  {
+    id: "bar-label",
+    title: "Bar Chart - Custom Label",
+    description: "Bar chart with value labels on bars",
+    category: "bar",
+    config: {
+      type: "bar",
+      xKey: "month",
+      yKeys: ["desktop"],
+      legend: true,
+      barLabel: true,
+      barLayout: "horizontal",
+      size: { width: 600, height: 300 },
+    },
+    dataset: barChartData.basic,
+  },
+  {
+    id: "bar-mixed",
+    title: "Bar Chart - Mixed",
+    description: "Bars with an overlaid line series",
+    category: "bar",
+    config: {
+      type: "bar",
+      xKey: "month",
+      yKeys: ["desktop"],
+      lineKeys: ["mobile"],
+      legend: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: barChartData.multiSeries,
+  },
+  {
+    id: "bar-negative",
+    title: "Bar Chart - Negative",
+    description: "Bar chart with positive and negative values",
+    category: "bar",
+    config: {
+      type: "bar",
+      xKey: "month",
+      yKeys: ["revenue"],
+      legend: true,
+      size: { width: 600, height: 300 },
+    },
+    dataset: barChartData.negative,
+  },
+];
+
+export const ALL_TEMPLATES: ChartTemplate[] = [
+  ...AREA_CHART_TEMPLATES,
+  ...BAR_CHART_TEMPLATES,
+];
+
 export function getTemplatesByCategory(category: ChartTemplate["category"]): ChartTemplate[] {
-  return AREA_CHART_TEMPLATES.filter(template => template.category === category);
+  return ALL_TEMPLATES.filter(template => template.category === category);
 }
 
 export function getTemplateById(id: string): ChartTemplate | undefined {
-  return AREA_CHART_TEMPLATES.find(template => template.id === id);
+  return ALL_TEMPLATES.find(template => template.id === id);
 }

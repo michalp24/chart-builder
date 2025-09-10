@@ -51,12 +51,14 @@ export function ChartGallery({ category }: ChartGalleryProps) {
               <CardContent className="pb-4">
                 <div className="relative">
                   {/* Chart Preview */}
-                  <div className="h-48 bg-muted/10 rounded-lg p-2 overflow-hidden">
-                    <ChartCanvas 
-                      config={config}
-                      dataset={template.dataset}
-                      className="w-full h-full"
-                    />
+                  <div className="h-48 bg-muted/10 rounded-lg p-4 overflow-hidden flex items-center justify-center">
+                    <div className="w-full h-full max-w-full">
+                      <ChartCanvas 
+                        config={config}
+                        dataset={template.dataset}
+                        className="w-full h-full"
+                      />
+                    </div>
                   </div>
                   
                   {/* Hover Overlay */}

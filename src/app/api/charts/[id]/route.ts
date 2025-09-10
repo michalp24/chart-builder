@@ -1,17 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ChartConfig, Dataset, ChartConfigSchema, DatasetSchema } from "@/lib/schema";
-
-// In-memory storage for charts (shared with main route)
-interface SavedChart {
-  id: string;
-  config: ChartConfig;
-  dataset: Dataset;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-// This would be shared from a database module in a real app
-const charts = new Map<string, SavedChart>();
+import { ChartConfigSchema, DatasetSchema } from "@/lib/schema";
+import { chartStorage, SavedChart } from "@/lib/chart-storage";
 
 // GET /api/charts/[id] - Get a specific chart
 export async function GET(
@@ -20,7 +9,7 @@ export async function GET(
 ) {
   try {
     const { id } = params;
-    const chart = charts.get(id);
+    const chart = chartStorage.getById(id);
 
     if (!chart) {
       return NextResponse.json(
@@ -52,7 +41,7 @@ export async function PUT(
 ) {
   try {
     const { id } = params;
-    const existingChart = charts.get(id);
+    const existingChart = chartStorage.getById(id);
 
     if (!existingChart) {
       return NextResponse.json(
@@ -89,7 +78,7 @@ export async function PUT(
       updatedAt: new Date(),
     };
 
-    charts.set(id, updatedChart);
+    chartStorage.save(updatedChart);
 
     return NextResponse.json({
       id: updatedChart.id,
@@ -112,14 +101,14 @@ export async function DELETE(
   try {
     const { id } = params;
     
-    if (!charts.has(id)) {
+    if (!chartStorage.has(id)) {
       return NextResponse.json(
         { error: "Chart not found" },
         { status: 404 }
       );
     }
 
-    charts.delete(id);
+    chartStorage.delete(id);
 
     return NextResponse.json({
       message: "Chart deleted successfully",

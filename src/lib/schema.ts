@@ -17,6 +17,11 @@ export const ChartConfigSchema = z.object({
   legend: z.boolean().optional(),
   gradient: z.boolean().optional(),
   colors: z.record(z.string(), z.string()).optional(),
+  // Bar specific options
+  barLayout: z.enum(["horizontal", "vertical"]).optional(),
+  barLabel: z.boolean().optional(),
+  // Mixed overlays
+  lineKeys: z.array(z.string()).optional(),
   axis: z.object({
     x: z.any().optional(),
     y: z.any().optional(),

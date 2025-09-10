@@ -129,9 +129,10 @@ export function DataGrid({ dataset, onChange }: DataGridProps) {
       label: `Column ${fields.length + 1}`,
     };
     
+    // Initialize new column with numeric values (0) to make it chart-ready
     const newRows = data.map((row) => ({
       ...row,
-      [newKey]: "",
+      [newKey]: 0,
     }));
 
     onChange({

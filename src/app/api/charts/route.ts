@@ -1,22 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ChartConfig, Dataset, ChartConfigSchema, DatasetSchema } from "@/lib/schema";
-
-// In-memory storage for charts
-// In production, this would be replaced with a database
-interface SavedChart {
-  id: string;
-  config: ChartConfig;
-  dataset: Dataset;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const charts = new Map<string, SavedChart>();
+import { ChartConfigSchema, DatasetSchema } from "@/lib/schema";
+import { chartStorage, SavedChart } from "@/lib/chart-storage";
 
 // GET /api/charts - List all charts
 export async function GET() {
   try {
-    const chartList = Array.from(charts.values()).map(chart => ({
+    const chartList = chartStorage.getAll().map(chart => ({
       id: chart.id,
       type: chart.config.type,
       createdAt: chart.createdAt,
@@ -67,7 +56,7 @@ export async function POST(request: NextRequest) {
       updatedAt: new Date(),
     };
 
-    charts.set(savedChart.id, savedChart);
+    chartStorage.save(savedChart);
 
     return NextResponse.json({
       id: savedChart.id,

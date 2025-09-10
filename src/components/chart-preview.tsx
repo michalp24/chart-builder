@@ -16,12 +16,17 @@ interface ChartPreviewProps {
 }
 
 export function ChartPreview({ config, dataset }: ChartPreviewProps) {
-  const svgRef = useRef<SVGSVGElement>(null);
+  const svgRef = useRef<HTMLDivElement>(null);
 
   const handleExportSVG = () => {
     if (svgRef.current && config) {
       const filename = `chart-${config.type}-${Date.now()}`;
-      exportSVG(svgRef.current, filename);
+      try {
+        exportSVG(svgRef.current, filename);
+      } catch (error) {
+        console.error('Export failed:', error);
+        alert('Failed to export chart. Please try again.');
+      }
     }
   };
 

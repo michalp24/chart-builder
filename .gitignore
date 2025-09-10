@@ -135,4 +135,4 @@ Thumbs.db
 .vercel
 
 # Turbo
-.turbo
+.turbo.chart-storage/

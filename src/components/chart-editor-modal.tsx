@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/dialog";
 import { ChartCanvas } from "./chart-canvas";
 import { DataEditor } from "./data-editor";
+import { ChartSettings } from "./chart-settings";
+import { ColorPicker } from "./color-picker";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ChartTemplate } from "@/lib/chart-templates";
@@ -26,7 +28,7 @@ interface ChartEditorModalProps {
 export function ChartEditorModal({ template, open, onOpenChange }: ChartEditorModalProps) {
   const [config, setConfig] = useState<ChartConfig | null>(null);
   const [dataset, setDataset] = useState<Dataset | null>(null);
-  const svgRef = React.useRef<SVGSVGElement>(null);
+  const svgRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (template) {
@@ -38,10 +40,46 @@ export function ChartEditorModal({ template, open, onOpenChange }: ChartEditorMo
     }
   }, [template]);
 
+  // Update chart config when dataset changes (for new columns)
+  useEffect(() => {
+    if (config && dataset?.rows?.length) {
+      try {
+        const numericFields = dataset.fields.filter(field => {
+          // Check if this field contains numeric data in any row
+          const hasNumericData = dataset.rows.some(row => {
+            const value = row[field.key];
+            return typeof value === 'number' && !isNaN(value);
+          });
+          return hasNumericData;
+        });
+
+        // Update yKeys to include all numeric fields except the xKey
+        const newYKeys = numericFields
+          .filter(field => field.key !== config.xKey)
+          .map(field => field.key);
+
+        // Only update if there's actually a change and we have valid yKeys
+        if (newYKeys.length > 0 && JSON.stringify(newYKeys.sort()) !== JSON.stringify((config.yKeys || []).sort())) {
+          setConfig(prev => prev ? {
+            ...prev,
+            yKeys: newYKeys
+          } : null);
+        }
+      } catch (error) {
+        console.error('Error updating yKeys:', error);
+      }
+    }
+  }, [dataset?.fields, dataset?.rows?.length, config?.xKey]); // More specific dependencies
+
   const handleExportSVG = () => {
     if (svgRef.current && config) {
       const filename = `${config.type}-chart-${Date.now()}`;
-      exportSVG(svgRef.current, filename);
+      try {
+        exportSVG(svgRef.current, filename);
+      } catch (error) {
+        console.error('Export failed:', error);
+        alert('Failed to export chart. Please try again.');
+      }
     }
   };
 
@@ -89,15 +127,32 @@ export function ChartEditorModal({ template, open, onOpenChange }: ChartEditorMo
         
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-hidden">
           {/* Left Side - Data Editor */}
-          <div className="flex flex-col">
-            <h3 className="text-lg font-semibold mb-4">Edit Data</h3>
-            <Card className="flex-1 overflow-hidden">
-              <DataEditor 
-                dataset={dataset}
-                onChange={setDataset}
-                disabled={false}
+          <div className="flex flex-col overflow-hidden">
+            <h3 className="text-lg font-semibold mb-4 flex-shrink-0">Edit Data</h3>
+            
+            <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+              {/* Chart Settings */}
+              <ChartSettings 
+                config={config}
+                onChange={setConfig}
               />
-            </Card>
+              
+              {/* Color Picker */}
+              <ColorPicker 
+                config={config}
+                onConfigChange={setConfig}
+                yKeys={config.yKeys || []}
+              />
+              
+              {/* Data Editor */}
+              <Card className="flex-1 overflow-hidden min-h-[300px]">
+                <DataEditor 
+                  dataset={dataset}
+                  onChange={setDataset}
+                  disabled={false}
+                />
+              </Card>
+            </div>
           </div>
 
           {/* Right Side - Chart Preview */}
@@ -117,14 +172,16 @@ export function ChartEditorModal({ template, open, onOpenChange }: ChartEditorMo
             </div>
             
             <Card className="flex-1 p-4">
-              <div className="h-full flex items-center justify-center">
-                <ChartCanvas 
-                  key={`${config.id}-${dataset.rows.length}-${JSON.stringify(dataset.rows[0] || {})}`}
-                  ref={svgRef}
-                  config={config} 
-                  dataset={dataset} 
-                  className="w-full h-full"
-                />
+              <div className="h-full w-full flex items-center justify-center">
+                <div className="w-full h-full max-w-full">
+                  <ChartCanvas 
+                    key={`${config.id}-${dataset.rows.length}-${JSON.stringify(dataset.rows[0] || {})}`}
+                    ref={svgRef}
+                    config={config} 
+                    dataset={dataset} 
+                    className="w-full h-full"
+                  />
+                </div>
               </div>
             </Card>
 
