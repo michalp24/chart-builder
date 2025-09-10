@@ -743,7 +743,15 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                   borderRadius: "6px",
                 }}
                 formatter={tooltipFormatter}
-                labelFormatter={tooltipLabelFormatter}
+                labelFormatter={config.tooltip?.hideLabel ? undefined : tooltipLabelFormatter}
+                cursor={
+                  config.tooltip?.cursor === "line" ? { strokeWidth: 1, stroke: textColor } :
+                  config.tooltip?.cursor === "crosshair" ? { strokeWidth: 1, stroke: textColor, strokeDasharray: "3 3" } :
+                  config.tooltip?.cursor === "rect" ? { fill: "rgba(148, 163, 184, 0.1)" } :
+                  config.tooltip?.cursor === "none" ? false :
+                  true
+                }
+                wrapperStyle={{ outline: "none" }}
               />
             )}
           </RadialBarChart>

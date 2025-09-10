@@ -44,6 +44,10 @@ export const ChartConfigSchema = z.object({
   tooltip: z.object({
     enabled: z.boolean(),
     formatters: z.record(z.string(), z.string()).optional(),
+    variant: z.enum(["default", "indicator", "advanced", "none"]).optional(),
+    cursor: z.enum(["line", "crosshair", "rect", "none"]).optional(),
+    hideLabel: z.boolean().optional(),
+    hideIndicator: z.boolean().optional(),
   }).optional(),
   theme: z.enum(["system", "light", "dark"]).optional(),
   size: z.object({

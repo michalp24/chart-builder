@@ -5,7 +5,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { ChartGallery } from "@/components/chart-gallery";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AreaChart, BarChart3, LineChart, PieChart, RadarIcon, Circle } from "lucide-react";
+import { AreaChart, BarChart3, LineChart, PieChart, RadarIcon, Circle, MessageSquare } from "lucide-react";
 
 const chartCategories = [
   { id: "area", label: "Area Charts", icon: AreaChart },
@@ -14,10 +14,11 @@ const chartCategories = [
   { id: "pie", label: "Pie Charts", icon: PieChart },
   { id: "radar", label: "Radar Charts", icon: RadarIcon },
   { id: "radial", label: "Radial Charts", icon: Circle },
+  { id: "tooltip", label: "Tooltip Charts", icon: MessageSquare },
 ] as const;
 
 export default function Home() {
-  const [activeCategory, setActiveCategory] = useState<"area" | "bar" | "line" | "pie" | "radar" | "radial">("area");
+  const [activeCategory, setActiveCategory] = useState<"area" | "bar" | "line" | "pie" | "radar" | "radial" | "tooltip">("area");
 
   return (
     <div className="min-h-screen bg-background">
@@ -60,7 +61,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <Tabs value={activeCategory} onValueChange={(value) => setActiveCategory(value as typeof activeCategory)}>
             <div className="flex justify-center mb-8">
-              <TabsList className="grid grid-cols-3 lg:grid-cols-6 w-full max-w-4xl">
+              <TabsList className="grid grid-cols-3 lg:grid-cols-7 w-full max-w-5xl">
                 {chartCategories.map((category) => {
                   const Icon = category.icon;
                   return (

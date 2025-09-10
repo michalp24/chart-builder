@@ -6,7 +6,7 @@ export interface ChartTemplate {
   description: string;
   config: Omit<ChartConfig, "id">;
   dataset: Dataset;
-  category: "area" | "bar" | "line" | "pie" | "radar" | "radial";
+  category: "area" | "bar" | "line" | "pie" | "radar" | "radial" | "tooltip";
 }
 
 // Sample data for area charts
@@ -650,6 +650,156 @@ export const RADAR_CHART_TEMPLATES: ChartTemplate[] = [
   },
 ];
 
+// Sample data for tooltip charts (reuse existing data with enhanced tooltip configs)
+const tooltipChartData = {
+  basic: {
+    fields: [
+      { key: "month", label: "Month" },
+      { key: "desktop", label: "Desktop" },
+      { key: "mobile", label: "Mobile" },
+    ],
+    rows: [
+      { month: "January", desktop: 186, mobile: 80 },
+      { month: "February", desktop: 305, mobile: 200 },
+      { month: "March", desktop: 237, mobile: 120 },
+      { month: "April", desktop: 73, mobile: 190 },
+      { month: "May", desktop: 209, mobile: 130 },
+      { month: "June", desktop: 214, mobile: 140 },
+    ],
+  },
+  advanced: {
+    fields: [
+      { key: "date", label: "Date" },
+      { key: "revenue", label: "Revenue" },
+      { key: "profit", label: "Profit" },
+      { key: "users", label: "Users" },
+    ],
+    rows: [
+      { date: "2024-01-01", revenue: 1200, profit: 400, users: 1500 },
+      { date: "2024-01-02", revenue: 1100, profit: 350, users: 1400 },
+      { date: "2024-01-03", revenue: 1300, profit: 450, users: 1600 },
+      { date: "2024-01-04", revenue: 1250, profit: 420, users: 1550 },
+      { date: "2024-01-05", revenue: 1400, profit: 500, users: 1700 },
+      { date: "2024-01-06", revenue: 1350, profit: 480, users: 1650 },
+    ],
+  },
+};
+
+export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
+  {
+    id: "tooltip-default",
+    title: "Tooltip - Default",
+    description: "Line chart with default tooltip styling",
+    category: "tooltip",
+    config: {
+      type: "line",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      tooltip: { 
+        enabled: true, 
+        variant: "default" 
+      },
+      size: { width: 600, height: 300 },
+    },
+    dataset: tooltipChartData.basic,
+  },
+  {
+    id: "tooltip-indicator",
+    title: "Tooltip - Indicator",
+    description: "Area chart with indicator dots in tooltip",
+    category: "tooltip",
+    config: {
+      type: "area",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      tooltip: { 
+        enabled: true, 
+        variant: "indicator",
+        cursor: "line" 
+      },
+      size: { width: 600, height: 300 },
+    },
+    dataset: tooltipChartData.basic,
+  },
+  {
+    id: "tooltip-advanced",
+    title: "Tooltip - Advanced",
+    description: "Bar chart with advanced multi-line tooltip formatting",
+    category: "tooltip",
+    config: {
+      type: "bar",
+      xKey: "date",
+      yKeys: ["revenue", "profit", "users"],
+      legend: true,
+      tooltip: { 
+        enabled: true, 
+        variant: "advanced",
+        cursor: "rect" 
+      },
+      size: { width: 600, height: 300 },
+    },
+    dataset: tooltipChartData.advanced,
+  },
+  {
+    id: "tooltip-none",
+    title: "Tooltip - None",
+    description: "Line chart with tooltips disabled",
+    category: "tooltip",
+    config: {
+      type: "line",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      tooltip: { 
+        enabled: false,
+        variant: "none"
+      },
+      size: { width: 600, height: 300 },
+    },
+    dataset: tooltipChartData.basic,
+  },
+  {
+    id: "tooltip-crosshair",
+    title: "Tooltip - Crosshair",
+    description: "Area chart with crosshair cursor and detailed tooltip",
+    category: "tooltip",
+    config: {
+      type: "area",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      tooltip: { 
+        enabled: true, 
+        variant: "default",
+        cursor: "crosshair" 
+      },
+      size: { width: 600, height: 300 },
+    },
+    dataset: tooltipChartData.basic,
+  },
+  {
+    id: "tooltip-label-hidden",
+    title: "Tooltip - Label Hidden",
+    description: "Bar chart with hidden tooltip labels",
+    category: "tooltip",
+    config: {
+      type: "bar",
+      xKey: "month",
+      yKeys: ["desktop", "mobile"],
+      legend: true,
+      tooltip: { 
+        enabled: true, 
+        variant: "indicator",
+        hideLabel: true 
+      },
+      size: { width: 600, height: 300 },
+    },
+    dataset: tooltipChartData.basic,
+  },
+];
+
 // Sample data for radial charts
 const radialChartData = {
   basic: {
@@ -742,6 +892,7 @@ export const ALL_TEMPLATES: ChartTemplate[] = [
   ...PIE_CHART_TEMPLATES,
   ...RADAR_CHART_TEMPLATES,
   ...RADIAL_CHART_TEMPLATES,
+  ...TOOLTIP_CHART_TEMPLATES,
 ];
 
 export function getTemplatesByCategory(category: ChartTemplate["category"]): ChartTemplate[] {
