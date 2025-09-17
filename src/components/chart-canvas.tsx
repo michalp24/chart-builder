@@ -83,6 +83,60 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
     
     const textColor = getTextColor();
 
+    // Smart Y-axis domain calculation with intelligent rounding
+    const calculateSmartYDomain = (data: any[], yKeys: string[]) => {
+      if (!data?.length || !yKeys?.length) return [0, 100];
+      
+      // Get all numeric values from the specified y-keys
+      const allValues: number[] = [];
+      data.forEach(row => {
+        yKeys.forEach(key => {
+          const value = row[key];
+          if (typeof value === 'number' && !isNaN(value)) {
+            allValues.push(value);
+          }
+        });
+      });
+      
+      if (allValues.length === 0) return [0, 100];
+      
+      const min = Math.min(...allValues);
+      const max = Math.max(...allValues);
+      
+      // Determine rounding increment based on data range
+      let roundingIncrement: number;
+      if (max <= 100) {
+        roundingIncrement = 10; // Small numbers: round to nearest 10
+      } else if (max <= 1000) {
+        roundingIncrement = 50; // Medium numbers: round to nearest 50
+      } else if (max <= 10000) {
+        roundingIncrement = 100; // Large numbers: round to nearest 100
+      } else {
+        roundingIncrement = 1000; // Very large numbers: round to nearest 1000
+      }
+      
+      // Calculate smart min and max
+      let smartMin: number;
+      let smartMax: number;
+      
+      // For positive data, start from 0 unless min is significantly above 0
+      if (min >= 0) {
+        smartMin = min > roundingIncrement * 2 ? 
+          Math.floor(min / roundingIncrement) * roundingIncrement : 0;
+      } else {
+        smartMin = Math.floor(min / roundingIncrement) * roundingIncrement;
+      }
+      
+      // Always round max up to next increment
+      smartMax = Math.ceil(max / roundingIncrement) * roundingIncrement;
+      
+      // Add some padding for visual appeal
+      const padding = roundingIncrement;
+      smartMax += padding;
+      
+      return [smartMin, smartMax];
+    };
+
     // Create a mapping from field keys to labels for the legend
     const fieldLabelMap = dataset.fields.reduce((acc, field) => {
       acc[field.key] = field.label || field.key;
@@ -209,7 +263,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       const variant = config.tooltip?.variant;
       
       return (
-        <div className="bg-background border border-border rounded-md p-3 shadow-md">
+        <div className="bg-background border border-border p-3 shadow-md">
           {label && tooltipLabelFormatter && (
             <div className="font-medium mb-2 text-foreground">
               {tooltipLabelFormatter(label)}
@@ -242,33 +296,36 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       );
     };
 
-    const renderAreaChart = () => (
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart 
-          data={data} 
-          margin={{ top: 5, right: 30, left: 5, bottom: 60 }}
-          stackOffset={config.stackedExpanded ? "expand" : undefined}
-        >
-          <CartesianGrid strokeDasharray="3 3" verticalPoints={[]} stroke={gridColor} />
-          <XAxis 
-            dataKey={xKey} 
-            type="category"
-            scale="point"
-            tick={{ fontSize: 12, fill: textColor }}
-            axisLine={false}
-            tickLine={false}
-            tickMargin={8}
-            padding={{ left: 0, right: 0 }}
-            tickFormatter={formatXAxisValue}
-            interval="preserveStartEnd"
-          />
-          <YAxis 
-            tick={{ fontSize: 12, fill: textColor }}
-            axisLine={false}
-            tickLine={false}
-            tickMargin={8}
-            domain={["dataMin - 5", "dataMax + 5"]}
-          />
+    const renderAreaChart = () => {
+      const [yMin, yMax] = calculateSmartYDomain(data, yKeys);
+      
+      return (
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart 
+            data={data} 
+            margin={{ top: 5, right: 30, left: 5, bottom: 60 }}
+            stackOffset={config.stackedExpanded ? "expand" : undefined}
+          >
+            <CartesianGrid strokeDasharray="3 3" verticalPoints={[]} stroke={gridColor} />
+            <XAxis 
+              dataKey={xKey} 
+              type="category"
+              scale="point"
+              tick={{ fontSize: 12, fill: textColor }}
+              axisLine={false}
+              tickLine={false}
+              tickMargin={8}
+              padding={{ left: 0, right: 0 }}
+              tickFormatter={formatXAxisValue}
+              interval="preserveStartEnd"
+            />
+            <YAxis 
+              tick={{ fontSize: 12, fill: textColor }}
+              axisLine={false}
+              tickLine={false}
+              tickMargin={8}
+              domain={[yMin, yMax]}
+            />
           {config.tooltip?.enabled !== false && (
             config.tooltip?.variant === "icons" || config.tooltip?.variant === "advanced" ? (
               <Tooltip 
@@ -280,7 +337,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 contentStyle={{
                   backgroundColor: "hsl(var(--background))",
                   border: "1px solid hsl(var(--border))",
-                  borderRadius: "6px",
+                  borderRadius: "0px",
                 }}
                 formatter={tooltipFormatter}
                 labelFormatter={tooltipLabelFormatter}
@@ -357,13 +414,16 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               ))}
             </defs>
           )}
-        </AreaChart>
-      </ResponsiveContainer>
-    );
+          </AreaChart>
+        </ResponsiveContainer>
+      );
+    };
 
     const renderBarChart = () => {
       const isHorizontal = config.barLayout === "horizontal";
       const lineKeys = config.lineKeys || [];
+      const [yMin, yMax] = calculateSmartYDomain(data, yKeys);
+      
       return (
         <ResponsiveContainer width="100%" height="100%">
           <BarChart 
@@ -397,7 +457,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
-                  domain={[0, "dataMax + 10"]}
+                  domain={[yMin, yMax]}
                 />
                 <YAxis 
                   dataKey={xKey}
@@ -423,7 +483,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
-                  domain={[0, "dataMax + 5"]}
+                  domain={[yMin, yMax]}
                   allowDataOverflow={false}
                 />
               </>
@@ -433,7 +493,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 contentStyle={{
                   backgroundColor: "hsl(var(--background))",
                   border: "1px solid hsl(var(--border))",
-                  borderRadius: "6px",
+                  borderRadius: "0px",
                 }}
                 formatter={tooltipFormatter}
                 labelFormatter={tooltipLabelFormatter}
@@ -486,7 +546,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 key={key}
                 dataKey={key}
                 fill={colors[key]}
-                radius={isHorizontal ? [0, 4, 4, 0] : [4, 4, 0, 0]}
+                radius={0}
               >
                 {config.barLabel && (
                   <LabelList 
@@ -514,29 +574,32 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       );
     };
 
-    const renderLineChart = () => (
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 5, right: 30, left: 5, bottom: 60 }}>
-          <CartesianGrid strokeDasharray="3 3" verticalPoints={[]} stroke={gridColor} />
-          <XAxis 
-            dataKey={xKey} 
-            type="category"
-            scale="point"
-            tick={{ fontSize: 12, fill: textColor }}
-            axisLine={false}
-            tickLine={false}
-            tickMargin={8}
-            padding={{ left: 0, right: 0 }}
-            tickFormatter={formatXAxisValue}
-            interval="preserveStartEnd"
-          />
-          <YAxis 
-            tick={{ fontSize: 12, fill: textColor }}
-            axisLine={false}
-            tickLine={false}
-            tickMargin={8}
-            domain={["dataMin - 5", "dataMax + 5"]}
-          />
+    const renderLineChart = () => {
+      const [yMin, yMax] = calculateSmartYDomain(data, yKeys);
+      
+      return (
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={data} margin={{ top: 5, right: 30, left: 5, bottom: 60 }}>
+            <CartesianGrid strokeDasharray="3 3" verticalPoints={[]} stroke={gridColor} />
+            <XAxis 
+              dataKey={xKey} 
+              type="category"
+              scale="point"
+              tick={{ fontSize: 12, fill: textColor }}
+              axisLine={false}
+              tickLine={false}
+              tickMargin={8}
+              padding={{ left: 0, right: 0 }}
+              tickFormatter={formatXAxisValue}
+              interval="preserveStartEnd"
+            />
+            <YAxis 
+              tick={{ fontSize: 12, fill: textColor }}
+              axisLine={false}
+              tickLine={false}
+              tickMargin={8}
+              domain={[yMin, yMax]}
+            />
           {config.tooltip?.enabled !== false && (
             config.tooltip?.variant === "icons" || config.tooltip?.variant === "advanced" ? (
               <Tooltip 
@@ -548,7 +611,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 contentStyle={{
                   backgroundColor: "hsl(var(--background))",
                   border: "1px solid hsl(var(--border))",
-                  borderRadius: "6px",
+                  borderRadius: "0px",
                 }}
                 formatter={tooltipFormatter}
                 labelFormatter={tooltipLabelFormatter}
@@ -607,9 +670,10 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               activeDot={{ r: 6, strokeWidth: 0 }}
             />
           ))}
-        </LineChart>
-      </ResponsiveContainer>
-    );
+          </LineChart>
+        </ResponsiveContainer>
+      );
+    };
 
     const renderPieChart = () => (
       <ResponsiveContainer width="100%" height="100%">
@@ -666,7 +730,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 contentStyle={{
                   backgroundColor: "hsl(var(--background))",
                   border: "1px solid hsl(var(--border))",
-                  borderRadius: "6px",
+                  borderRadius: "0px",
                 }}
                 formatter={tooltipFormatter}
                 labelFormatter={tooltipLabelFormatter}
@@ -735,7 +799,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 contentStyle={{
                   backgroundColor: "hsl(var(--background))",
                   border: "1px solid hsl(var(--border))",
-                  borderRadius: "6px",
+                  borderRadius: "0px",
                 }}
                 formatter={tooltipFormatter}
                 labelFormatter={tooltipLabelFormatter}
@@ -816,7 +880,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               margin={{ top: 5, right: 30, left: 5, bottom: 60 }}
             >
               {config.showGrid && <PolarGrid />}
-              <RadialBar dataKey="value" cornerRadius={8} />
+              <RadialBar dataKey="value" cornerRadius={0} />
               {config.legend !== false && yKeys.map((key, index) => {
                 try {
                   const chartHeight = config.size?.height || 400;
@@ -874,7 +938,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             margin={{ top: 5, right: 30, left: 5, bottom: 5 }}
           >
             {config.showGrid && <PolarGrid />}
-            <RadialBar dataKey="value" cornerRadius={10} />
+            <RadialBar dataKey="value" cornerRadius={0} />
             {config.centerLabel && (
               <text 
                 x="50%" 
@@ -900,7 +964,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                   contentStyle={{
                     backgroundColor: "hsl(var(--background))",
                     border: "1px solid hsl(var(--border))",
-                    borderRadius: "6px",
+                    borderRadius: "0px",
                   }}
                   formatter={tooltipFormatter}
                   labelFormatter={tooltipLabelFormatter}
