@@ -311,7 +311,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               dataKey={xKey} 
               type="category"
               scale="point"
-              tick={{ fontSize: 12, fill: textColor }}
+              tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: 700 }}
               axisLine={false}
               tickLine={false}
               tickMargin={8}
@@ -320,7 +320,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               interval="preserveStartEnd"
             />
             <YAxis 
-              tick={{ fontSize: 12, fill: textColor }}
+              tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA' }}
               axisLine={false}
               tickLine={false}
               tickMargin={8}
@@ -345,46 +345,6 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               />
             )
           )}
-          {/* SVG Legend - renders inside chart SVG for proper export */}
-          {config.legend !== false && yKeys.map((key, index) => {
-            try {
-              const chartHeight = config.size?.height || 400;
-              const legendY = chartHeight - 30; // Position legend 30px from bottom
-              const itemWidth = 80; // Space between legend items (80px = ~15px gap + text)
-              const totalWidth = yKeys.length * itemWidth;
-              const chartWidth = config.size?.width || 600;
-              const startX = (chartWidth - totalWidth) / 2; // Center horizontally based on actual chart width
-              const x = startX + (index * itemWidth);
-              const label = legendFormatter ? legendFormatter(key) : key;
-              
-              return (
-                <g key={`svg-legend-${key}`}>
-                  <rect
-                    x={x}
-                    y={legendY}
-                    width="12"
-                    height="12"
-                    fill={colors[key] || '#666'}
-                    rx="2"
-                    ry="2"
-                  />
-                  <text
-                    x={x + 18}
-                    y={legendY + 9}
-                    fontSize="12"
-                    fill={textColor}
-                    dominantBaseline="middle"
-                    textAnchor="start"
-                  >
-                    {label}
-                  </text>
-                </g>
-              );
-            } catch (error) {
-              console.error('Legend rendering error:', error);
-              return null;
-            }
-          })}
           {yKeys.map((key, index) => (
             <Area
               key={key}
@@ -414,6 +374,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               ))}
             </defs>
           )}
+            {renderSVGLegend()}
           </AreaChart>
         </ResponsiveContainer>
       );
@@ -453,7 +414,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               <>
                 <XAxis 
                   type="number"
-                  tick={{ fontSize: 12, fill: textColor }}
+                  tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA' }}
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
@@ -462,7 +423,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 <YAxis 
                   dataKey={xKey}
                   type="category"
-                  tick={isTooltipChart ? false : { fontSize: 12, fill: textColor }}
+                  tick={isTooltipChart ? false : { fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: 700 }}
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
@@ -473,13 +434,13 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 <XAxis 
                   dataKey={xKey} 
                   type="category"
-                  tick={{ fontSize: 12, fill: textColor }}
+                  tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: 700 }}
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
                 />
                 <YAxis 
-                  tick={isTooltipChart ? false : { fontSize: 12, fill: textColor }}
+                  tick={isTooltipChart ? false : { fontSize: 12, fill: textColor, fontFamily: 'NVIDIA' }}
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
@@ -501,46 +462,6 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 wrapperStyle={{ outline: "none" }}
               />
             )}
-            {/* SVG Legend - renders inside chart SVG for proper export */}
-          {config.legend !== false && yKeys.map((key, index) => {
-            try {
-              const chartHeight = config.size?.height || 400;
-              const legendY = chartHeight - 30; // Position legend 30px from bottom
-              const itemWidth = 80; // Space between legend items (80px = ~15px gap + text)
-              const totalWidth = yKeys.length * itemWidth;
-              const chartWidth = config.size?.width || 600;
-              const startX = (chartWidth - totalWidth) / 2; // Center horizontally based on actual chart width
-              const x = startX + (index * itemWidth);
-              const label = legendFormatter ? legendFormatter(key) : key;
-              
-              return (
-                <g key={`svg-legend-${key}`}>
-                  <rect
-                    x={x}
-                    y={legendY}
-                    width="12"
-                    height="12"
-                    fill={colors[key] || '#666'}
-                    rx="2"
-                    ry="2"
-                  />
-                  <text
-                    x={x + 18}
-                    y={legendY + 9}
-                    fontSize="12"
-                    fill={textColor}
-                    dominantBaseline="middle"
-                    textAnchor="start"
-                  >
-                    {label}
-                  </text>
-                </g>
-              );
-            } catch (error) {
-              console.error('Legend rendering error:', error);
-              return null;
-            }
-          })}
             {yKeys.map((key) => (
               <Bar
                 key={key}
@@ -569,6 +490,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 yAxisId={0}
               />
             ))}
+            {renderSVGLegend()}
           </BarChart>
         </ResponsiveContainer>
       );
@@ -585,7 +507,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               dataKey={xKey} 
               type="category"
               scale="point"
-              tick={{ fontSize: 12, fill: textColor }}
+              tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: 700 }}
               axisLine={false}
               tickLine={false}
               tickMargin={8}
@@ -594,7 +516,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               interval="preserveStartEnd"
             />
             <YAxis 
-              tick={{ fontSize: 12, fill: textColor }}
+              tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA' }}
               axisLine={false}
               tickLine={false}
               tickMargin={8}
@@ -619,46 +541,6 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               />
             )
           )}
-          {/* SVG Legend - renders inside chart SVG for proper export */}
-          {config.legend !== false && yKeys.map((key, index) => {
-            try {
-              const chartHeight = config.size?.height || 400;
-              const legendY = chartHeight - 30; // Position legend 30px from bottom
-              const itemWidth = 80; // Space between legend items (80px = ~15px gap + text)
-              const totalWidth = yKeys.length * itemWidth;
-              const chartWidth = config.size?.width || 600;
-              const startX = (chartWidth - totalWidth) / 2; // Center horizontally based on actual chart width
-              const x = startX + (index * itemWidth);
-              const label = legendFormatter ? legendFormatter(key) : key;
-              
-              return (
-                <g key={`svg-legend-${key}`}>
-                  <rect
-                    x={x}
-                    y={legendY}
-                    width="12"
-                    height="12"
-                    fill={colors[key] || '#666'}
-                    rx="2"
-                    ry="2"
-                  />
-                  <text
-                    x={x + 18}
-                    y={legendY + 9}
-                    fontSize="12"
-                    fill={textColor}
-                    dominantBaseline="middle"
-                    textAnchor="start"
-                  >
-                    {label}
-                  </text>
-                </g>
-              );
-            } catch (error) {
-              console.error('Legend rendering error:', error);
-              return null;
-            }
-          })}
           {yKeys.map((key) => (
             <Line
               key={key}
@@ -670,6 +552,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               activeDot={{ r: 6, strokeWidth: 0 }}
             />
           ))}
+            {renderSVGLegend()}
           </LineChart>
         </ResponsiveContainer>
       );
@@ -714,6 +597,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               dominantBaseline="middle" 
               fontSize="24"
               fontWeight="bold"
+              fontFamily="NVIDIA"
               fill={textColor}
             >
               {data.reduce((sum, item) => sum + (item[yKeys[0]] as number), 0).toLocaleString()}
@@ -738,56 +622,17 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               />
             )
           )}
-          {/* SVG Legend - renders inside chart SVG for proper export */}
-          {config.legend !== false && yKeys.map((key, index) => {
-            try {
-              const chartHeight = config.size?.height || 400;
-              const legendY = chartHeight - 30; // Position legend 30px from bottom
-              const itemWidth = 80; // Space between legend items (80px = ~15px gap + text)
-              const totalWidth = yKeys.length * itemWidth;
-              const chartWidth = config.size?.width || 600;
-              const startX = (chartWidth - totalWidth) / 2; // Center horizontally based on actual chart width
-              const x = startX + (index * itemWidth);
-              const label = legendFormatter ? legendFormatter(key) : key;
-              
-              return (
-                <g key={`svg-legend-${key}`}>
-                  <rect
-                    x={x}
-                    y={legendY}
-                    width="12"
-                    height="12"
-                    fill={colors[key] || '#666'}
-                    rx="2"
-                    ry="2"
-                  />
-                  <text
-                    x={x + 18}
-                    y={legendY + 9}
-                    fontSize="12"
-                    fill={textColor}
-                    dominantBaseline="middle"
-                    textAnchor="start"
-                  >
-                    {label}
-                  </text>
-                </g>
-              );
-            } catch (error) {
-              console.error('Legend rendering error:', error);
-              return null;
-            }
-          })}
+          {renderSVGLegend()}
         </PieChart>
       </ResponsiveContainer>
     );
 
     const renderRadarChart = () => (
       <ResponsiveContainer width="100%" height="100%">
-        <RadarChart data={data} margin={{ top: 5, right: 30, left: 5, bottom: 5 }}>
+        <RadarChart data={data} margin={{ top: 5, right: 30, left: 5, bottom: 60 }}>
           <PolarGrid />
-          <PolarAngleAxis dataKey={xKey} tick={{ fontSize: 12, fill: textColor }} />
-          <PolarRadiusAxis tick={{ fontSize: 12, fill: textColor }} />
+          <PolarAngleAxis dataKey={xKey} tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: 700 }} />
+          <PolarRadiusAxis tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA' }} />
           {config.tooltip?.enabled !== false && (
             config.tooltip?.variant === "icons" || config.tooltip?.variant === "advanced" ? (
               <Tooltip 
@@ -807,46 +652,6 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               />
             )
           )}
-          {/* SVG Legend - renders inside chart SVG for proper export */}
-          {config.legend !== false && yKeys.map((key, index) => {
-            try {
-              const chartHeight = config.size?.height || 400;
-              const legendY = chartHeight - 30; // Position legend 30px from bottom
-              const itemWidth = 80; // Space between legend items (80px = ~15px gap + text)
-              const totalWidth = yKeys.length * itemWidth;
-              const chartWidth = config.size?.width || 600;
-              const startX = (chartWidth - totalWidth) / 2; // Center horizontally based on actual chart width
-              const x = startX + (index * itemWidth);
-              const label = legendFormatter ? legendFormatter(key) : key;
-              
-              return (
-                <g key={`svg-legend-${key}`}>
-                  <rect
-                    x={x}
-                    y={legendY}
-                    width="12"
-                    height="12"
-                    fill={colors[key] || '#666'}
-                    rx="2"
-                    ry="2"
-                  />
-                  <text
-                    x={x + 18}
-                    y={legendY + 9}
-                    fontSize="12"
-                    fill={textColor}
-                    dominantBaseline="middle"
-                    textAnchor="start"
-                  >
-                    {label}
-                  </text>
-                </g>
-              );
-            } catch (error) {
-              console.error('Legend rendering error:', error);
-              return null;
-            }
-          })}
           {yKeys.map((key) => (
             <Radar
               key={key}
@@ -858,6 +663,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               strokeWidth={2}
             />
           ))}
+          {renderSVGLegend()}
         </RadarChart>
       </ResponsiveContainer>
     );
@@ -881,45 +687,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             >
               {config.showGrid && <PolarGrid />}
               <RadialBar dataKey="value" cornerRadius={0} />
-              {config.legend !== false && yKeys.map((key, index) => {
-                try {
-                  const chartHeight = config.size?.height || 400;
-                  const legendY = chartHeight - 30;
-                  const itemWidth = 80;
-                  const totalWidth = yKeys.length * itemWidth;
-                  const chartWidth = config.size?.width || 600;
-                  const startX = (chartWidth - totalWidth) / 2;
-                  const x = startX + (index * itemWidth);
-                  const label = fieldLabelMap[key] || key;
-                  
-                  return (
-                    <g key={`svg-legend-${key}`}>
-                      <rect
-                        x={x}
-                        y={legendY}
-                        width="12"
-                        height="12"
-                        fill={colors[key] || '#666'}
-                        rx="2"
-                        ry="2"
-                      />
-                      <text
-                        x={x + 18}
-                        y={legendY + 9}
-                        fontSize="12"
-                        fill={textColor}
-                        dominantBaseline="middle"
-                        textAnchor="start"
-                      >
-                        {label}
-                      </text>
-                    </g>
-                  );
-                } catch (error) {
-                  console.error('Legend rendering error:', error);
-                  return null;
-                }
-              })}
+              {renderSVGLegend()}
             </RadialBarChart>
           </ResponsiveContainer>
         );
@@ -935,7 +703,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             data={[{ name: fieldLabelMap[yKeys[0]] || yKeys[0], value, fill: colors[yKeys[0]] || getChartColor(0) }]} 
             innerRadius="40%" 
             outerRadius="80%" 
-            margin={{ top: 5, right: 30, left: 5, bottom: 5 }}
+            margin={{ top: 5, right: 30, left: 5, bottom: 60 }}
           >
             {config.showGrid && <PolarGrid />}
             <RadialBar dataKey="value" cornerRadius={0} />
@@ -945,9 +713,10 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 y="50%" 
                 textAnchor="middle" 
                 dominantBaseline="middle" 
-                fontSize="32"
-                fontWeight="bold"
-                fill={textColor}
+              fontSize="32"
+              fontWeight="bold"
+              fontFamily="NVIDIA"
+              fill={textColor}
               >
                 {`${value}%`}
               </text>
@@ -973,6 +742,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 />
               )
             )}
+            {renderSVGLegend()}
           </RadialBarChart>
         </ResponsiveContainer>
       );
@@ -1006,13 +776,125 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       }
     };
 
+    // FlexBox Legend Component for Display
+    const FlexLegend = () => {
+      if (config.legend === false || !yKeys?.length) return null;
+      
+      return (
+        <div className="flex flex-wrap justify-center gap-4" style={{ marginTop: '-2rem' }}>
+          {yKeys.map((key) => {
+            const label = fieldLabelMap[key] || key;
+            return (
+              <div key={key} className="flex items-center gap-1" style={{ gap: '4px' }}>
+                <div
+                  className="w-3 h-3"
+                  style={{
+                    backgroundColor: colors[key] || '#666',
+                    borderRadius: '2px'
+                  }}
+                />
+                <span 
+                  className="text-xs font-bold"
+                  style={{ 
+                    fontFamily: 'NVIDIA',
+                    color: textColor,
+                    fontSize: '12px'
+                  }}
+                >
+                  {label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      );
+    };
+
+    // Hybrid SVG Legend: Proper SVG elements positioned exactly like FlexLegend
+    const renderSVGLegend = () => {
+      if (config.legend === false || !yKeys?.length) return null;
+      
+      const chartHeight = config.size?.height || 400;
+      const chartWidth = config.size?.width || 600;
+      
+      // Position legend at specific Y coordinate as requested
+      const legendY = 275;
+      
+      // Calculate item dimensions exactly like FlexLegend flexbox
+      const itemGap = 16; // Same as flexbox gap-4 (16px)  
+      const colorBoxWidth = 12; // Same as w-3 h-3 (12px)
+      const colorLabelGap = 4; // Same as gap-1 override (4px)
+      
+      // Measure text widths and calculate total width (client-side only)
+      let context: CanvasRenderingContext2D | null = null;
+      if (typeof window !== 'undefined') {
+        const canvas = document.createElement('canvas');
+        context = canvas.getContext('2d');
+        if (context) {
+          context.font = 'bold 12px NVIDIA, sans-serif';
+        }
+      }
+      
+      const items = yKeys.map((key) => {
+        const label = fieldLabelMap[key] || key;
+        const textWidth = context ? context.measureText(label).width : label.length * 7; // Fallback estimate
+        const itemWidth = colorBoxWidth + colorLabelGap + textWidth;
+        return { key, label, textWidth, itemWidth };
+      });
+      
+      const totalWidth = items.reduce((sum, item, index) => {
+        return sum + item.itemWidth + (index < items.length - 1 ? itemGap : 0);
+      }, 0);
+      
+      // Center the entire group like flexbox justify-content: center
+      const startX = (chartWidth - totalWidth) / 2;
+      
+      let currentX = startX;
+      
+      return items.map((item) => {
+        const rectX = currentX;
+        const textX = currentX + colorBoxWidth + colorLabelGap;
+        
+        const legendGroup = (
+          <g key={`svg-legend-export-${item.key}`} className="export-legend">
+            <rect
+              x={rectX}
+              y={legendY}
+              width={colorBoxWidth}
+              height="12"
+              fill={colors[item.key] || '#666'}
+              rx="2"
+              ry="2"
+            />
+            <text
+              x={textX}
+              y={286}
+              fontSize="12"
+              fill={textColor}
+              fontFamily="NVIDIA"
+              fontWeight="bold"
+              dominantBaseline="middle"
+              textAnchor="start"
+            >
+              {item.label}
+            </text>
+          </g>
+        );
+        
+        // Move to next item position
+        currentX += item.itemWidth + itemGap;
+        
+        return legendGroup;
+      });
+    };
+
     const containerHeight = config.size?.height || 400;
     const containerWidth = config.size?.width || 600;
     
     return (
       <div 
-        className={`${className || ""} w-full h-full flex items-center justify-center`} 
-        style={{ minHeight: `${containerHeight}px` }}
+        className={`${className || ""} w-full h-full flex flex-col items-center justify-center`} 
+        style={{ minHeight: `${containerHeight + 60}px` }}
         ref={ref}
       >
         <div 
@@ -1024,6 +906,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
         >
           {renderChart()}
         </div>
+        <FlexLegend />
       </div>
     );
   }

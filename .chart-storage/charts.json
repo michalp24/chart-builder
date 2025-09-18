@@ -65,5 +65,87 @@
     },
     "createdAt": "2025-09-10T05:26:24.403Z",
     "updatedAt": "2025-09-10T05:26:24.403Z"
+  },
+  {
+    "id": "k6le09o7bp",
+    "config": {
+      "id": "k6le09o7bp",
+      "type": "bar",
+      "xKey": "month",
+      "yKeys": [
+        "desktop",
+        "mobile",
+        "column_4"
+      ],
+      "legend": true,
+      "colors": {
+        "mobile": "#757575",
+        "column_4": "#A7A7A7"
+      },
+      "size": {
+        "width": 600,
+        "height": 300
+      }
+    },
+    "dataset": {
+      "fields": [
+        {
+          "key": "month",
+          "label": "Month"
+        },
+        {
+          "key": "desktop",
+          "label": "Desktop"
+        },
+        {
+          "key": "mobile",
+          "label": "Tablet"
+        },
+        {
+          "key": "column_4",
+          "label": "Mobile"
+        }
+      ],
+      "rows": [
+        {
+          "month": "January",
+          "desktop": 186,
+          "mobile": 80,
+          "column_4": 56
+        },
+        {
+          "month": "February",
+          "desktop": 305,
+          "mobile": 200,
+          "column_4": 322
+        },
+        {
+          "month": "March",
+          "desktop": 237,
+          "mobile": 120,
+          "column_4": 45
+        },
+        {
+          "month": "April",
+          "desktop": 73,
+          "mobile": 190,
+          "column_4": 123
+        },
+        {
+          "month": "May",
+          "desktop": 209,
+          "mobile": 130,
+          "column_4": 111
+        },
+        {
+          "month": "June",
+          "desktop": 214,
+          "mobile": 140,
+          "column_4": 0
+        }
+      ]
+    },
+    "createdAt": "2025-09-18T19:30:33.620Z",
+    "updatedAt": "2025-09-18T19:30:33.620Z"
   }
 ]
