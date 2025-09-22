@@ -159,11 +159,16 @@ function resolveColorsAndInlineStyles(element: Element) {
     element.setAttribute('style', 'display: block !important;');
   }
   
-  // Step 4.5: Handle export-legend elements specifically
-  if (element.classList && element.classList.contains('export-legend')) {
-    // Force SVG legends to be visible in export
-    element.setAttribute('style', 'display: block !important;');
-  }
+    // Step 4.5: Handle export elements specifically
+    if (element.classList && element.classList.contains('export-legend')) {
+      // Force SVG legends to be visible in export
+      element.setAttribute('style', 'display: block !important;');
+    }
+    
+    if (element.classList && element.classList.contains('export-secondary-label')) {
+      // Force SVG secondary labels to be visible in export
+      element.setAttribute('style', 'display: block !important;');
+    }
   
   // Step 5: Process child elements recursively
   Array.from(element.children).forEach(child => resolveColorsAndInlineStyles(child));

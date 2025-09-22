@@ -6,7 +6,7 @@ export interface ChartTemplate {
   description: string;
   config: Omit<ChartConfig, "id">;
   dataset: Dataset;
-  category: "area" | "bar" | "line" | "pie" | "radar" | "radial" | "tooltip";
+  category: "area" | "bar" | "line" | "pie" | "tooltip";
 }
 
 // Sample data for area charts
@@ -222,24 +222,6 @@ const pieChartData = {
   },
 };
 
-// Sample data for radar charts
-const radarChartData = {
-  basic: {
-    fields: [
-      { key: "month", label: "Month" },
-      { key: "desktop", label: "Desktop" },
-      { key: "mobile", label: "Mobile" },
-    ],
-    rows: [
-      { month: "January", desktop: 186, mobile: 80 },
-      { month: "February", desktop: 305, mobile: 200 },
-      { month: "March", desktop: 237, mobile: 120 },
-      { month: "April", desktop: 73, mobile: 190 },
-      { month: "May", desktop: 209, mobile: 130 },
-      { month: "June", desktop: 214, mobile: 140 },
-    ],
-  },
-};
 
 export const AREA_CHART_TEMPLATES: ChartTemplate[] = [
   {
@@ -618,37 +600,6 @@ export const PIE_CHART_TEMPLATES: ChartTemplate[] = [
   },
 ];
 
-export const RADAR_CHART_TEMPLATES: ChartTemplate[] = [
-  {
-    id: "radar-basic",
-    title: "Radar Chart",
-    description: "A basic radar chart for multi-dimensional data",
-    category: "radar",
-    config: {
-      type: "radar",
-      xKey: "month",
-      yKeys: ["desktop", "mobile"],
-      legend: true,
-      size: { width: 600, height: 300 },
-    },
-    dataset: radarChartData.basic,
-  },
-  {
-    id: "radar-grid",
-    title: "Radar Chart - Grid",
-    description: "Radar chart with customized grid lines",
-    category: "radar",
-    config: {
-      type: "radar",
-      xKey: "month",
-      yKeys: ["desktop", "mobile"],
-      legend: true,
-      showGrid: true,
-      size: { width: 600, height: 300 },
-    },
-    dataset: radarChartData.basic,
-  },
-];
 
 // Sample data for tooltip charts - consistent shadcn format (all use same stacked bar data)
 const tooltipChartData = {
@@ -851,98 +802,12 @@ export const TOOLTIP_CHART_TEMPLATES: ChartTemplate[] = [
   },
 ];
 
-// Sample data for radial charts
-const radialChartData = {
-  basic: {
-    fields: [
-      { key: "name", label: "Name" },
-      { key: "value", label: "Value" },
-    ],
-    rows: [
-      { name: "Progress", value: 72 },
-    ],
-  },
-  stacked: {
-    fields: [
-      { key: "name", label: "Name" },
-      { key: "desktop", label: "Desktop" },
-      { key: "mobile", label: "Mobile" },
-    ],
-    rows: [
-      { name: "Progress", desktop: 45, mobile: 27 },
-    ],
-  },
-};
-
-export const RADIAL_CHART_TEMPLATES: ChartTemplate[] = [
-  {
-    id: "radial-basic",
-    title: "Radial Chart",
-    description: "A basic radial progress chart",
-    category: "radial",
-    config: {
-      type: "radial",
-      xKey: "name",
-      yKeys: ["value"],
-      legend: false,
-      size: { width: 600, height: 400 },
-    },
-    dataset: radialChartData.basic,
-  },
-  {
-    id: "radial-label",
-    title: "Radial Chart - Label",
-    description: "Radial chart with center label",
-    category: "radial",
-    config: {
-      type: "radial",
-      xKey: "name",
-      yKeys: ["value"],
-      legend: false,
-      centerLabel: true,
-      size: { width: 600, height: 400 },
-    },
-    dataset: radialChartData.basic,
-  },
-  {
-    id: "radial-grid",
-    title: "Radial Chart - Grid",
-    description: "Radial chart with grid lines",
-    category: "radial",
-    config: {
-      type: "radial",
-      xKey: "name",
-      yKeys: ["value"],
-      legend: false,
-      showGrid: true,
-      size: { width: 600, height: 400 },
-    },
-    dataset: radialChartData.basic,
-  },
-  {
-    id: "radial-stacked",
-    title: "Radial Chart - Stacked",
-    description: "Stacked radial chart with multiple series",
-    category: "radial",
-    config: {
-      type: "radial",
-      xKey: "name",
-      yKeys: ["desktop", "mobile"],
-      legend: true,
-      stacked: true,
-      size: { width: 600, height: 400 },
-    },
-    dataset: radialChartData.stacked,
-  },
-];
 
 export const ALL_TEMPLATES: ChartTemplate[] = [
   ...AREA_CHART_TEMPLATES,
   ...BAR_CHART_TEMPLATES,
   ...LINE_CHART_TEMPLATES,
   ...PIE_CHART_TEMPLATES,
-  ...RADAR_CHART_TEMPLATES,
-  ...RADIAL_CHART_TEMPLATES,
   ...TOOLTIP_CHART_TEMPLATES,
 ];
 

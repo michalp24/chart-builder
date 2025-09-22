@@ -7,12 +7,14 @@ import { Label } from "@/components/ui/label";
 import { ChartConfig } from "@/lib/schema";
 import { Settings } from "lucide-react";
 
+
 interface ChartSettingsProps {
   config: ChartConfig;
   onChange: (config: ChartConfig) => void;
 }
 
 export function ChartSettings({ config, onChange }: ChartSettingsProps) {
+  
   const handleHeightChange = (value: string) => {
     const height = parseInt(value) || 400; // Default to 400 if invalid
     onChange({
@@ -24,6 +26,7 @@ export function ChartSettings({ config, onChange }: ChartSettingsProps) {
     });
   };
 
+
   return (
     <Card className="mb-4">
       <CardHeader className="pb-3">
@@ -33,6 +36,7 @@ export function ChartSettings({ config, onChange }: ChartSettingsProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Chart Dimensions */}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <Label htmlFor="chart-width" className="text-xs font-medium">
@@ -69,6 +73,7 @@ export function ChartSettings({ config, onChange }: ChartSettingsProps) {
             />
           </div>
         </div>
+
       </CardContent>
     </Card>
   );

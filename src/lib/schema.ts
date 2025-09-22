@@ -1,15 +1,16 @@
 import { z } from "zod";
 
-export type ChartType = "area" | "line" | "bar" | "pie" | "radar" | "radial";
+export type ChartType = "area" | "line" | "bar" | "pie";
 
 export const ChartFieldSchema = z.object({
   key: z.string(),
   label: z.string().optional(),
+  secondaryLabel: z.string().optional(), // Secondary label for each column
 });
 
 export const ChartConfigSchema = z.object({
   id: z.string(),
-  type: z.enum(["area", "line", "bar", "pie", "radar", "radial"]),
+  type: z.enum(["area", "line", "bar", "pie"]),
   xKey: z.string().optional(),
   yKeys: z.array(z.string()).optional(),
   stacked: z.boolean().optional(),
@@ -31,10 +32,6 @@ export const ChartConfigSchema = z.object({
   centerText: z.boolean().optional(),
   activeIndex: z.number().optional(),
   interactive: z.boolean().optional(),
-  // Radar specific options
-  showGrid: z.boolean().optional(),
-  // Radial specific options
-  centerLabel: z.boolean().optional(),
   // Mixed overlays
   lineKeys: z.array(z.string()).optional(),
   axis: z.object({
@@ -59,6 +56,11 @@ export const ChartConfigSchema = z.object({
     showIcons: z.boolean().optional(),
     customFormatter: z.boolean().optional(),
     showTotal: z.boolean().optional(),
+  }).optional(),
+  // Secondary X-axis label options (per-column)
+  secondaryLabels: z.object({
+    enabled: z.boolean(),
+    color: z.string(),
   }).optional(),
   theme: z.enum(["system", "light", "dark"]).optional(),
   size: z.object({

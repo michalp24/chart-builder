@@ -68,13 +68,14 @@ const NVIDIA_COLOR_CATEGORIES = {
   }
 } as const;
 
-// Default colors (300-series + NVIDIA Green)
+// Default colors (NVIDIA Green + Gray scale)
 const DEFAULT_COLORS = [
   "#76B900", // NVIDIA Green
-  "#1DBBA4", // Teal 300
-  "#FC79CA", // Fuchsia 300 
-  "#FF7181", // Red 300
-  "#EF9100", // Yellow 300
+  "#A7A7A7", // Gray 300
+  "#989898", // Gray 400 
+  "#757575", // Gray 500
+  "#636363", // Gray 600
+  "#4B4B4B", // Gray 700
 ];
 
 // Helper function to find color name by hex value

@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Eye } from "lucide-react";
 
 interface ChartGalleryProps {
-  category: "area" | "bar" | "line" | "pie" | "radar" | "radial" | "tooltip";
+  category: "area" | "bar" | "line" | "pie" | "tooltip";
 }
 
 export function ChartGallery({ category }: ChartGalleryProps) {

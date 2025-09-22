@@ -4,7 +4,7 @@ import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChartConfig, Dataset, ChartType, generateChartId } from "@/lib/schema";
-import { AreaChart, BarChart3, LineChart, PieChart, RadarIcon, Circle } from "lucide-react";
+import { AreaChart, BarChart3, LineChart, PieChart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PresetGalleryProps {
@@ -128,56 +128,6 @@ const PRESETS: PresetItem[] = [
         { browser: "firefox", visitors: 187 },
         { browser: "edge", visitors: 173 },
         { browser: "other", visitors: 90 },
-      ],
-    },
-  },
-  {
-    type: "radar",
-    title: "Radar Chart",
-    description: "Compare multiple variables",
-    icon: RadarIcon,
-    config: {
-      type: "radar",
-      xKey: "subject",
-      yKeys: ["A", "B"],
-      legend: true,
-      size: { width: 500, height: 500 },
-    },
-    sampleData: {
-      fields: [
-        { key: "subject", label: "Subject" },
-        { key: "A", label: "Student A" },
-        { key: "B", label: "Student B" },
-      ],
-      rows: [
-        { subject: "Math", A: 120, B: 110 },
-        { subject: "Chinese", A: 98, B: 130 },
-        { subject: "English", A: 86, B: 130 },
-        { subject: "Geography", A: 99, B: 100 },
-        { subject: "Physics", A: 85, B: 90 },
-        { subject: "History", A: 65, B: 85 },
-      ],
-    },
-  },
-  {
-    type: "radial",
-    title: "Radial Chart",
-    description: "Show progress or completion",
-    icon: Circle,
-    config: {
-      type: "radial",
-      xKey: "name",
-      yKeys: ["value"],
-      legend: false,
-      size: { width: 400, height: 400 },
-    },
-    sampleData: {
-      fields: [
-        { key: "name", label: "Metric" },
-        { key: "value", label: "Value" },
-      ],
-      rows: [
-        { name: "Progress", value: 72 },
       ],
     },
   },

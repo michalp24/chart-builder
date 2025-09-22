@@ -354,9 +354,18 @@
   display: none; /* Hidden by default */
 }
 
-/* Show SVG legends only when printing/exporting */
+/* Hide SVG secondary labels in display (they're only for export) */
+.export-secondary-label {
+  display: none; /* Hidden by default */
+}
+
+/* Show SVG legends and secondary labels only when printing/exporting */
 @media print {
   .export-legend {
+    display: block;
+  }
+  
+  .export-secondary-label {
     display: block;
   }
 }

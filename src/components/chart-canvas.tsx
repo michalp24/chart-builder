@@ -10,13 +10,6 @@ import {
   Line,
   PieChart,
   Pie,
-  RadarChart,
-  Radar,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  RadialBarChart,
-  RadialBar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -188,6 +181,55 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       return value;
     };
 
+    // Custom XAxis Tick Component that includes secondary labels
+    const CustomXAxisTick = (props: any) => {
+      const { x, y, payload } = props;
+      
+      // Get the x-axis key and secondary key
+      const xAxisKey = dataset.fields[0]?.key || 'month';
+      const secondaryKey = `${xAxisKey}_secondary`;
+      
+      // Find the corresponding data row for this tick
+      const dataRow = data.find(row => row[xAxisKey] === payload.value);
+      const secondaryLabel = dataRow?.[secondaryKey];
+      
+      // Format the primary label value
+      const formattedValue = formatXAxisValue(payload.value);
+      
+      return (
+        <g transform={`translate(${x},${y})`}>
+          {/* Primary label */}
+          <text 
+            x={0} 
+            y={0} 
+            dy={16} 
+            textAnchor="middle" 
+            fill={textColor}
+            fontSize="12"
+            fontFamily="NVIDIA"
+            fontWeight="700"
+          >
+            {formattedValue}
+          </text>
+          {/* Secondary label if exists */}
+          {secondaryLabel && (
+            <text 
+              x={0} 
+              y={-10} 
+              dy={48} // 2em below primary label (48px = ~2em at 12px font)
+              textAnchor="middle" 
+              fill="#222222"
+              fontSize="12"
+              fontFamily="NVIDIA"
+              fontWeight="600"
+            >
+              {secondaryLabel}
+            </text>
+          )}
+        </g>
+      );
+    };
+
     // Enhanced tooltip formatters for shadcn variants
     const getTooltipLabelFormatter = () => {
       const variant = config.tooltip?.variant;
@@ -303,7 +345,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart 
             data={data} 
-            margin={{ top: 5, right: 30, left: 5, bottom: 60 }}
+            margin={{ top: 5, right: 30, left: 5, bottom: 80 }}
             stackOffset={config.stackedExpanded ? "expand" : undefined}
           >
             <CartesianGrid strokeDasharray="3 3" verticalPoints={[]} stroke={gridColor} />
@@ -311,12 +353,11 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               dataKey={xKey} 
               type="category"
               scale="point"
-              tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: 700 }}
+              tick={<CustomXAxisTick />}
               axisLine={false}
               tickLine={false}
               tickMargin={8}
               padding={{ left: 0, right: 0 }}
-              tickFormatter={formatXAxisValue}
               interval="preserveStartEnd"
             />
             <YAxis 
@@ -390,7 +431,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
           <BarChart 
             data={data} 
             layout={isHorizontal ? "vertical" : "horizontal"}
-            margin={{ top: 6, right: 30, left: 6, bottom: 60 }}
+            margin={{ top: 6, right: 30, left: 6, bottom: 80 }}
             barCategoryGap="20%"
             barGap={4}
           >
@@ -434,7 +475,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 <XAxis 
                   dataKey={xKey} 
                   type="category"
-                  tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: 700 }}
+                  tick={<CustomXAxisTick />}
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
@@ -501,18 +542,17 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       
       return (
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 5, right: 30, left: 5, bottom: 60 }}>
+          <LineChart data={data} margin={{ top: 5, right: 30, left: 5, bottom: 80 }}>
             <CartesianGrid strokeDasharray="3 3" verticalPoints={[]} stroke={gridColor} />
             <XAxis 
               dataKey={xKey} 
               type="category"
               scale="point"
-              tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: 700 }}
+              tick={<CustomXAxisTick />}
               axisLine={false}
               tickLine={false}
               tickMargin={8}
               padding={{ left: 0, right: 0 }}
-              tickFormatter={formatXAxisValue}
               interval="preserveStartEnd"
             />
             <YAxis 
@@ -627,126 +667,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       </ResponsiveContainer>
     );
 
-    const renderRadarChart = () => (
-      <ResponsiveContainer width="100%" height="100%">
-        <RadarChart data={data} margin={{ top: 5, right: 30, left: 5, bottom: 60 }}>
-          <PolarGrid />
-          <PolarAngleAxis dataKey={xKey} tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: 700 }} />
-          <PolarRadiusAxis tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA' }} />
-          {config.tooltip?.enabled !== false && (
-            config.tooltip?.variant === "icons" || config.tooltip?.variant === "advanced" ? (
-              <Tooltip 
-                content={<CustomTooltipContent />}
-                wrapperStyle={{ outline: "none" }}
-              />
-            ) : (
-              <Tooltip 
-                contentStyle={{
-                  backgroundColor: "hsl(var(--background))",
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: "0px",
-                }}
-                formatter={tooltipFormatter}
-                labelFormatter={tooltipLabelFormatter}
-                wrapperStyle={{ outline: "none" }}
-              />
-            )
-          )}
-          {yKeys.map((key) => (
-            <Radar
-              key={key}
-              name={key}
-              dataKey={key}
-              stroke={colors[key]}
-              fill={colors[key]}
-              fillOpacity={0.1}
-              strokeWidth={2}
-            />
-          ))}
-          {renderSVGLegend()}
-        </RadarChart>
-      </ResponsiveContainer>
-    );
 
-    const renderRadialChart = () => {
-      // For stacked radial charts, format data differently
-      if (config.stacked && yKeys.length > 1) {
-        const stackedData = yKeys.map((key, index) => ({
-          name: key,
-          value: data[0]?.[key] as number || 0,
-          fill: colors[key] || getChartColor(index),
-        }));
-        
-        return (
-          <ResponsiveContainer width="100%" height="100%">
-            <RadialBarChart 
-              data={stackedData} 
-              innerRadius="30%" 
-              outerRadius="90%" 
-              margin={{ top: 5, right: 30, left: 5, bottom: 60 }}
-            >
-              {config.showGrid && <PolarGrid />}
-              <RadialBar dataKey="value" cornerRadius={0} />
-              {renderSVGLegend()}
-            </RadialBarChart>
-          </ResponsiveContainer>
-        );
-      }
-      
-      // Single value radial chart
-      const value = data[0]?.[yKeys[0]] as number || 0;
-      const maxValue = 100;
-      
-      return (
-        <ResponsiveContainer width="100%" height="100%">
-          <RadialBarChart 
-            data={[{ name: fieldLabelMap[yKeys[0]] || yKeys[0], value, fill: colors[yKeys[0]] || getChartColor(0) }]} 
-            innerRadius="40%" 
-            outerRadius="80%" 
-            margin={{ top: 5, right: 30, left: 5, bottom: 60 }}
-          >
-            {config.showGrid && <PolarGrid />}
-            <RadialBar dataKey="value" cornerRadius={0} />
-            {config.centerLabel && (
-              <text 
-                x="50%" 
-                y="50%" 
-                textAnchor="middle" 
-                dominantBaseline="middle" 
-              fontSize="32"
-              fontWeight="bold"
-              fontFamily="NVIDIA"
-              fill={textColor}
-              >
-                {`${value}%`}
-              </text>
-            )}
-            {config.tooltip?.enabled !== false && (
-              config.tooltip?.variant === "icons" || config.tooltip?.variant === "advanced" ? (
-                <Tooltip 
-                  content={<CustomTooltipContent />}
-                  cursor={{ fill: "rgba(148, 163, 184, 0.1)" }}
-                  wrapperStyle={{ outline: "none" }}
-                />
-              ) : (
-                <Tooltip 
-                  contentStyle={{
-                    backgroundColor: "hsl(var(--background))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "0px",
-                  }}
-                  formatter={tooltipFormatter}
-                  labelFormatter={tooltipLabelFormatter}
-                  cursor={{ fill: "rgba(148, 163, 184, 0.1)" }}
-                  wrapperStyle={{ outline: "none" }}
-                />
-              )
-            )}
-            {renderSVGLegend()}
-          </RadialBarChart>
-        </ResponsiveContainer>
-      );
-    };
 
     const renderChart = () => {
       try {
@@ -759,10 +680,6 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             return renderLineChart();
           case "pie":
             return renderPieChart();
-          case "radar":
-            return renderRadarChart();
-          case "radial":
-            return renderRadialChart();
           default:
             return <div className="flex items-center justify-center h-full text-muted-foreground">Unsupported chart type: {type}</div>;
         }
@@ -809,6 +726,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
         </div>
       );
     };
+
 
     // Hybrid SVG Legend: Proper SVG elements positioned exactly like FlexLegend
     const renderSVGLegend = () => {
