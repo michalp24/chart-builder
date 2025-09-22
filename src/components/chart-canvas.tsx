@@ -234,7 +234,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               fontFamily="NVIDIA"
               fontWeight="600"
             >
-              {secondaryLabel}
+              {String(secondaryLabel)}
             </text>
           )}
         </g>
