@@ -75,6 +75,17 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
     };
     
     const textColor = getTextColor();
+    
+    // Get secondary label color based on theme
+    const getSecondaryTextColor = () => {
+      if (typeof document !== 'undefined') {
+        const isDark = document.documentElement.classList.contains('dark');
+        return isDark ? '#EEEEEE' : '#222222';
+      }
+      return '#222222'; // Default to light theme color
+    };
+    
+    const secondaryTextColor = getSecondaryTextColor();
 
     // Smart Y-axis domain calculation with intelligent rounding
     const calculateSmartYDomain = (data: any[], yKeys: string[]) => {
@@ -218,7 +229,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               y={-10} 
               dy={48} // 2em below primary label (48px = ~2em at 12px font)
               textAnchor="middle" 
-              fill="#222222"
+              fill={secondaryTextColor}
               fontSize="12"
               fontFamily="NVIDIA"
               fontWeight="600"
