@@ -30,6 +30,99 @@ interface ChartCanvasProps {
   isTooltipChart?: boolean; // Flag for tooltip chart variants
 }
 
+// Custom tooltip component with color boxes
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: any[];
+  label?: any;
+  config: ChartConfig;
+  fieldLabelMap: Record<string, string>;
+  formatTooltipLabel: (label: any) => string;
+}
+
+const CustomTooltip: React.FC<CustomTooltipProps> = ({ 
+  active, 
+  payload, 
+  label, 
+  config,
+  fieldLabelMap,
+  formatTooltipLabel
+}) => {
+  if (!active || !payload || !payload.length) return null;
+
+  return (
+    <div 
+      className="bg-white border border-gray-200 rounded-none shadow-lg p-3"
+      style={{
+        backgroundColor: "#ffffff",
+        border: "1px solid #e5e5e5",
+        borderRadius: "0px",
+        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+      }}
+    >
+      {/* Label */}
+      {label && (
+        <div 
+          className="font-semibold mb-2"
+          style={{
+            fontSize: "14px",
+            color: "#222222",
+            fontFamily: "NVIDIA",
+            fontWeight: "600"
+          }}
+        >
+          {formatTooltipLabel(label)}
+        </div>
+      )}
+      
+      {/* Data entries */}
+      <div className="space-y-1">
+        {payload.map((entry, index) => {
+          const dataKey = entry.dataKey || entry.name;
+          const displayName = fieldLabelMap[dataKey] || dataKey;
+          const color = entry.color || getChartColor(index);
+          
+          return (
+            <div key={index} className="flex items-center gap-2">
+              {/* Color box */}
+              <div 
+                className="w-3 h-3 flex-shrink-0"
+                style={{ backgroundColor: color }}
+              />
+              {/* Data */}
+              <div className="flex justify-between items-center w-full min-w-0">
+                <span 
+                  className="truncate"
+                  style={{
+                    fontSize: "14px",
+                    color: "#222222",
+                    fontFamily: "NVIDIA"
+                  }}
+                >
+                  {displayName}:
+                </span>
+                <span 
+                  className="font-semibold ml-2"
+                  style={{
+                    fontSize: "14px",
+                    color: "#222222",
+                    fontFamily: "NVIDIA",
+                    fontWeight: "600"
+                  }}
+                >
+                  {typeof entry.value === 'number' 
+                    ? entry.value.toLocaleString() 
+                    : entry.value}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
   ({ config, dataset, className, isTooltipChart = false }, ref) => {
     const { type, xKey, yKeys = [] } = config;
@@ -386,13 +479,11 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               />
             ) : (
               <Tooltip 
-                contentStyle={{
-                  backgroundColor: "hsl(var(--background))",
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: "0px",
-                }}
-                formatter={tooltipFormatter}
-                labelFormatter={tooltipLabelFormatter}
+                content={<CustomTooltip 
+                  config={config} 
+                  fieldLabelMap={fieldLabelMap}
+                  formatTooltipLabel={formatTooltipLabel}
+                />}
                 wrapperStyle={{ outline: "none" }}
               />
             )
@@ -503,13 +594,11 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             )}
             {config.tooltip?.enabled !== false && (
               <Tooltip 
-                contentStyle={{
-                  backgroundColor: "hsl(var(--background))",
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: "0px",
-                }}
-                formatter={tooltipFormatter}
-                labelFormatter={tooltipLabelFormatter}
+                content={<CustomTooltip 
+                  config={config} 
+                  fieldLabelMap={fieldLabelMap}
+                  formatTooltipLabel={formatTooltipLabel}
+                />}
                 cursor={{ fill: "rgba(148, 163, 184, 0.1)" }}
                 wrapperStyle={{ outline: "none" }}
               />
@@ -581,13 +670,11 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               />
             ) : (
               <Tooltip 
-                contentStyle={{
-                  backgroundColor: "hsl(var(--background))",
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: "0px",
-                }}
-                formatter={tooltipFormatter}
-                labelFormatter={tooltipLabelFormatter}
+                content={<CustomTooltip 
+                  config={config} 
+                  fieldLabelMap={fieldLabelMap}
+                  formatTooltipLabel={formatTooltipLabel}
+                />}
                 wrapperStyle={{ outline: "none" }}
               />
             )
@@ -662,13 +749,11 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               />
             ) : (
               <Tooltip 
-                contentStyle={{
-                  backgroundColor: "hsl(var(--background))",
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: "0px",
-                }}
-                formatter={tooltipFormatter}
-                labelFormatter={tooltipLabelFormatter}
+                content={<CustomTooltip 
+                  config={config} 
+                  fieldLabelMap={fieldLabelMap}
+                  formatTooltipLabel={formatTooltipLabel}
+                />}
                 wrapperStyle={{ outline: "none" }}
               />
             )
