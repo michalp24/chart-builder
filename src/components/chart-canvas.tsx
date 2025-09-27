@@ -180,6 +180,13 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
     
     const secondaryTextColor = getSecondaryTextColor();
 
+    // Check if any secondary labels exist in the dataset
+    const hasSecondaryLabels = () => {
+      const xAxisKey = dataset.fields[0]?.key || 'month';
+      const secondaryKey = `${xAxisKey}_secondary`;
+      return data.some(row => row[secondaryKey] && String(row[secondaryKey]).trim() !== '');
+    };
+
     // Smart Y-axis domain calculation with intelligent rounding
     const calculateSmartYDomain = (data: any[], yKeys: string[]) => {
       if (!data?.length || !yKeys?.length) return [0, 100];
@@ -325,7 +332,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               fill={secondaryTextColor}
               fontSize="12"
               fontFamily="NVIDIA"
-              fontWeight="600"
+              fontWeight="400"
             >
               {String(secondaryLabel)}
             </text>
@@ -793,8 +800,15 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
     const FlexLegend = () => {
       if (config.legend === false || !yKeys?.length) return null;
       
+      // Dynamic positioning based on secondary labels
+      // No secondary labels: 30px below main labels 
+      // With secondary labels: 30px below secondary labels
+      const baseMargin = -46; // Adjusted to achieve 30px distance from main labels
+      const adjustment = hasSecondaryLabels() ? 22 : 0; // Adjusted to achieve exactly 30px from secondary labels
+      const legendMargin = baseMargin + adjustment;
+      
       return (
-        <div className="flex flex-wrap justify-center gap-4" style={{ marginTop: '-2rem' }}>
+        <div className="flex flex-wrap justify-center gap-4" style={{ marginTop: `${legendMargin}px` }}>
           {yKeys.map((key) => {
             const label = fieldLabelMap[key] || key;
             return (
@@ -831,8 +845,12 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       const chartHeight = config.size?.height || 400;
       const chartWidth = config.size?.width || 600;
       
-      // Position legend at specific Y coordinate as requested
-      const legendY = 275;
+      // Dynamic positioning based on secondary labels
+      // No secondary labels: 30px below main labels 
+      // With secondary labels: 30px below secondary labels
+      const baseLegendY = chartHeight - 46; // Base position matching FlexLegend (-46px margin)
+      const adjustment = hasSecondaryLabels() ? 22 : 0; // Adjusted to achieve exactly 30px from secondary labels
+      const legendY = baseLegendY + adjustment;
       
       // Calculate item dimensions exactly like FlexLegend flexbox
       const itemGap = 16; // Same as flexbox gap-4 (16px)  
@@ -877,19 +895,17 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               width={colorBoxWidth}
               height="12"
               fill={colors[item.key] || '#666'}
-              rx="2"
-              ry="2"
             />
-            <text
-              x={textX}
-              y={286}
-              fontSize="12"
-              fill={textColor}
-              fontFamily="NVIDIA"
-              fontWeight="bold"
-              dominantBaseline="middle"
-              textAnchor="start"
-            >
+             <text
+               x={textX}
+               y={legendY + 11}
+               fontSize="12"
+               fill={textColor}
+               fontFamily="NVIDIA"
+               fontWeight="bold"
+               dominantBaseline="middle"
+               textAnchor="start"
+             >
               {item.label}
             </text>
           </g>
@@ -908,7 +924,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
     return (
       <div 
         className={`${className || ""} w-full h-full flex flex-col items-center justify-center`} 
-        style={{ minHeight: `${containerHeight + 60}px` }}
+        style={{ minHeight: `${containerHeight + (hasSecondaryLabels() ? 90 : 60)}px` }}
         ref={ref}
       >
         <div 

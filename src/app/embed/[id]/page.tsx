@@ -58,7 +58,7 @@ export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="w-full h-full flex items-center justify-center bg-background" style={{ height: '400px' }}>
         <div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" />
       </div>
     );
@@ -66,7 +66,7 @@ export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="w-full h-full flex items-center justify-center bg-background" style={{ height: '400px' }}>
         <div className="text-center">
           <div className="text-red-600 text-lg font-medium mb-2">Error</div>
           <div className="text-muted-foreground">{error}</div>
@@ -77,7 +77,7 @@ export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
 
   if (!config || !dataset) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="w-full h-full flex items-center justify-center bg-background" style={{ height: '400px' }}>
         <div className="text-center">
           <div className="text-muted-foreground">No chart data available</div>
         </div>
@@ -86,17 +86,15 @@ export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="max-w-full mx-auto">
-        <ChartCanvas 
-          config={config} 
-          dataset={dataset} 
-          className="w-full h-full"
-        />
-      </div>
+    <div className="w-full bg-background" style={{ height: `${config.size?.height || 400}px` }}>
+      <ChartCanvas 
+        config={config} 
+        dataset={dataset} 
+        className="w-full h-full"
+      />
       
       {/* Optional branding */}
-      <div className="fixed bottom-2 right-2 text-xs text-muted-foreground">
+      <div className="absolute bottom-2 right-2 text-xs text-muted-foreground opacity-50">
         <span className="hover:text-primary">
           Created with Chart Builder
         </span>

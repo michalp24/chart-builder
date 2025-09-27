@@ -16,12 +16,15 @@ export function exportSVG(svgElement: SVGSVGElement | HTMLDivElement, filename: 
   // Clone the SVG element to avoid modifying the original
   const svgClone = actualSvg.cloneNode(true) as SVGSVGElement;
   
-  // Ensure SVG has proper viewBox to include legends
+  // Ensure SVG has proper viewBox to include dynamic legend positioning
   const currentViewBox = svgClone.getAttribute('viewBox');
   if (!currentViewBox) {
     const width = svgClone.getAttribute('width') || '600';
-    const height = svgClone.getAttribute('height') || '400';
+    const baseHeight = svgClone.getAttribute('height') || '400';
+    // Add extra height to accommodate legend positioning
+    const height = parseInt(baseHeight) + 50;
     svgClone.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    svgClone.setAttribute('height', height.toString());
   }
   
   // Resolve colors and inline critical styles
@@ -164,6 +167,7 @@ function resolveColorsAndInlineStyles(element: Element) {
       // Force SVG legends to be visible in export
       element.setAttribute('style', 'display: block !important;');
     }
+    
     
     if (element.classList && element.classList.contains('export-secondary-label')) {
       // Force SVG secondary labels to be visible in export

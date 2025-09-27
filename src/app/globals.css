@@ -354,6 +354,7 @@
   display: none; /* Hidden by default */
 }
 
+
 /* Hide SVG secondary labels in display (they're only for export) */
 .export-secondary-label {
   display: none; /* Hidden by default */
