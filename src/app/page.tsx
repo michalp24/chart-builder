@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ChartGallery } from "@/components/chart-gallery";
 import { Button } from "@/components/ui/button";
@@ -49,7 +50,9 @@ export default function Home() {
           </p>
           <div className="flex flex-wrap justify-center gap-2">
             <Button variant="outline" size="sm">Browse Charts</Button>
-            <Button variant="outline" size="sm">Documentation</Button>
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/docs">Documentation</Link>
+            </Button>
           </div>
         </div>
       </section>

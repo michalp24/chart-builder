@@ -74,6 +74,51 @@ export function ChartSettings({ config, onChange }: ChartSettingsProps) {
           </div>
         </div>
 
+        {/* Axis Labels */}
+        <div className="space-y-4">
+          <h4 className="text-sm font-medium">Axis Labels</h4>
+          <div className="grid grid-cols-1 gap-4">
+            <div>
+              <Label htmlFor="x-axis-label" className="text-xs font-medium">
+                X-Axis Label
+              </Label>
+              <Input
+                id="x-axis-label"
+                type="text"
+                placeholder="e.g., Month, Category, etc."
+                value={config.axisLabels?.xAxis || ""}
+                onChange={(e) => onChange({
+                  ...config,
+                  axisLabels: {
+                    ...config.axisLabels,
+                    xAxis: e.target.value || undefined
+                  }
+                })}
+                className="h-8 text-xs"
+              />
+            </div>
+            <div>
+              <Label htmlFor="y-axis-label" className="text-xs font-medium">
+                Y-Axis Label
+              </Label>
+              <Input
+                id="y-axis-label"
+                type="text"
+                placeholder="e.g., Revenue, Users, Count, etc."
+                value={config.axisLabels?.yAxis || ""}
+                onChange={(e) => onChange({
+                  ...config,
+                  axisLabels: {
+                    ...config.axisLabels,
+                    yAxis: e.target.value || undefined
+                  }
+                })}
+                className="h-8 text-xs"
+              />
+            </div>
+          </div>
+        </div>
+
       </CardContent>
     </Card>
   );

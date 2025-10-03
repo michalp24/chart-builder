@@ -187,6 +187,75 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       return data.some(row => row[secondaryKey] && String(row[secondaryKey]).trim() !== '');
     };
 
+    // Helper to check if axis labels are present
+    const hasAxisLabels = () => {
+      return !!(config.axisLabels?.xAxis || config.axisLabels?.yAxis);
+    };
+
+    // Helper to calculate bottom margin based on secondary labels and axis labels
+    const getBottomMargin = () => {
+      let baseMargin = 50;
+      if (hasSecondaryLabels()) baseMargin += 20;
+      if (config.axisLabels?.xAxis) baseMargin += 25;
+      return baseMargin;
+    };
+
+    // Helper to calculate left margin based on y-axis label
+    const getLeftMargin = (defaultLeft: number) => {
+      return config.axisLabels?.yAxis ? defaultLeft + 35 : defaultLeft;
+    };
+
+    // Render axis labels as SVG elements
+    const renderAxisLabels = () => {
+      if (!hasAxisLabels()) return null;
+
+      const chartHeight = config.size?.height || 400;
+      const chartWidth = config.size?.width || 600;
+      
+      // Calculate the actual chart area (CartesianGrid area) by accounting for margins
+      const leftMargin = getLeftMargin(5); // Use same logic as charts
+      const rightMargin = 30;
+      const actualChartWidth = chartWidth - leftMargin - rightMargin;
+      const chartCenterX = leftMargin + (actualChartWidth / 2);
+      
+      return (
+        <g className="axis-labels">
+          {/* X-Axis Label */}
+          {config.axisLabels?.xAxis && (
+            <text
+              x={chartCenterX}
+              y={chartHeight - 30}
+              textAnchor="middle"
+              fontSize="15"
+              fill={textColor}
+              fontFamily="NVIDIA"
+              fontWeight="bold"
+              style={{ lineHeight: "1667%" }}
+            >
+              {config.axisLabels.xAxis}
+            </text>
+          )}
+          
+          {/* Y-Axis Label */}
+          {config.axisLabels?.yAxis && (
+            <text
+              x="30"
+              y={chartHeight / 2}
+              textAnchor="middle"
+              fontSize="15"
+              fill={textColor}
+              fontFamily="NVIDIA"
+              fontWeight="bold"
+              style={{ lineHeight: "1667%" }}
+              transform={`rotate(-90, 30, ${chartHeight / 2})`}
+            >
+              {config.axisLabels.yAxis}
+            </text>
+          )}
+        </g>
+      );
+    };
+
     // Smart Y-axis domain calculation with intelligent rounding
     const calculateSmartYDomain = (data: any[], yKeys: string[]) => {
       if (!data?.length || !yKeys?.length) return [0, 100];
@@ -318,7 +387,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             fill={textColor}
             fontSize="12"
             fontFamily="NVIDIA"
-            fontWeight="700"
+            fontWeight={hasAxisLabels() ? "400" : "700"}
           >
             {formattedValue}
           </text>
@@ -456,7 +525,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart 
             data={data} 
-            margin={{ top: 5, right: 30, left: 5, bottom: 80 }}
+            margin={{ top: 40, right: 30, left: getLeftMargin(5), bottom: getBottomMargin() }}
             stackOffset={config.stackedExpanded ? "expand" : undefined}
           >
             <CartesianGrid strokeDasharray="3 3" verticalPoints={[]} stroke={gridColor} />
@@ -472,7 +541,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               interval="preserveStartEnd"
             />
             <YAxis 
-              tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA' }}
+              tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: hasAxisLabels() ? 400 : 700 }}
               axisLine={false}
               tickLine={false}
               tickMargin={8}
@@ -525,6 +594,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             </defs>
           )}
             {renderSVGLegend()}
+            {renderAxisLabels()}
           </AreaChart>
         </ResponsiveContainer>
       );
@@ -540,7 +610,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
           <BarChart 
             data={data} 
             layout={isHorizontal ? "vertical" : "horizontal"}
-            margin={{ top: 6, right: 30, left: 6, bottom: 80 }}
+            margin={{ top: 40, right: 30, left: getLeftMargin(6), bottom: getBottomMargin() }}
             barCategoryGap="20%"
             barGap={4}
           >
@@ -564,7 +634,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               <>
                 <XAxis 
                   type="number"
-                  tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA' }}
+                  tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: hasAxisLabels() ? 400 : 700 }}
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
@@ -573,7 +643,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                 <YAxis 
                   dataKey={xKey}
                   type="category"
-                  tick={isTooltipChart ? false : { fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: 700 }}
+                  tick={isTooltipChart ? false : { fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: hasAxisLabels() ? 400 : 700 }}
                   axisLine={false}
                   tickLine={false}
                   tickMargin={8}
@@ -639,6 +709,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               />
             ))}
             {renderSVGLegend()}
+            {renderAxisLabels()}
           </BarChart>
         </ResponsiveContainer>
       );
@@ -649,7 +720,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
       
       return (
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 5, right: 30, left: 5, bottom: 80 }}>
+          <LineChart data={data} margin={{ top: 40, right: 30, left: getLeftMargin(5), bottom: getBottomMargin() }}>
             <CartesianGrid strokeDasharray="3 3" verticalPoints={[]} stroke={gridColor} />
             <XAxis 
               dataKey={xKey} 
@@ -663,7 +734,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
               interval="preserveStartEnd"
             />
             <YAxis 
-              tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA' }}
+              tick={{ fontSize: 12, fill: textColor, fontFamily: 'NVIDIA', fontWeight: hasAxisLabels() ? 400 : 700 }}
               axisLine={false}
               tickLine={false}
               tickMargin={8}
@@ -698,6 +769,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             />
           ))}
             {renderSVGLegend()}
+            {renderAxisLabels()}
           </LineChart>
         </ResponsiveContainer>
       );
@@ -705,7 +777,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
 
     const renderPieChart = () => (
       <ResponsiveContainer width="100%" height="100%">
-        <PieChart margin={{ top: 5, right: 30, left: 5, bottom: 60 }}>
+        <PieChart margin={{ top: 40, right: 30, left: getLeftMargin(5), bottom: config.axisLabels?.xAxis ? 45 : (hasSecondaryLabels() ? 40 : 20) }}>
           <Pie
             data={data}
             dataKey={yKeys[0]}
@@ -766,6 +838,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             )
           )}
           {renderSVGLegend()}
+          {renderAxisLabels()}
         </PieChart>
       </ResponsiveContainer>
     );
@@ -800,15 +873,11 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
     const FlexLegend = () => {
       if (config.legend === false || !yKeys?.length) return null;
       
-      // Dynamic positioning based on secondary labels
-      // No secondary labels: 30px below main labels 
-      // With secondary labels: 30px below secondary labels
-      const baseMargin = -46; // Adjusted to achieve 30px distance from main labels
-      const adjustment = hasSecondaryLabels() ? 22 : 0; // Adjusted to achieve exactly 30px from secondary labels
-      const legendMargin = baseMargin + adjustment;
-      
       return (
-        <div className="flex flex-wrap justify-center gap-4" style={{ marginTop: `${legendMargin}px` }}>
+        <div 
+          className="absolute top-0 right-8 flex flex-wrap gap-4"
+          style={{ zIndex: 10 }}
+        >
           {yKeys.map((key) => {
             const label = fieldLabelMap[key] || key;
             return (
@@ -817,7 +886,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
                   className="w-3 h-3"
                   style={{
                     backgroundColor: colors[key] || '#666',
-                    borderRadius: '2px'
+                    borderRadius: '0px'
                   }}
                 />
                 <span 
@@ -838,21 +907,18 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
     };
 
 
-    // Hybrid SVG Legend: Proper SVG elements positioned exactly like FlexLegend
+    // Hybrid SVG Legend: Proper SVG elements positioned at top right
     const renderSVGLegend = () => {
       if (config.legend === false || !yKeys?.length) return null;
       
       const chartHeight = config.size?.height || 400;
       const chartWidth = config.size?.width || 600;
       
-      // Dynamic positioning based on secondary labels
-      // No secondary labels: 30px below main labels 
-      // With secondary labels: 30px below secondary labels
-      const baseLegendY = chartHeight - 46; // Base position matching FlexLegend (-46px margin)
-      const adjustment = hasSecondaryLabels() ? 22 : 0; // Adjusted to achieve exactly 30px from secondary labels
-      const legendY = baseLegendY + adjustment;
+      // Position at top right to match FlexLegend (top-0 right-8)
+      // Account for chart margins and actual drawing area
+      const legendY = 5; // Moved up by 10px (was 15, now 5)
       
-      // Calculate item dimensions exactly like FlexLegend flexbox
+      // Calculate item dimensions
       const itemGap = 16; // Same as flexbox gap-4 (16px)  
       const colorBoxWidth = 12; // Same as w-3 h-3 (12px)
       const colorLabelGap = 4; // Same as gap-1 override (4px)
@@ -878,8 +944,10 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
         return sum + item.itemWidth + (index < items.length - 1 ? itemGap : 0);
       }, 0);
       
-      // Center the entire group like flexbox justify-content: center
-      const startX = (chartWidth - totalWidth) / 2;
+      // Position exactly like FlexLegend: right-8 (2rem = 32px) from container edge
+      // Adjusted positioning: 43px more to the left from previous position
+      const containerPadding = 63; // Increased from 20 to move legend 43px to the left
+      const startX = chartWidth - totalWidth - containerPadding;
       
       let currentX = startX;
       
@@ -898,7 +966,7 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
             />
              <text
                x={textX}
-               y={legendY + 11}
+               y={legendY + 10}
                fontSize="12"
                fill={textColor}
                fontFamily="NVIDIA"
@@ -924,19 +992,19 @@ const ChartCanvas = forwardRef<HTMLDivElement, ChartCanvasProps>(
     return (
       <div 
         className={`${className || ""} w-full h-full flex flex-col items-center justify-center`} 
-        style={{ minHeight: `${containerHeight + (hasSecondaryLabels() ? 90 : 60)}px` }}
+        style={{ minHeight: `${containerHeight + (hasSecondaryLabels() ? 50 : 30) + (hasAxisLabels() ? 35 : 0)}px` }}
         ref={ref}
       >
         <div 
-          className="w-full" 
+          className="w-full relative" 
           style={{ 
             height: `${containerHeight}px`,
             maxWidth: `${containerWidth}px`
           }}
         >
           {renderChart()}
+          <FlexLegend />
         </div>
-        <FlexLegend />
       </div>
     );
   }

@@ -51,12 +51,12 @@ export function ChartGallery({ category }: ChartGalleryProps) {
               <CardContent className="pb-4">
                 <div className="relative">
                   {/* Chart Preview */}
-                  <div className="h-48 bg-muted/10 rounded-lg p-4 overflow-hidden flex items-center justify-center">
-                    <div className="w-full h-full max-w-full">
+                  <div className="w-[100%] h-60 bg-muted/10 rounded-lg overflow-hidden flex items-start mx-auto">
+                    <div style={{ width: "100%", height: "100%" }}>
                       <ChartCanvas 
                         config={config}
                         dataset={template.dataset}
-                        className="w-full h-full"
+                        style={{ width: "100%", height: "100%" }}
                         isTooltipChart={template.category === "tooltip"}
                       />
                     </div>

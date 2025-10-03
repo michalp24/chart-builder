@@ -62,6 +62,11 @@ export const ChartConfigSchema = z.object({
     enabled: z.boolean(),
     color: z.string(),
   }).optional(),
+  // Axis labels
+  axisLabels: z.object({
+    xAxis: z.string().optional(),
+    yAxis: z.string().optional(),
+  }).optional(),
   theme: z.enum(["system", "light", "dark"]).optional(),
   size: z.object({
     width: z.number(),
