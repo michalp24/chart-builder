@@ -56,7 +56,6 @@ export function ChartGallery({ category }: ChartGalleryProps) {
                       <ChartCanvas 
                         config={config}
                         dataset={template.dataset}
-                        style={{ width: "100%", height: "100%" }}
                         isTooltipChart={template.category === "tooltip"}
                       />
                     </div>
