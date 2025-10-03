@@ -476,13 +476,13 @@ npx tailwindcss init -p`}</code>
                     <li>• Add axis labels for data context</li>
                     <li>• Test responsive behavior on mobile</li>
                     <li>• Include NVIDIA theme variables</li>
-                    <li>• Use loading="lazy" for performance</li>
+                    <li>• Use loading=&quot;lazy&quot; for performance</li>
                     <li>• Maintain consistent color schemes</li>
                   </ul>
                 </div>
                 
                 <div>
-                  <h3 className="font-semibold text-red-700 dark:text-red-400 mb-2">❌ Don't</h3>
+                  <h3 className="font-semibold text-red-700 dark:text-red-400 mb-2">❌ Don&apos;t</h3>
                   <ul className="text-sm space-y-1 text-muted-foreground">
                     <li>• Forget Tailwind CSS dependency</li>
                     <li>• Set fixed heights that break responsiveness</li>
