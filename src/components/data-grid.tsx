@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useMemo, useState, useCallback, useRef, useEffect } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -123,6 +123,8 @@ function EditableCell({ value, onChange, type = "text" }: EditableCell) {
 export function DataGrid({ dataset, onChange }: DataGridProps) {
   const data = useMemo(() => dataset?.rows || [], [dataset?.rows]);
   const fields = useMemo(() => dataset?.fields || [], [dataset?.fields]);
+  const [editingCell, setEditingCell] = useState<string | null>(null);
+  const tableContainerRef = useRef<HTMLDivElement>(null);
   
   // Check if we have the first column (x-axis) for secondary labels
   const xKey = fields[0]?.key || 'month';
@@ -324,10 +326,22 @@ export function DataGrid({ dataset, onChange }: DataGridProps) {
       [newKey]: 0,
     }));
 
-    onChange({
+    const newDataset = {
       fields: [...fields, newField],
       rows: newRows,
-    });
+    };
+
+    onChange(newDataset);
+
+    // Scroll to the new column after a brief delay to ensure DOM update
+    setTimeout(() => {
+      if (tableContainerRef.current) {
+        tableContainerRef.current.scrollTo({
+          left: tableContainerRef.current.scrollWidth,
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
   };
 
 
@@ -354,13 +368,13 @@ export function DataGrid({ dataset, onChange }: DataGridProps) {
       </div>
 
       {/* Table */}
-      <div className="flex-1 border rounded-md overflow-auto">
+      <div ref={tableContainerRef} className="flex-1 border rounded-md overflow-auto">
         <table className="w-full">
           <thead className="bg-muted/50">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id} className="text-left p-2 border-b">
+                  <th key={header.id} className="text-left p-2 border-b min-w-[100px] max-w-[150px] w-[120px]">
                     {flexRender(header.column.columnDef.header, header.getContext())}
                   </th>
                 ))}
@@ -372,7 +386,7 @@ export function DataGrid({ dataset, onChange }: DataGridProps) {
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="group hover:bg-accent/30">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="p-1 border-b">
+                  <td key={cell.id} className="p-1 border-b min-w-[100px] max-w-[150px] w-[120px]">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
