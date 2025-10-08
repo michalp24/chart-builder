@@ -12,12 +12,13 @@ const chartCategories = [
   { id: "area", label: "Area Charts", icon: AreaChart },
   { id: "bar", label: "Bar Charts", icon: BarChart3 },
   { id: "line", label: "Line Charts", icon: LineChart },
-  { id: "pie", label: "Pie Charts", icon: PieChart },
-  { id: "tooltip", label: "Tooltip Charts", icon: MessageSquare },
+  // Temporarily hidden:
+  // { id: "pie", label: "Pie Charts", icon: PieChart },
+  // { id: "tooltip", label: "Tooltip Charts", icon: MessageSquare },
 ] as const;
 
 export default function Home() {
-  const [activeCategory, setActiveCategory] = useState<"area" | "bar" | "line" | "pie" | "tooltip">("area");
+  const [activeCategory, setActiveCategory] = useState<"area" | "bar" | "line">("area");
 
   return (
     <div className="min-h-screen bg-background">
@@ -62,7 +63,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <Tabs value={activeCategory} onValueChange={(value) => setActiveCategory(value as typeof activeCategory)}>
             <div className="flex justify-center mb-8">
-              <TabsList className="grid grid-cols-3 lg:grid-cols-5 w-full max-w-4xl">
+              <TabsList className="grid grid-cols-3 w-full max-w-2xl">
                 {chartCategories.map((category) => {
                   const Icon = category.icon;
                   return (

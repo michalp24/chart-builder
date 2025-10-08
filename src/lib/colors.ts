@@ -1,20 +1,20 @@
 // NVIDIA color palette: Green primary + Gray scale (300-700)
 export const CHART_COLORS_LIGHT = {
-  0: "#76B900",   // NVIDIA Green (primary)
-  1: "#A7A7A7",   // Gray 300
-  2: "#989898",   // Gray 400
-  3: "#757575",   // Gray 500
-  4: "#636363",   // Gray 600
-  5: "#4B4B4B",   // Gray 700
+  0: "#76B900",   // NVIDIA Green (primary - stays same)
+  1: "#A7A7A7",   // Gray 300 (lightest)
+  2: "#989898",   // Gray 400 (second lightest)
+  3: "#757575",   // Gray 500 (middle - stays same)
+  4: "#636363",   // Gray 600 (second darkest)
+  5: "#4B4B4B",   // Gray 700 (darkest)
 } as const;
 
 export const CHART_COLORS_DARK = {
-  0: "#76B900",   // NVIDIA Green (primary)
-  1: "#A7A7A7",   // Gray 300
-  2: "#989898",   // Gray 400
-  3: "#757575",   // Gray 500
-  4: "#636363",   // Gray 600
-  5: "#4B4B4B",   // Gray 700
+  0: "#76B900",   // NVIDIA Green (primary - stays same)
+  1: "#4B4B4B",   // Gray 700 (inverted from Gray 300)
+  2: "#636363",   // Gray 600 (inverted from Gray 400)
+  3: "#757575",   // Gray 500 (middle - stays same)
+  4: "#989898",   // Gray 400 (inverted from Gray 600)
+  5: "#A7A7A7",   // Gray 300 (inverted from Gray 700)
 } as const;
 
 // Fallback colors using CSS variables for theme compatibility

@@ -33,22 +33,24 @@ export default function DocsPage() {
     <!-- Optional: Custom theme variables -->
     <style>
         :root {
-            --chart-1: #76B900;           /* NVIDIA Green */
-            --chart-2: #A7A7A7;          /* Gray 300 */
-            --chart-3: #858585;          /* Gray 400 */
-            --chart-4: #666666;          /* Gray 500 */
-            --chart-5: #525252;          /* Gray 600 */
+            --chart-1: #76B900;           /* NVIDIA Green (primary) */
+            --chart-2: #A7A7A7;          /* Gray 300 (lightest) */
+            --chart-3: #989898;          /* Gray 400 */
+            --chart-4: #757575;          /* Gray 500 (middle) */
+            --chart-5: #636363;          /* Gray 600 */
+            --chart-6: #4B4B4B;          /* Gray 700 (darkest) */
             --background: 0, 0%, 100%;
             --foreground: 222.2, 84%, 4.9%;
             --border: 214.3, 31.8%, 91.4%;
         }
         
         .dark {
-            --chart-1: #76B900;          /* NVIDIA Green */
-            --chart-2: #A7A7A7;          /* Gray 300 */
-            --chart-3: #858585;          /* Gray 400 */
-            --chart-4: #666666;          /* Gray 500 */
-            --chart-5: #525252;          /* Gray 600 */
+            --chart-1: #76B900;          /* NVIDIA Green (stays same) */
+            --chart-2: #4B4B4B;          /* Gray 700 (inverted from Gray 300) */
+            --chart-3: #636363;          /* Gray 600 (inverted from Gray 400) */
+            --chart-4: #757575;          /* Gray 500 (middle - stays same) */
+            --chart-5: #989898;          /* Gray 400 (inverted from Gray 600) */
+            --chart-6: #A7A7A7;          /* Gray 300 (inverted from Gray 700) */
             --background: 222.2, 84%, 4.9%;
             --foreground: 210, 40%, 98%;
             --border: 217.2, 32.6%, 17.5%;
@@ -313,11 +315,11 @@ export default function DocsPage() {
                   </p>
                 </div>
 
-                <div>
+              <div>
                   <h3 className="font-semibold mb-2">4. Export or Embed</h3>
-                  <p className="text-sm text-muted-foreground mb-2">
+                <p className="text-sm text-muted-foreground mb-2">
                     Download as SVG for presentations or copy the embed code for websites. All exports maintain pixel-perfect quality.
-                  </p>
+                </p>
                 </div>
               </div>
             </CardContent>
@@ -398,17 +400,19 @@ npx tailwindcss init -p`}</code>
               <div>
                 <h3 className="font-semibold mb-3">NVIDIA Color Theme Variables</h3>
                 <p className="text-sm text-muted-foreground mb-2">
-                  For consistent NVIDIA Green theming and grayscale secondary colors:
+                  Smart color inversion system: grayscale colors flip positions in dark mode (except middle colors):
                 </p>
                 
                 <div className="bg-slate-50 dark:bg-slate-800 border dark:border-slate-700 rounded p-4 overflow-x-auto">
                   <pre className="text-sm text-slate-800 dark:text-slate-200">
 {`:root {
-    --chart-1: #76B900;      /* NVIDIA Green */
-    --chart-2: #A7A7A7;      /* Gray 300 */
-    --chart-3: #858585;      /* Gray 400 */
-    --chart-4: #666666;      /* Gray 500 */
-    --chart-5: #525252;      /* Gray 600 */
+    /* Light Theme */
+    --chart-1: #76B900;      /* NVIDIA Green (stays same) */
+    --chart-2: #A7A7A7;      /* Gray 300 (lightest) */
+    --chart-3: #989898;      /* Gray 400 */
+    --chart-4: #757575;      /* Gray 500 (middle - stays same) */
+    --chart-5: #636363;      /* Gray 600 */
+    --chart-6: #4B4B4B;      /* Gray 700 (darkest) */
     
     --background: 0, 0%, 100%;
     --foreground: 222.2, 84%, 4.9%;
@@ -416,17 +420,29 @@ npx tailwindcss init -p`}</code>
 }
 
 .dark {
-    --chart-1: #76B900;      /* NVIDIA Green */
-    --chart-2: #A7A7A7;      /* Gray 300 */
-    --chart-3: #858585;      /* Gray 400 */
-    --chart-4: #666666;      /* Gray 500 */
-    --chart-5: #525252;      /* Gray 600 */
+    /* Dark Theme - Inverted Grayscale (except middle) */
+    --chart-1: #76B900;      /* NVIDIA Green (stays same) */
+    --chart-2: #4B4B4B;      /* Gray 700 (was lightest, now darkest) */
+    --chart-3: #636363;      /* Gray 600 (was Gray 400) */
+    --chart-4: #757575;      /* Gray 500 (middle - stays same) */
+    --chart-5: #989898;      /* Gray 400 (was Gray 600) */
+    --chart-6: #A7A7A7;      /* Gray 300 (was darkest, now lightest) */
     
     --background: 222.2, 84%, 4.9%;
     --foreground: 210, 40%, 98%;
     --border: 217.2, 32.6%, 17.5%;
 }`}
                   </pre>
+                </div>
+                
+                <div className="mt-3 text-xs text-muted-foreground">
+                  <p><strong>Color Inversion Logic:</strong></p>
+                  <ul className="pl-4 space-y-1">
+                    <li>• NVIDIA Green (#76B900) stays constant across themes</li>
+                    <li>• Gray 500 (middle) stays constant as reference point</li>
+                    <li>• Other grays flip: lightest ↔ darkest, second-lightest ↔ second-darkest</li>
+                    <li>• Creates better contrast and readability in dark mode</li>
+                  </ul>
                 </div>
               </div>
             </CardContent>
