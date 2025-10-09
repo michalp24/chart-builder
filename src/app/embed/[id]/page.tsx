@@ -91,13 +91,15 @@ export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
   }
 
   return (
-    <div className="w-full bg-background relative">
+    <div className="w-full bg-background relative" style={{ overflow: 'hidden' }}>
       {/* Responsive container that maintains aspect ratio */}
       <div 
-        className="w-full relative min-h-[250px] sm:min-h-[300px]"
+        className="w-full relative"
         style={{ 
           aspectRatio: `${aspectRatio}`,
-          maxHeight: '90vh', // Prevent charts from being too tall on mobile
+          minHeight: '300px',
+          maxHeight: '100vh',
+          width: '100%',
           '--chart-width': `${baseWidth}px`,
           '--chart-height': `${baseHeight}px`
         } as React.CSSProperties}
@@ -105,7 +107,8 @@ export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
         <ChartCanvas 
           config={config} 
           dataset={dataset} 
-          className="absolute inset-0 w-full h-full"
+          className="w-full h-full"
+          style={{ width: '100%', height: '100%' }}
         />
         
         {/* Optional branding */}

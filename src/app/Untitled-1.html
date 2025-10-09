@@ -1,19 +1,4 @@
-<!-- Ensure proper mobile viewport -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 <style>
-  /* Reset and mobile-first approach */
-  * {
-    box-sizing: border-box;
-  }
-  
-  html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow-x: hidden;
-  }
-  
   /* Responsive Chart Container */
   .responsive-container {
     width: 100%;
@@ -46,30 +31,35 @@
     border-radius: 8px;
   }
   
-  /* Mobile optimizations */
+  /* Mobile optimizations - Fixed for viewport issues */
   @media (max-width: 768px) {
     .responsive-container {
-      max-width: 100%;
-      margin: 0 15px;
+      max-width: none;
+      width: calc(100vw - 20px);
+      margin: 0 10px;
     }
   }
   
   @media (max-width: 480px) {
     .responsive-container {
-      margin: 0 10px;
+      width: calc(100vw - 10px);
+      margin: 0 5px;
       border-radius: 4px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.1);
     }
   }
   
-  /* Very small screens */
-  @media (max-width: 360px) {
-    .responsive-container {
-      margin: 0 5px;
-    }
+  /* Ensure no horizontal scrolling */
+  html, body {
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+  
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
 </style>
 
 <div class="responsive-container">
-    <iframe src="https://chart-builder-one.vercel.app/embed/jxe6olo5m7h" title="Interactive Chart" loading="lazy"></iframe>
+    <iframe src="https://chart-builder-one.vercel.app/embed/a6b0yx47ab" title="Interactive Chart" loading="lazy"></iframe>
 </div>

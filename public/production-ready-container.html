@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Responsive Chart Container - Production Ready</title>
+    <style>
+        /* ========================================
+           RESPONSIVE CHART CONTAINER SYSTEM
+           Ready for production use
+           ======================================== */
+        
+        /* Global reset for proper box-sizing */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        /* ========================================
+           MAIN RESPONSIVE CONTAINER CLASS
+           ======================================== */
+        
+        .responsive-chart-container {
+            /* Base container styling */
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            
+            /* Visual styling (optional) */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+        }
+        
+        /* Aspect ratio preservation using pseudo-element */
+        .responsive-chart-container::before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 0;
+            padding-bottom: 66.67%; /* 400/600 * 100 = 66.67% for 600:400 aspect ratio */
+        }
+        
+        /* Iframe positioning for responsive behavior */
+        .responsive-chart-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 8px;
+        }
+        
+        /* Tablet responsiveness */
+        @media (max-width: 768px) {
+            .responsive-chart-container {
+                max-width: none;
+                width: calc(100vw - 20px);
+                margin: 0 10px;
+            }
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 480px) {
+            .responsive-chart-container {
+                width: calc(100vw - 10px);
+                margin: 0 5px;
+                border-radius: 4px;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            }
+        }
+        
+        /* ========================================
+           ALTERNATIVE CONTAINER VARIATIONS
+           ======================================== */
+        
+        /* Wide format container (16:9) */
+        .responsive-chart-container-wide {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+        }
+        
+        .responsive-chart-container-wide::before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        }
+        
+        .responsive-chart-container-wide iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 8px;
+        }
+        
+        /* Square container (1:1) */
+        .responsive-chart-container-square {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+        }
+        
+        .responsive-chart-container-square::before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%; /* 1:1 aspect ratio */
+        }
+        
+        .responsive-chart-container-square iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 8px;
+        }
+        
+        /* Minimal container (no styling) */
+        .responsive-chart-container-minimal {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .responsive-chart-container-minimal::before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 0;
+            padding-bottom: 66.67%;
+        }
+        
+        .responsive-chart-container-minimal iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        /* Modern browsers: CSS aspect-ratio (Chrome 88+, Firefox 89+, Safari 15+) */
+        .responsive-chart-container-modern {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 1.5; /* 600:400 ratio */
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+        }
+        
+        .responsive-chart-container-modern iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+        
+        /* ========================================
+           DEMO STYLING (REMOVE IN PRODUCTION)
+           ======================================== */
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        .example {
+            margin-bottom: 40px;
+        }
+        
+        h1, h2, h3 {
+            color: #333;
+        }
+        
+        .code-block {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        
+        .info-box {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #76b900;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 Responsive Chart Container - Production Ready</h1>
+    
+    <div class="info-box">
+        <strong>🎯 For Developers:</strong> This page contains production-ready CSS classes for responsive chart embedding. 
+        Copy the CSS and HTML patterns below for immediate use.
+    </div>
+
+    <!-- Example 1: Standard Container -->
+    <div class="example">
+        <h2>1. Standard Responsive Container (600:400 ratio)</h2>
+        <div class="responsive-chart-container">
+            <iframe src="https://chart-builder-one.vercel.app/embed/a6b0yx47ab" title="Standard Chart" loading="lazy"></iframe>
+        </div>
+        
+        <div class="code-block">
+&lt;div class="responsive-chart-container"&gt;
+    &lt;iframe src="https://your-chart-url" title="Chart" loading="lazy"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+        </div>
+    </div>
+
+    <!-- Example 2: Wide Container -->
+    <div class="example">
+        <h2>2. Wide Format Container (16:9 ratio)</h2>
+        <div class="responsive-chart-container-wide">
+            <iframe src="https://chart-builder-one.vercel.app/embed/a6b0yx47ab" title="Wide Chart" loading="lazy"></iframe>
+        </div>
+        
+        <div class="code-block">
+&lt;div class="responsive-chart-container-wide"&gt;
+    &lt;iframe src="https://your-chart-url" title="Chart" loading="lazy"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+        </div>
+    </div>
+
+    <!-- Example 3: Square Container -->
+    <div class="example">
+        <h2>3. Square Container (1:1 ratio)</h2>
+        <div class="responsive-chart-container-square">
+            <iframe src="https://chart-builder-one.vercel.app/embed/a6b0yx47ab" title="Square Chart" loading="lazy"></iframe>
+        </div>
+        
+        <div class="code-block">
+&lt;div class="responsive-chart-container-square"&gt;
+    &lt;iframe src="https://your-chart-url" title="Chart" loading="lazy"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+        </div>
+    </div>
+
+    <!-- Example 4: Minimal Container -->
+    <div class="example">
+        <h2>4. Minimal Container (no styling)</h2>
+        <div class="responsive-chart-container-minimal">
+            <iframe src="https://chart-builder-one.vercel.app/embed/a6b0yx47ab" title="Minimal Chart" loading="lazy"></iframe>
+        </div>
+        
+        <div class="code-block">
+&lt;div class="responsive-chart-container-minimal"&gt;
+    &lt;iframe src="https://your-chart-url" title="Chart" loading="lazy"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+        </div>
+    </div>
+
+    <!-- Example 5: Modern CSS (for newer browsers) -->
+    <div class="example">
+        <h2>5. Modern CSS Aspect Ratio (Chrome 88+, Firefox 89+, Safari 15+)</h2>
+        <div class="responsive-chart-container-modern">
+            <iframe src="https://chart-builder-one.vercel.app/embed/a6b0yx47ab" title="Modern Chart" loading="lazy"></iframe>
+        </div>
+        
+        <div class="code-block">
+&lt;div class="responsive-chart-container-modern"&gt;
+    &lt;iframe src="https://your-chart-url" title="Chart" loading="lazy"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+        </div>
+    </div>
+
+    <!-- Implementation Guide -->
+    <div class="example">
+        <h2>📋 Implementation Guide</h2>
+        
+        <h3>Quick Setup (3 steps):</h3>
+        <ol>
+            <li><strong>Copy the CSS</strong> from the &lt;style&gt; section above</li>
+            <li><strong>Use the HTML pattern</strong> with your chart URL</li>
+            <li><strong>Remove fixed dimensions</strong> from iframes (no width/height attributes)</li>
+        </ol>
+
+        <div class="warning-box">
+            <strong>⚠️ Critical:</strong> Never use <code>width</code> or <code>height</code> attributes on iframes. 
+            They override the responsive CSS and cause mobile cutting issues.
+        </div>
+
+        <h3>Aspect Ratio Customization:</h3>
+        <p>To create custom aspect ratios, calculate: <code>padding-bottom: (height ÷ width × 100)%</code></p>
+        <ul>
+            <li><strong>600×400:</strong> 66.67% (standard)</li>
+            <li><strong>800×600:</strong> 75% (4:3 ratio)</li>
+            <li><strong>1920×1080:</strong> 56.25% (16:9 ratio)</li>
+            <li><strong>500×500:</strong> 100% (1:1 square)</li>
+        </ul>
+        
+        <div class="code-block">
+/* Custom aspect ratio example */
+.my-custom-container::before {
+    padding-bottom: 75%; /* 4:3 ratio */
+}
+        </div>
+
+        <h3>Browser Support:</h3>
+        <ul>
+            <li><strong>Standard method (::before):</strong> All modern browsers + IE11</li>
+            <li><strong>aspect-ratio property:</strong> Chrome 88+, Firefox 89+, Safari 15+</li>
+        </ul>
+    </div>
+
+    <!-- Troubleshooting -->
+    <div class="example">
+        <h2>🔧 Troubleshooting</h2>
+        
+        <h3>Chart cut off on mobile?</h3>
+        <ul>
+            <li>Remove <code>width</code> and <code>height</code> attributes from iframe</li>
+            <li>Ensure proper viewport meta tag is present</li>
+            <li>Check for fixed container widths exceeding viewport</li>
+        </ul>
+
+        <h3>Charts not scaling?</h3>
+        <ul>
+            <li>Verify iframe has no fixed dimensions</li>
+            <li>Check CSS specificity isn't being overridden</li>
+            <li>Test with the minimal container first</li>
+        </ul>
+
+        <h3>Horizontal scrolling on mobile?</h3>
+        <ul>
+            <li>Use <code>calc(100vw - 20px)</code> instead of percentage widths</li>
+            <li>Add <code>overflow-x: hidden</code> to body</li>
+            <li>Ensure <code>box-sizing: border-box</code> is set</li>
+        </ul>
+    </div>
+
+    <footer style="text-align: center; margin-top: 60px; padding: 20px; color: #666;">
+        <p>🚀 NVIDIA Chart Builder - Responsive Embed System</p>
+        <p><strong>Ready for Production</strong> | Last Updated: October 2025</p>
+    </footer>
+
+</body>
+</html>

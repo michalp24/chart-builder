@@ -14,24 +14,47 @@ export default function EmbedLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <style>{`
           /* Enhanced responsive embed styles */
-          * {
-            box-sizing: border-box;
-          }
-          
           html, body {
             margin: 0;
             padding: 0;
             width: 100%;
+            height: 100%;
             overflow-x: hidden;
+            box-sizing: border-box;
+          }
+          
+          *, *::before, *::after {
+            box-sizing: border-box;
           }
           
           .embed-container {
             width: 100%;
-            height: 100%;
+            height: 100vh;
             overflow: hidden;
             position: relative;
+          }
+          
+          /* Force responsive charts on mobile */
+          @media (max-width: 768px) {
+            .embed-container {
+              width: 100vw !important;
+              height: 100vh !important;
+              max-width: none !important;
+            }
+            
+            /* Force recharts to be responsive */
+            .recharts-responsive-container {
+              width: 100% !important;
+              height: 100% !important;
+            }
+            
+            .recharts-wrapper {
+              width: 100% !important;
+              height: 100% !important;
+            }
           }
           
           /* Ensure aspect ratio works on older browsers */
@@ -48,36 +71,6 @@ export default function EmbedLayout({
               content: '';
               display: table;
               clear: both;
-            }
-          }
-          
-          /* Mobile-first responsive breakpoints */
-          @media (max-width: 768px) {
-            .embed-container {
-              min-height: 250px;
-              max-height: 90vh;
-            }
-          }
-          
-          @media (max-width: 480px) {
-            .embed-container {
-              min-height: 200px;
-              max-height: 85vh;
-            }
-          }
-          
-          @media (max-height: 500px) {
-            .embed-container {
-              height: 90vh !important;
-              max-height: 90vh !important;
-              aspect-ratio: unset !important;
-            }
-          }
-          
-          /* Prevent horizontal scrolling on small screens */
-          @media (max-width: 360px) {
-            .embed-container {
-              min-height: 180px;
             }
           }
         `}</style>
