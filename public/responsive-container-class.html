@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Container Class Examples</title>
+    <style>
+        /* Basic Responsive Chart Container */
+        .responsive-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #ffffff;
+        }
+        
+        /* Aspect Ratio Container (600:400 = 1.5:1 = 66.67% padding-bottom) */
+        .responsive-container::before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 0;
+            padding-bottom: 66.67%; /* 400/600 * 100 = 66.67% */
+        }
+        
+        /* Responsive iframe positioning */
+        .responsive-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 8px;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .responsive-container {
+                max-width: calc(100% - 20px);
+                margin: 0 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .responsive-container {
+                margin: 0 5px;
+                border-radius: 4px;
+                box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            }
+        }
+
+        /* Alternative: Minimal responsive container */
+        .responsive-container-minimal {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .responsive-container-minimal::before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 0;
+            padding-bottom: 66.67%;
+        }
+        
+        .responsive-container-minimal iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Modern browsers: CSS aspect-ratio */
+        .responsive-container-modern {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 1.5;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #ffffff;
+        }
+        
+        .responsive-container-modern iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+
+        /* Wide format container (16:9) */
+        .responsive-container-wide {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #ffffff;
+        }
+        
+        .responsive-container-wide::before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        }
+        
+        .responsive-container-wide iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 8px;
+        }
+
+        /* Square container (1:1) */
+        .responsive-container-square {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #ffffff;
+        }
+        
+        .responsive-container-square::before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%; /* 1:1 aspect ratio */
+        }
+        
+        .responsive-container-square iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 8px;
+        }
+
+        /* Demo styling */
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .example {
+            margin-bottom: 40px;
+        }
+        
+        h1, h2 {
+            color: #333;
+        }
+        
+        .code-block {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Responsive Container Class Examples</h1>
+
+    <!-- Example 1: Default Responsive Container -->
+    <div class="example">
+        <h2>1. Default Responsive Container (600:400 ratio)</h2>
+        <div class="responsive-container">
+            <iframe src="https://chart-builder-one.vercel.app/embed/jxe6olo5m7h" title="Chart 1" loading="lazy"></iframe>
+        </div>
+        
+        <div class="code-block">
+&lt;div class="responsive-container"&gt;
+    &lt;iframe src="https://your-chart-url" title="Chart" loading="lazy"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+        </div>
+    </div>
+
+    <!-- Example 2: Minimal Container -->
+    <div class="example">
+        <h2>2. Minimal Responsive Container</h2>
+        <div class="responsive-container-minimal">
+            <iframe src="https://chart-builder-one.vercel.app/embed/jxe6olo5m7h" title="Chart 2" loading="lazy"></iframe>
+        </div>
+        
+        <div class="code-block">
+&lt;div class="responsive-container-minimal"&gt;
+    &lt;iframe src="https://your-chart-url" title="Chart" loading="lazy"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+        </div>
+    </div>
+
+    <!-- Example 3: Modern CSS Aspect Ratio -->
+    <div class="example">
+        <h2>3. Modern CSS Aspect Ratio (Chrome 88+, Firefox 89+, Safari 15+)</h2>
+        <div class="responsive-container-modern">
+            <iframe src="https://chart-builder-one.vercel.app/embed/jxe6olo5m7h" title="Chart 3" loading="lazy"></iframe>
+        </div>
+        
+        <div class="code-block">
+&lt;div class="responsive-container-modern"&gt;
+    &lt;iframe src="https://your-chart-url" title="Chart" loading="lazy"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+        </div>
+    </div>
+
+    <!-- Example 4: Wide Format -->
+    <div class="example">
+        <h2>4. Wide Format Container (16:9 ratio)</h2>
+        <div class="responsive-container-wide">
+            <iframe src="https://chart-builder-one.vercel.app/embed/jxe6olo5m7h" title="Chart 4" loading="lazy"></iframe>
+        </div>
+        
+        <div class="code-block">
+&lt;div class="responsive-container-wide"&gt;
+    &lt;iframe src="https://your-chart-url" title="Chart" loading="lazy"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+        </div>
+    </div>
+
+    <!-- Example 5: Square Format -->
+    <div class="example">
+        <h2>5. Square Container (1:1 ratio)</h2>
+        <div class="responsive-container-square">
+            <iframe src="https://chart-builder-one.vercel.app/embed/jxe6olo5m7h" title="Chart 5" loading="lazy"></iframe>
+        </div>
+        
+        <div class="code-block">
+&lt;div class="responsive-container-square"&gt;
+    &lt;iframe src="https://your-chart-url" title="Chart" loading="lazy"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+        </div>
+    </div>
+
+    <!-- CSS Code Reference -->
+    <div class="example">
+        <h2>📋 Complete CSS Code (Copy-Paste Ready)</h2>
+        <div class="code-block">
+&lt;style&gt;
+  /* Responsive Chart Container */
+  .responsive-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background: #ffffff;
+  }
+  
+  /* Aspect Ratio Container (600:400 = 1.5:1 = 66.67% padding-bottom) */
+  .responsive-container::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 0;
+    padding-bottom: 66.67%; /* 400/600 * 100 = 66.67% */
+  }
+  
+  /* Responsive iframe positioning */
+  .responsive-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 8px;
+  }
+  
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    .responsive-container {
+      max-width: calc(100% - 20px);
+      margin: 0 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .responsive-container {
+      margin: 0 5px;
+      border-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+  }
+&lt;/style&gt;
+
+&lt;div class="responsive-container"&gt;
+    &lt;iframe src="https://your-chart-url" title="Interactive Chart" loading="lazy"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+        </div>
+    </div>
+
+    <!-- Tips -->
+    <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin-top: 40px;">
+        <h3 style="color: #2d5a2d; margin-top: 0;">💡 Customization Tips</h3>
+        <ul style="color: #2d5a2d; line-height: 1.6;">
+            <li><strong>Aspect Ratio:</strong> Change padding-bottom percentage: (height ÷ width × 100)%</li>
+            <li><strong>Max Width:</strong> Adjust max-width to control maximum chart size</li>
+            <li><strong>Spacing:</strong> Modify margin values for mobile responsiveness</li>
+            <li><strong>Styling:</strong> Customize border-radius, box-shadow, and background</li>
+            <li><strong>Modern Support:</strong> Use aspect-ratio property for newer browsers</li>
+        </ul>
+    </div>
+
+</body>
+</html>

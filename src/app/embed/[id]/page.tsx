@@ -91,12 +91,13 @@ export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
   }
 
   return (
-    <div className="w-full bg-background relative overflow-hidden">
+    <div className="w-full bg-background relative">
       {/* Responsive container that maintains aspect ratio */}
       <div 
-        className="w-full relative min-h-[300px] max-h-screen"
+        className="w-full relative min-h-[250px] sm:min-h-[300px]"
         style={{ 
           aspectRatio: `${aspectRatio}`,
+          maxHeight: '90vh', // Prevent charts from being too tall on mobile
           '--chart-width': `${baseWidth}px`,
           '--chart-height': `${baseHeight}px`
         } as React.CSSProperties}

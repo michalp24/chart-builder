@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Chart Embed Examples</title>
+</head>
+<body style="margin: 0; padding: 20px; font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5;">
+
+    <h1 style="text-align: center; color: #333; margin-bottom: 40px;">Responsive Chart Embed Container Examples</h1>
+
+    <!-- Example 1: Fully Inline Responsive Container -->
+    <div style="margin-bottom: 40px;">
+        <h2 style="color: #333; margin-bottom: 20px;">1. Fully Inline Responsive Container</h2>
+        <p style="color: #666; margin-bottom: 20px;">All styles inline, maintains 600:400 aspect ratio (1.5:1)</p>
+        
+        <!-- Responsive Chart Embed Container -->
+        <div style="width: 100%; max-width: 600px; margin: 0 auto; position: relative; overflow: hidden; background: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <!-- Aspect Ratio Container (600:400 = 1.5:1 = 66.67% padding-bottom) -->
+            <div style="width: 100%; height: 0; padding-bottom: 66.67%; position: relative; background: #ffffff; border-radius: 8px; overflow: hidden;">
+                <!-- Responsive iFrame -->
+                <iframe 
+                    src="https://chart-builder-one.vercel.app/embed/sb8ghlbdxr" 
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 8px;"
+                    title="Interactive Chart"
+                    loading="lazy"
+                ></iframe>
+            </div>
+            
+            <!-- Loading placeholder -->
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; opacity: 0.3; font-size: 14px; color: #666; z-index: -1;">
+                Loading chart...
+            </div>
+        </div>
+    </div>
+
+    <!-- Example 2: Minimal Inline Container -->
+    <div style="margin-bottom: 40px;">
+        <h2 style="color: #333; margin-bottom: 20px;">2. Minimal Inline Container</h2>
+        <p style="color: #666; margin-bottom: 20px;">Simplified version with essential responsive styles only</p>
+        
+        <div style="width: 100%; max-width: 600px; margin: 0 auto; position: relative;">
+            <div style="width: 100%; height: 0; padding-bottom: 66.67%; position: relative;">
+                <iframe 
+                    src="https://chart-builder-one.vercel.app/embed/sb8ghlbdxr" 
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+                    title="Interactive Chart"
+                ></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Example 3: Modern CSS Aspect Ratio (for newer browsers) -->
+    <div style="margin-bottom: 40px;">
+        <h2 style="color: #333; margin-bottom: 20px;">3. Modern CSS Aspect Ratio</h2>
+        <p style="color: #666; margin-bottom: 20px;">Uses modern aspect-ratio CSS property (works in Chrome 88+, Firefox 89+, Safari 15+)</p>
+        
+        <div style="width: 100%; max-width: 600px; aspect-ratio: 1.5; margin: 0 auto; position: relative; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); background: #ffffff;">
+            <iframe 
+                src="https://chart-builder-one.vercel.app/embed/sb8ghlbdxr" 
+                style="width: 100%; height: 100%; border: 0; display: block;"
+                title="Interactive Chart"
+                loading="lazy"
+            ></iframe>
+        </div>
+    </div>
+
+    <!-- Example 4: Full Width with Mobile Considerations -->
+    <div style="margin-bottom: 40px;">
+        <h2 style="color: #333; margin-bottom: 20px;">4. Full Width Mobile-Optimized</h2>
+        <p style="color: #666; margin-bottom: 20px;">Takes full width on mobile, with proper spacing and sizing</p>
+        
+        <div style="width: calc(100% - 20px); max-width: 800px; margin: 0 auto; position: relative; padding: 0 10px;">
+            <div style="width: 100%; height: 0; padding-bottom: 50%; position: relative; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.12);">
+                <iframe 
+                    src="https://chart-builder-one.vercel.app/embed/sb8ghlbdxr" 
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 12px;"
+                    title="Interactive Chart"
+                    loading="lazy"
+                ></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Example 5: Grid Layout -->
+    <div style="margin-bottom: 40px;">
+        <h2 style="color: #333; margin-bottom: 20px;">5. Multiple Charts in Grid</h2>
+        <p style="color: #666; margin-bottom: 20px;">Responsive grid layout with multiple charts</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto;">
+            <!-- Chart 1 -->
+            <div style="position: relative;">
+                <div style="width: 100%; height: 0; padding-bottom: 75%; position: relative; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <iframe 
+                        src="https://chart-builder-one.vercel.app/embed/sb8ghlbdxr" 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 8px;"
+                        title="Chart 1"
+                        loading="lazy"
+                    ></iframe>
+                </div>
+            </div>
+            
+            <!-- Chart 2 -->
+            <div style="position: relative;">
+                <div style="width: 100%; height: 0; padding-bottom: 75%; position: relative; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <iframe 
+                        src="https://chart-builder-one.vercel.app/embed/sb8ghlbdxr" 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 8px;"
+                        title="Chart 2"
+                        loading="lazy"
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copy-Paste Code Examples -->
+    <div style="margin-bottom: 40px;">
+        <h2 style="color: #333; margin-bottom: 20px;">📋 Copy-Paste Ready Code</h2>
+        
+        <h3 style="color: #555; margin-bottom: 10px;">Basic Responsive Container:</h3>
+        <pre style="background: #f4f4f4; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 14px; line-height: 1.4;"><code>&lt;div style="width: 100%; max-width: 600px; margin: 0 auto; position: relative;"&gt;
+  &lt;div style="width: 100%; height: 0; padding-bottom: 66.67%; position: relative;"&gt;
+    &lt;iframe 
+      src="https://chart-builder-one.vercel.app/embed/YOUR-CHART-ID" 
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+      title="Chart"
+    &gt;&lt;/iframe&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+        <h3 style="color: #555; margin-bottom: 10px; margin-top: 30px;">With Styling:</h3>
+        <pre style="background: #f4f4f4; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 14px; line-height: 1.4;"><code>&lt;div style="width: 100%; max-width: 600px; margin: 0 auto; position: relative; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); background: #ffffff;"&gt;
+  &lt;div style="width: 100%; height: 0; padding-bottom: 66.67%; position: relative;"&gt;
+    &lt;iframe 
+      src="https://chart-builder-one.vercel.app/embed/YOUR-CHART-ID" 
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 8px;"
+      title="Chart"
+      loading="lazy"
+    &gt;&lt;/iframe&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+        <h3 style="color: #555; margin-bottom: 10px; margin-top: 30px;">Modern Aspect Ratio:</h3>
+        <pre style="background: #f4f4f4; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 14px; line-height: 1.4;"><code>&lt;div style="width: 100%; max-width: 600px; aspect-ratio: 1.5; margin: 0 auto; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"&gt;
+  &lt;iframe 
+    src="https://chart-builder-one.vercel.app/embed/YOUR-CHART-ID" 
+    style="width: 100%; height: 100%; border: 0;"
+    title="Chart"
+  &gt;&lt;/iframe&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <!-- Tips -->
+    <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin-bottom: 40px;">
+        <h3 style="color: #2d5a2d; margin-top: 0;">💡 Tips for Responsive Embeds</h3>
+        <ul style="color: #2d5a2d; line-height: 1.6;">
+            <li><strong>Aspect Ratio:</strong> Use padding-bottom percentage to maintain aspect ratio (height/width * 100)</li>
+            <li><strong>Max Width:</strong> Set max-width to prevent charts from becoming too large on desktop</li>
+            <li><strong>Mobile:</strong> Consider using calc(100% - 20px) for mobile spacing</li>
+            <li><strong>Loading:</strong> Add loading="lazy" for better performance</li>
+            <li><strong>Accessibility:</strong> Always include a descriptive title attribute</li>
+            <li><strong>Modern Browsers:</strong> Use aspect-ratio CSS property when targeting newer browsers</li>
+        </ul>
+    </div>
+
+    <footer style="text-align: center; color: #666; padding: 20px;">
+        <p>🚀 Generated by NVIDIA Chart Builder - <a href="https://chart-builder-one.vercel.app" style="color: #76B900;">Create Your Own Charts</a></p>
+    </footer>
+
+</body>
+</html>
