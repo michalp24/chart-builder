@@ -56,9 +56,14 @@ export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
     // "system" or undefined will use system default
   }, [theme]);
 
+  // Calculate responsive dimensions
+  const baseWidth = config?.size?.width || 600;
+  const baseHeight = config?.size?.height || 400;
+  const aspectRatio = baseWidth / baseHeight;
+
   if (loading) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-background" style={{ height: '400px' }}>
+      <div className="w-full h-full min-h-[300px] flex items-center justify-center bg-background">
         <div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" />
       </div>
     );
@@ -66,7 +71,7 @@ export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
 
   if (error) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-background" style={{ height: '400px' }}>
+      <div className="w-full h-full min-h-[300px] flex items-center justify-center bg-background">
         <div className="text-center">
           <div className="text-red-600 text-lg font-medium mb-2">Error</div>
           <div className="text-muted-foreground">{error}</div>
@@ -77,7 +82,7 @@ export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
 
   if (!config || !dataset) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-background" style={{ height: '400px' }}>
+      <div className="w-full h-full min-h-[300px] flex items-center justify-center bg-background">
         <div className="text-center">
           <div className="text-muted-foreground">No chart data available</div>
         </div>
@@ -86,18 +91,28 @@ export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
   }
 
   return (
-    <div className="w-full bg-background" style={{ height: `${config.size?.height || 400}px` }}>
-      <ChartCanvas 
-        config={config} 
-        dataset={dataset} 
-        className="w-full h-full"
-      />
-      
-      {/* Optional branding */}
-      <div className="absolute bottom-2 right-2 text-xs text-muted-foreground opacity-50">
-        <span className="hover:text-primary">
-          Created with Chart Builder
-        </span>
+    <div className="w-full bg-background relative overflow-hidden">
+      {/* Responsive container that maintains aspect ratio */}
+      <div 
+        className="w-full relative min-h-[300px] max-h-screen"
+        style={{ 
+          aspectRatio: `${aspectRatio}`,
+          '--chart-width': `${baseWidth}px`,
+          '--chart-height': `${baseHeight}px`
+        } as React.CSSProperties}
+      >
+        <ChartCanvas 
+          config={config} 
+          dataset={dataset} 
+          className="absolute inset-0 w-full h-full"
+        />
+        
+        {/* Optional branding */}
+        <div className="absolute bottom-2 right-2 text-xs text-muted-foreground opacity-50 z-10 pointer-events-none">
+          <span className="hover:text-primary pointer-events-auto">
+            Created with Chart Builder
+          </span>
+        </div>
       </div>
     </div>
   );
