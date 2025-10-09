@@ -108,7 +108,6 @@ export default function EmbedPage({ params, searchParams }: EmbedPageProps) {
           config={config} 
           dataset={dataset} 
           className="w-full h-full"
-          style={{ width: '100%', height: '100%' }}
         />
         
         {/* Optional branding */}
